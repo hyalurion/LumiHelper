@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
 
+    // Image Loading (Coil)
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)

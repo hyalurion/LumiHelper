@@ -113,4 +113,14 @@ class HoYoApiFactory(
 
         return retrofit.create(EnkaApi::class.java)
     }
+
+    fun createEnkaNetworkApi(): EnkaNetworkApi {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://enka.network/")
+            .client(baseClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+
+        return retrofit.create(EnkaNetworkApi::class.java)
+    }
 }

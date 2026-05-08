@@ -23,7 +23,9 @@ object DataModule {
             context,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME,
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     @Singleton
@@ -34,6 +36,16 @@ object DataModule {
     @Singleton
     fun provideDailyNoteCacheDao(database: AppDatabase): DailyNoteCacheDao =
         database.dailyNoteCacheDao()
+
+    @Provides
+    @Singleton
+    fun provideGachaEntryDao(database: AppDatabase): GachaEntryDao =
+        database.gachaEntryDao()
+
+    @Provides
+    @Singleton
+    fun provideGachaProfileDao(database: AppDatabase): GachaProfileDao =
+        database.gachaProfileDao()
 
     @Provides
     @Singleton
@@ -62,4 +74,12 @@ object DataModule {
         enkaApi: EnkaNetworkApi,
         moshi: Moshi,
     ): EnkaRepository = EnkaRepository(context, enkaApi, moshi)
+
+    @Provides
+    @Singleton
+    fun provideGachaRepository(
+        gachaEntryDao: GachaEntryDao,
+        gachaProfileDao: GachaProfileDao,
+        moshi: Moshi,
+    ): GachaRepository = GachaRepository(gachaEntryDao, gachaProfileDao, moshi)
 }

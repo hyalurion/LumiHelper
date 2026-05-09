@@ -8,7 +8,6 @@ import com.chronie.helperunited.model.DailyNoteZZZ
 import com.chronie.helperunited.network.HoYoApiFactory
 import com.chronie.helperunited.network.HoYoApiConfig
 import com.squareup.moshi.Moshi
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -16,7 +15,7 @@ import javax.inject.Singleton
  * Ported from PizzaHelperUnited's DailyNote fetch logic.
  */
 @Singleton
-class DailyNoteRepository @Inject constructor(
+class DailyNoteRepository(
     private val apiFactory: HoYoApiFactory,
     private val dailyNoteCacheDao: DailyNoteCacheDao,
     private val moshi: Moshi,

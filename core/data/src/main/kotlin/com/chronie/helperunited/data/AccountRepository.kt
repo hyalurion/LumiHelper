@@ -5,7 +5,6 @@ import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.HoYoAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -13,7 +12,7 @@ import javax.inject.Singleton
  * Ported from PizzaHelperUnited's account persistence layer.
  */
 @Singleton
-class AccountRepository @Inject constructor(
+class AccountRepository(
     private val accountDao: AccountDao,
 ) {
     fun observeAllAccounts(): Flow<List<HoYoAccount>> =

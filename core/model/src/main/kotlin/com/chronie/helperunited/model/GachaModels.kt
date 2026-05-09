@@ -23,7 +23,7 @@ data class GachaEntry(
     @Json(name = "lang") val lang: String?,       // Language code
     @Json(name = "itemType") val itemType: String?, // Character/Weapon
     @Json(name = "rankType") val rankType: Int?,  // Rarity (3/4/5)
-    @Json(name = "id") val gachaId: String?,      // Gacha pool ID
+    @Json(name = "gacha_id") val gachaId: String?, // Gacha pool ID
 )
 
 /**

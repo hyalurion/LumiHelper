@@ -17,7 +17,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -26,7 +25,7 @@ import javax.inject.Singleton
  * Ported from PizzaHelperUnited's EnkaKit.
  */
 @Singleton
-class EnkaRepository @Inject constructor(
+class EnkaRepository(
     @ApplicationContext private val context: Context,
     private val enkaApi: EnkaNetworkApi,
     private val moshi: Moshi,

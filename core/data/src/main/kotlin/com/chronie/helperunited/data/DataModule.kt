@@ -51,21 +51,15 @@ object DataModule {
     @Singleton
     fun provideAccountRepository(
         accountDao: AccountDao,
-        apiFactory: HoYoApiFactory,
-    ): AccountRepository = AccountRepository(accountDao, apiFactory)
+    ): AccountRepository = AccountRepository(accountDao)
 
     @Provides
     @Singleton
     fun provideDailyNoteRepository(
-        accountDao: AccountDao,
         apiFactory: HoYoApiFactory,
-    ): DailyNoteRepository = DailyNoteRepository(accountDao, apiFactory)
-
-    @Provides
-    @Singleton
-    fun provideEnkaNetworkApi(
-        apiFactory: HoYoApiFactory,
-    ): EnkaNetworkApi = apiFactory.createEnkaNetworkApi()
+        dailyNoteCacheDao: DailyNoteCacheDao,
+        moshi: Moshi,
+    ): DailyNoteRepository = DailyNoteRepository(apiFactory, dailyNoteCacheDao, moshi)
 
     @Provides
     @Singleton

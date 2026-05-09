@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -20,7 +19,7 @@ import javax.inject.Singleton
  * Ported from PizzaHelperUnited's GachaKit.
  */
 @Singleton
-class GachaRepository @Inject constructor(
+class GachaRepository(
     private val gachaEntryDao: GachaEntryDao,
     private val gachaProfileDao: GachaProfileDao,
     private val moshi: Moshi,

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
 }
 
@@ -26,7 +27,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Moshi
+    // Moshi - using kotlin-reflect instead of codegen for base types
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
 

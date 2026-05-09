@@ -1,7 +1,7 @@
 package com.chronie.helperunited.base
 
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
 data class AccountRegion(
     val type: RegionType,
@@ -63,10 +63,22 @@ enum class RegionType {
     MIYOUSHE,
 }
 
-class AccountRegionAdapter {
-    @ToJson
-    fun toJson(region: AccountRegion): String = region.rawValue
+object AccountRegionAdapterFactory : JsonAdapter.Factory {
+    override fun create(type: java.lang.reflect.Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
+        if (type != AccountRegion::class.java) return null
+        return object : JsonAdapter<AccountRegion>() {
+            override fun fromJson(reader: com.squareup.moshi.JsonReader): AccountRegion? {
+                val rawValue = reader.readJsonValue() as? String ?: return null
+                return AccountRegion.fromRawValue(rawValue)
+            }
 
-    @FromJson
-    fun fromJson(rawValue: String): AccountRegion? = AccountRegion.fromRawValue(rawValue)
+            override fun toJson(writer: com.squareup.moshi.JsonWriter, value: AccountRegion?) {
+                if (value == null) {
+                    writer.nullValue()
+                } else {
+                    writer.value(value.rawValue)
+                }
+            }
+        }
+    }
 }

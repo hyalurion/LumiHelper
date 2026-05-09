@@ -1,12 +1,8 @@
 package com.chronie.helperunited.base
 
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
-/**
- * Supported HoYoverse games.
- * Ported from PizzaHelperUnited's Pizza.SupportedGame.
- */
 data class SupportedGame(
     val rawValue: String,
     val hoyoBizId: String,
@@ -54,14 +50,22 @@ data class SupportedGame(
     }
 }
 
-/**
- * Moshi adapter for SupportedGame.
- * Serializes as raw value string (e.g., "GI", "HSR", "ZZZ").
- */
-class SupportedGameAdapter {
-    @ToJson
-    fun toJson(game: SupportedGame): String = game.rawValue
+object SupportedGameAdapterFactory : JsonAdapter.Factory {
+    override fun create(type: java.lang.reflect.Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
+        if (type != SupportedGame::class.java) return null
+        return object : JsonAdapter<SupportedGame>() {
+            override fun fromJson(reader: com.squareup.moshi.JsonReader): SupportedGame? {
+                val rawValue = reader.readJsonValue() as? String ?: return null
+                return SupportedGame.fromRawValue(rawValue)
+            }
 
-    @FromJson
-    fun fromJson(rawValue: String): SupportedGame? = SupportedGame.fromRawValue(rawValue)
+            override fun toJson(writer: com.squareup.moshi.JsonWriter, value: SupportedGame?) {
+                if (value == null) {
+                    writer.nullValue()
+                } else {
+                    writer.value(value.rawValue)
+                }
+            }
+        }
+    }
 }

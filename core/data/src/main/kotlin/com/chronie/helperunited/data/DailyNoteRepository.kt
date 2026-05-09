@@ -1,6 +1,7 @@
 package com.chronie.helperunited.data
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.DailyNoteGI
 import com.chronie.helperunited.model.DailyNoteHSR
@@ -23,8 +24,8 @@ class DailyNoteRepository(
     /**
      * Maps UID to the server string that the API expects.
      */
-    private fun uidToServer(region: AccountRegion, uid: String): String = when (region) {
-        is AccountRegion.Miyoushe -> when (region.game) {
+    private fun uidToServer(region: AccountRegion, uid: String): String = when (region.type) {
+        RegionType.MIYOUSHE -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> when {
                 uid.startsWith("1") -> "cn_gf01"
                 uid.startsWith("2") -> "cn_gf01"
@@ -38,7 +39,7 @@ class DailyNoteRepository(
             }
             SupportedGame.ZENLESS_ZONE -> "prod_gf_cn"
         }
-        is AccountRegion.HoyoLab -> when (region.game) {
+        RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> when {
                 uid.startsWith("6") -> "os_usa"
                 uid.startsWith("7") -> "os_euro"

@@ -1,6 +1,7 @@
 package com.chronie.helperunited.data
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.CharacterListRequest
 import com.chronie.helperunited.model.HoYoLabCharacterListZZZ
@@ -95,8 +96,8 @@ class ZZZShowcaseRepository(
             verticalPaintingUrl = agent.roleVerticalPaintingUrl,
             wEngine = wEngine,
             driveDiscs = driveDiscs,
-            skills = null, // Skills are in the raw model but we use the summarized version
-            properties = emptyList(), // Properties are in the raw model
+            skills = null,
+            properties = emptyList(),
         )
     }
 
@@ -135,9 +136,9 @@ class ZZZShowcaseRepository(
     /**
      * Maps UID to the server string that the API expects.
      */
-    private fun uidToServer(region: AccountRegion, uid: String): String = when (region) {
-        is AccountRegion.Miyoushe -> "prod_gf_cn"
-        is AccountRegion.HoyoLab -> when {
+    private fun uidToServer(region: AccountRegion, uid: String): String = when (region.type) {
+        RegionType.MIYOUSHE -> "prod_gf_cn"
+        RegionType.HOYOLAB -> when {
             uid.startsWith("6") -> "prod_gf_us"
             uid.startsWith("7") -> "prod_gf_eu"
             uid.startsWith("8") -> "prod_gf_jp"

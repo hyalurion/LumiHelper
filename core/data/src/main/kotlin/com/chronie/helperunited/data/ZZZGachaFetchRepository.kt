@@ -1,6 +1,7 @@
 package com.chronie.helperunited.data
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.model.GachaEntry
 import com.chronie.helperunited.model.GachaTypeZZZ
 import com.chronie.helperunited.model.ZZZGachaEntry
@@ -19,18 +20,12 @@ class ZZZGachaFetchRepository(
 ) {
     companion object {
         private const val PAGE_SIZE = 20
-        private const val MAX_PAGES = 500 // Safety limit
+        private const val MAX_PAGES = 500
     }
 
     /**
      * Fetch all ZZZ gacha records for a given account.
      * Iterates through all gacha types and pages until no more records.
-     *
-     * @param accountUid The game UID
-     * @param region The account region
-     * @param cookie The authentication cookie
-     * @param gachaTypes Which gacha types to fetch (default: all)
-     * @return Result with count of new records fetched
      */
     suspend fun fetchAllGachaRecords(
         accountUid: String,
@@ -57,7 +52,7 @@ class ZZZGachaFetchRepository(
     ): Int {
         val api = apiFactory.createRecordApi(region, cookie)
         val server = uidToServer(region, accountUid)
-        val lang = if (region is AccountRegion.Miyoushe) "zh-cn" else "en-us"
+        val lang = if (region.type == RegionType.MIYOUSHE) "zh-cn" else "en-us"
 
         var totalNew = 0
         var endId = "0"
@@ -83,17 +78,13 @@ class ZZZGachaFetchRepository(
 
             if (entries.isEmpty()) break
 
-            // Convert to unified GachaEntry format
             val gachaEntries = entries.map { it.toGachaEntry(accountUid) }
 
-            // Insert into database (REPLACE handles duplicates)
             gachaRepository.insertEntries(gachaEntries)
             totalNew += entries.size
 
-            // Update endId for next page
             endId = entries.last().id
 
-            // If fewer than PAGE_SIZE, we've reached the end
             if (entries.size < PAGE_SIZE) break
 
             page++
@@ -125,9 +116,9 @@ class ZZZGachaFetchRepository(
     /**
      * Maps UID to region string for gacha API.
      */
-    private fun uidToServer(region: AccountRegion, uid: String): String = when (region) {
-        is AccountRegion.Miyoushe -> "prod_gf_cn"
-        is AccountRegion.HoyoLab -> when {
+    private fun uidToServer(region: AccountRegion, uid: String): String = when (region.type) {
+        RegionType.MIYOUSHE -> "prod_gf_cn"
+        RegionType.HOYOLAB -> when {
             uid.startsWith("6") -> "prod_gf_us"
             uid.startsWith("7") -> "prod_gf_eu"
             uid.startsWith("8") -> "prod_gf_jp"

@@ -10,17 +10,17 @@ import java.util.UUID
  * HoYoverse account model.
  * Ported from PizzaHelperUnited's AccountMOProtocol.
  */
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class HoYoAccount(
     val uuid: String = UUID.randomUUID().toString(),
     val uid: String,
     val name: String,
     val region: AccountRegion,
     val cookie: String,
-    val deviceFingerPrint: String = "",
-    val allowNotification: Boolean = true,
+    @Json(name = "device_fingerprint") val deviceFingerPrint: String = "",
+    @Json(name = "allow_notification") val allowNotification: Boolean = true,
     val priority: Int = 0,
-    val sTokenV2: String? = null,
+    @Json(name = "stoken_v2") val sTokenV2: String? = null,
 ) {
     val game: SupportedGame get() = region.game
     val displayUid: String get() = game.withUid(uid)

@@ -1,6 +1,7 @@
 package com.chronie.helperunited.network
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -15,36 +16,36 @@ object HoYoApiConfig {
 
     // Region-specific API hosts
 
-    fun recordApiHost(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "api-takumi-record.mihoyo.com"
-        is AccountRegion.HoyoLab -> "bbs-api-os.hoyolab.com"
+    fun recordApiHost(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "api-takumi-record.mihoyo.com"
+        RegionType.HOYOLAB -> "bbs-api-os.hoyolab.com"
     }
 
-    fun accountApiHost(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "api-takumi.mihoyo.com"
-        is AccountRegion.HoyoLab -> "api-account-os.hoyolab.com"
+    fun accountApiHost(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "api-takumi.mihoyo.com"
+        RegionType.HOYOLAB -> "api-account-os.hoyolab.com"
     }
 
-    fun ledgerApiHost(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> when (region.game) {
+    fun ledgerApiHost(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "hk4e-api.mihoyo.com"
             SupportedGame.STAR_RAIL -> "api-takumi.mihoyo.com"
             SupportedGame.ZENLESS_ZONE -> ""
         }
-        is AccountRegion.HoyoLab -> when (region.game) {
+        RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "sg-hk4e-api.hoyolab.com"
             SupportedGame.STAR_RAIL -> "sg-public-api.hoyolab.com"
             SupportedGame.ZENLESS_ZONE -> ""
         }
     }
 
-    fun publicOpsDomain(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> when (region.game) {
+    fun publicOpsDomain(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "public-operation-hk4e.mihoyo.com"
             SupportedGame.STAR_RAIL -> "public-operation-hkrpg.mihoyo.com"
             SupportedGame.ZENLESS_ZONE -> "public-operation-nap.mihoyo.com"
         }
-        is AccountRegion.HoyoLab -> when (region.game) {
+        RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "public-operation-hk4e-sg.hoyoverse.com"
             SupportedGame.STAR_RAIL -> "public-operation-hkrpg-sg.hoyoverse.com"
             SupportedGame.ZENLESS_ZONE -> "public-operation-nap-sg.hoyoverse.com"
@@ -52,34 +53,34 @@ object HoYoApiConfig {
     }
 
     // Salts for DS signature
-    private fun salt(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"  // X4
-        is AccountRegion.HoyoLab -> "okr4obncj8bw5a65hbnn5oo6ixjc3l9w"   // OSX6
+    private fun salt(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"  // X4
+        RegionType.HOYOLAB -> "okr4obncj8bw5a65hbnn5oo6ixjc3l9w"   // OSX6
     }
 
     // App version
-    fun xRpcAppVersion(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "2.40.1"
-        is AccountRegion.HoyoLab -> "2.55.0"
+    fun xRpcAppVersion(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "2.40.1"
+        RegionType.HOYOLAB -> "2.55.0"
     }
 
     // Client type
-    fun xRpcClientType(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "5"
-        is AccountRegion.HoyoLab -> "2"
+    fun xRpcClientType(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "5"
+        RegionType.HOYOLAB -> "2"
     }
 
     // Headers
-    fun referer(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "https://webstatic.mihoyo.com"
-        is AccountRegion.HoyoLab -> "https://act.hoyolab.com"
+    fun referer(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "https://webstatic.mihoyo.com"
+        RegionType.HOYOLAB -> "https://act.hoyolab.com"
     }
 
     fun origin(region: AccountRegion): String = referer(region)
 
-    fun xRequestedWith(region: AccountRegion): String = when (region) {
-        is AccountRegion.Miyoushe -> "com.mihoyo.hyperion"
-        is AccountRegion.HoyoLab -> "com.mihoyo.hoyolab"
+    fun xRequestedWith(region: AccountRegion): String = when (region.type) {
+        RegionType.MIYOUSHE -> "com.mihoyo.hyperion"
+        RegionType.HOYOLAB -> "com.mihoyo.hoyolab"
     }
 
     fun userAgent(region: AccountRegion): String =

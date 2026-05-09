@@ -1,6 +1,7 @@
 package com.chronie.helperunited.data
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.GameSignStatus
 import com.chronie.helperunited.model.HoYoAccount
@@ -23,7 +24,6 @@ class HoYoLabSignRepository @Inject constructor(
     private val apiFactory: HoYoApiFactory,
 ) {
     companion object {
-        // Activity IDs for sign-in per game
         private val ACT_IDS = mapOf(
             SupportedGame.GENSHIN_IMPACT to "e202102251931481",
             SupportedGame.STAR_RAIL to "e202303301540311",
@@ -38,9 +38,9 @@ class HoYoLabSignRepository @Inject constructor(
         val api = apiFactory.createRecordApi(account.region, account.cookie)
         val actId = ACT_IDS[account.game] ?: throw IllegalArgumentException("Unsupported game")
 
-        val response = when (account.region) {
-            is AccountRegion.Miyoushe -> api.getSignInfoMiyoushe(actId)
-            is AccountRegion.HoyoLab -> api.getSignInfoHoyoLab(actId)
+        val response = when (account.region.type) {
+            RegionType.MIYOUSHE -> api.getSignInfoMiyoushe(actId)
+            RegionType.HOYOLAB -> api.getSignInfoHoyoLab(actId)
         }
 
         if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)
@@ -56,9 +56,9 @@ class HoYoLabSignRepository @Inject constructor(
 
         val body = SignInRequest(actId = actId)
 
-        val response = when (account.region) {
-            is AccountRegion.Miyoushe -> api.signInMiyoushe(body)
-            is AccountRegion.HoyoLab -> api.signInHoyoLab(body)
+        val response = when (account.region.type) {
+            RegionType.MIYOUSHE -> api.signInMiyoushe(body)
+            RegionType.HOYOLAB -> api.signInHoyoLab(body)
         }
 
         if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)

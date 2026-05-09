@@ -3,6 +3,7 @@ package com.chronie.helperunited.ui.account
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.data.AccountRepository
 import com.chronie.helperunited.model.HoYoAccount
@@ -55,7 +56,11 @@ class AccountViewModel @Inject constructor(
         isGlobal: Boolean = true,
     ) {
         viewModelScope.launch {
-            val region = if (isGlobal) AccountRegion.HoyoLab(game) else AccountRegion.Miyoushe(game)
+            val region = if (isGlobal) {
+                AccountRegion(RegionType.HOYOLAB, game)
+            } else {
+                AccountRegion(RegionType.MIYOUSHE, game)
+            }
             val account = HoYoAccount(
                 uuid = UUID.randomUUID().toString(),
                 uid = uid,

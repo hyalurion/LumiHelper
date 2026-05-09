@@ -1,5 +1,6 @@
 package com.chronie.helperunited.data
 
+import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.CharacterListRequest
 import com.chronie.helperunited.model.HoYoAccount
@@ -34,7 +35,6 @@ class HoYoLabCharacterRepository(
 
             val displayList = data.avatars.map { it.toDisplay("GI") }
 
-            // Cache
             characterDao.deleteByAccount(account.uid, SupportedGame.GENSHIN_IMPACT.rawValue)
             characterDao.upsertAll(data.avatars.map { it.toEntity(account.uid, SupportedGame.GENSHIN_IMPACT.rawValue) })
 
@@ -56,7 +56,6 @@ class HoYoLabCharacterRepository(
 
             val displayList = data.avatarList.map { it.toDisplay("HSR") }
 
-            // Cache
             characterDao.deleteByAccount(account.uid, SupportedGame.STAR_RAIL.rawValue)
             characterDao.upsertAll(data.avatarList.map { it.toEntity(account.uid, SupportedGame.STAR_RAIL.rawValue) })
 
@@ -88,7 +87,6 @@ class HoYoLabCharacterRepository(
     ): List<HoYoLabCharacterDisplay> {
         var list = getCachedCharacters(accountUid, game)
 
-        // Apply filters
         if (element != null) {
             list = list.filter { it.element.equals(element, ignoreCase = true) }
         }
@@ -96,7 +94,6 @@ class HoYoLabCharacterRepository(
             list = list.filter { it.rarity == rarity }
         }
 
-        // Apply sort
         list = when (sortBy) {
             SortOption.LEVEL -> list.sortedWith(
                 compareByDescending<HoYoLabCharacterDisplay> { it.level }
@@ -124,8 +121,6 @@ class HoYoLabCharacterRepository(
 
     suspend fun getDistinctRarities(accountUid: String, game: SupportedGame): List<Int> =
         characterDao.getDistinctRarities(accountUid, game.rawValue)
-
-    // ========== Mapping Helpers ==========
 
     private fun HoYoLabCharacterGI.toDisplay(gameId: String = "GI") = HoYoLabCharacterDisplay(
         id = "${gameId}_$id",
@@ -171,7 +166,7 @@ class HoYoLabCharacterRepository(
         level = level,
         rarity = rarity,
         constellation = rank,
-        friendship = 0, // HSR doesn't have friendship in this API
+        friendship = 0,
         iconUrl = image ?: portrait,
         weaponName = lightCone?.name,
         weaponLevel = lightCone?.level,
@@ -215,14 +210,10 @@ class HoYoLabCharacterRepository(
     )
 
     companion object {
-        /**
-         * Maps UID to the server string that the API expects.
-         * Same logic as DailyNoteRepository.
-         */
         fun uidToServer(account: HoYoAccount, uid: String): String {
             val region = account.region
-            return when (region) {
-                is com.chronie.helperunited.base.AccountRegion.Miyoushe -> when (account.game) {
+            return when (region.type) {
+                RegionType.MIYOUSHE -> when (account.game) {
                     SupportedGame.GENSHIN_IMPACT -> when {
                         uid.startsWith("5") -> "cn_qd01"
                         else -> "cn_gf01"
@@ -230,7 +221,7 @@ class HoYoLabCharacterRepository(
                     SupportedGame.STAR_RAIL -> "prod_gf_cn"
                     SupportedGame.ZENLESS_ZONE -> "prod_gf_cn"
                 }
-                is com.chronie.helperunited.base.AccountRegion.HoyoLab -> when (account.game) {
+                RegionType.HOYOLAB -> when (account.game) {
                     SupportedGame.GENSHIN_IMPACT -> when {
                         uid.startsWith("6") -> "os_usa"
                         uid.startsWith("7") -> "os_euro"

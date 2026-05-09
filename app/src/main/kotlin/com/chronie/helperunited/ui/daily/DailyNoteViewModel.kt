@@ -115,6 +115,12 @@ class DailyNoteViewModel @Inject constructor(
                             )
                         }
                 }
+                else -> {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        error = "Unsupported game: ${account.game.rawValue}",
+                    )
+                }
             }
         }
     }

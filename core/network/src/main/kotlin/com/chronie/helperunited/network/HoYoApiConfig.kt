@@ -31,11 +31,13 @@ object HoYoApiConfig {
             SupportedGame.GENSHIN_IMPACT -> "hk4e-api.mihoyo.com"
             SupportedGame.STAR_RAIL -> "api-takumi.mihoyo.com"
             SupportedGame.ZENLESS_ZONE -> ""
+            else -> ""
         }
         RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "sg-hk4e-api.hoyolab.com"
             SupportedGame.STAR_RAIL -> "sg-public-api.hoyolab.com"
             SupportedGame.ZENLESS_ZONE -> ""
+            else -> ""
         }
     }
 
@@ -44,11 +46,13 @@ object HoYoApiConfig {
             SupportedGame.GENSHIN_IMPACT -> "public-operation-hk4e.mihoyo.com"
             SupportedGame.STAR_RAIL -> "public-operation-hkrpg.mihoyo.com"
             SupportedGame.ZENLESS_ZONE -> "public-operation-nap.mihoyo.com"
+            else -> ""
         }
         RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> "public-operation-hk4e-sg.hoyoverse.com"
             SupportedGame.STAR_RAIL -> "public-operation-hkrpg-sg.hoyoverse.com"
             SupportedGame.ZENLESS_ZONE -> "public-operation-nap-sg.hoyoverse.com"
+            else -> ""
         }
     }
 

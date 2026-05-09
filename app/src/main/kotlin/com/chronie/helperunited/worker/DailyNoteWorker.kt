@@ -60,6 +60,7 @@ class DailyNoteWorker @AssistedInject constructor(
             SupportedGame.GENSHIN_IMPACT -> checkGI(account, thresholdPercent)
             SupportedGame.STAR_RAIL -> checkHSR(account, thresholdPercent)
             SupportedGame.ZENLESS_ZONE -> checkZZZ(account, thresholdPercent)
+            else -> throw IllegalArgumentException("Unsupported game: ${account.game.rawValue}")
         }
     }
 

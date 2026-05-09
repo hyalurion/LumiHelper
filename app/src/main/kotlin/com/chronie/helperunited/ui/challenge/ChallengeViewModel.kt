@@ -83,6 +83,11 @@ class ChallengeViewModel @Inject constructor(
                     error = "暂不支持绝区零式舆防卫战记录",
                 )
             }
+            else -> {
+                _uiState.value = _uiState.value.copy(
+                    error = "Unsupported game: ${account.game.rawValue}",
+                )
+            }
         }
     }
 

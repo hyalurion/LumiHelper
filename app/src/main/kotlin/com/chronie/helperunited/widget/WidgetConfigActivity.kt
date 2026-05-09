@@ -224,6 +224,7 @@ private fun WidgetConfigScreen(
                                 SupportedGame.GENSHIN_IMPACT -> "原神"
                                 SupportedGame.STAR_RAIL -> "星铁"
                                 SupportedGame.ZENLESS_ZONE -> "绝区零"
+                                else -> game.displayName
                             },
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                             color = if (isSelected) MaterialTheme.colorScheme.primary

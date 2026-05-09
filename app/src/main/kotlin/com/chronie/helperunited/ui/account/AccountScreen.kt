@@ -157,6 +157,7 @@ private fun AccountCard(
                     SupportedGame.GENSHIN_IMPACT -> "⚡"
                     SupportedGame.STAR_RAIL -> "🚂"
                     SupportedGame.ZENLESS_ZONE -> "🎮"
+                    else -> "🎮"
                 },
                 style = MiuixTheme.textStyles.headlineMedium,
             )

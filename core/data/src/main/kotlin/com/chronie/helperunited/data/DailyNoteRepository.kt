@@ -38,6 +38,7 @@ class DailyNoteRepository(
                 else -> "prod_gf_cn"
             }
             SupportedGame.ZENLESS_ZONE -> "prod_gf_cn"
+            else -> throw IllegalArgumentException("Unsupported game: ${region.game.rawValue}")
         }
         RegionType.HOYOLAB -> when (region.game) {
             SupportedGame.GENSHIN_IMPACT -> when {
@@ -61,6 +62,7 @@ class DailyNoteRepository(
                 uid.startsWith("9") -> "prod_gf_sg"
                 else -> "prod_gf_us"
             }
+            else -> throw IllegalArgumentException("Unsupported game: ${region.game.rawValue}")
         }
     }
 

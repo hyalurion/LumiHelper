@@ -88,6 +88,7 @@ class HoYoLabCharacterViewModel @Inject constructor(
                     // ZZZ character list not yet supported
                     Result.failure(Exception("绝区零角色列表暂不支持"))
                 }
+                else -> Result.failure(Exception("Unsupported game: ${account.game.rawValue}"))
             }
 
             result

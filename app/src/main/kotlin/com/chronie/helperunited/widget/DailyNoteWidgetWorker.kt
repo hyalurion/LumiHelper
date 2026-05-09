@@ -66,6 +66,7 @@ class DailyNoteWidgetWorker @AssistedInject constructor(
                 SupportedGame.GENSHIN_IMPACT -> fetchAndUpdateGI(account)
                 SupportedGame.STAR_RAIL -> fetchAndUpdateHSR(account)
                 SupportedGame.ZENLESS_ZONE -> fetchAndUpdateZZZ(account)
+                else -> throw IllegalArgumentException("Unsupported game: ${game.rawValue}")
             }
             Result.success()
         } catch (_: Exception) {

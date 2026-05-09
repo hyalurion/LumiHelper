@@ -18,11 +18,13 @@ data class AccountRegion(
                 SupportedGame.GENSHIN_IMPACT -> "hk4e_global"
                 SupportedGame.STAR_RAIL -> "hkrpg_global"
                 SupportedGame.ZENLESS_ZONE -> "nap_global"
+                else -> throw IllegalArgumentException("Unsupported game: ${game.rawValue}")
             }
             RegionType.MIYOUSHE -> when (game) {
                 SupportedGame.GENSHIN_IMPACT -> "hk4e_cn"
                 SupportedGame.STAR_RAIL -> "hkrpg_cn"
                 SupportedGame.ZENLESS_ZONE -> "nap_cn"
+                else -> throw IllegalArgumentException("Unsupported game: ${game.rawValue}")
             }
         }
 
@@ -43,17 +45,14 @@ data class AccountRegion(
         fun fromUid(uid: String, game: SupportedGame): AccountRegion? {
             val prefix = uid.firstOrNull()?.digitToIntOrNull() ?: return null
             return when {
-                // GI: CN UIDs start with 1-5, global starts with 6-9 (overseas)
                 game == SupportedGame.GENSHIN_IMPACT && prefix in 1..5 ->
                     AccountRegion(RegionType.MIYOUSHE, game)
                 game == SupportedGame.GENSHIN_IMPACT && prefix in 6..9 ->
                     AccountRegion(RegionType.HOYOLAB, game)
-                // HSR: CN UIDs start with 1, global starts with 6-9
                 game == SupportedGame.STAR_RAIL && prefix == 1 ->
                     AccountRegion(RegionType.MIYOUSHE, game)
                 game == SupportedGame.STAR_RAIL && prefix in 6..9 ->
                     AccountRegion(RegionType.HOYOLAB, game)
-                // ZZZ: similar logic
                 game == SupportedGame.ZENLESS_ZONE && prefix in 1..5 ->
                     AccountRegion(RegionType.MIYOUSHE, game)
                 game == SupportedGame.ZENLESS_ZONE && prefix in 6..9 ->

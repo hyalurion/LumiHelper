@@ -1,0 +1,19 @@
+name: Code Lines Count
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  count-lines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.15.0'
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+      - name: Count Lines
+        run: cloc .

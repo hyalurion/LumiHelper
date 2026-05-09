@@ -2,6 +2,15 @@
     <!-- App -->
     <string name="app_name">HelperUnited</string>
     <string name="widget_description">实时显示树脂/开拓力/电量</string>
+    <string name="widget_small_description">小组件 - 紧凑视图：仅显示资源数值和进度</string>
+    <string name="widget_medium_description">小组件 - 标准视图：资源 + 委托 + 派遣概览</string>
+    <string name="widget_large_description">小组件 - 完整视图：每日便笺全部详情</string>
+    <string name="widget_config_title">配置小组件</string>
+    <string name="widget_config_game">选择游戏</string>
+    <string name="widget_config_account">选择账号</string>
+    <string name="widget_config_no_account">没有找到该游戏的账号</string>
+    <string name="widget_config_add_account_hint">请先在「账号管理」中添加账号</string>
+    <string name="widget_tap_to_refresh">点击刷新</string>
 
     <!-- Bottom Nav Tabs -->
     <string name="tab_home">首页</string>

@@ -29,6 +29,7 @@ class EnkaRepository(
     @ApplicationContext private val context: Context,
     private val enkaApi: EnkaNetworkApi,
     private val moshi: Moshi,
+    private val enkaDbManager: EnkaDatabaseManager,
 ) {
     private val cacheDir: File
         get() = File(context.filesDir, "enka_cache").also { it.mkdirs() }
@@ -41,7 +42,9 @@ class EnkaRepository(
     suspend fun fetchShowcase(uid: String): Result<EnkaProfileSummarized> = withContext(Dispatchers.IO) {
         try {
             val response = enkaApi.getShowcase(uid)
-            val profile = processResponse(response)
+            // Preload EnkaDB for name resolution
+            val enkaDb = enkaDbManager.getDatabase()
+            val profile = processResponse(response, enkaDb)
             // Cache the response
             cacheResponse(uid, response)
             Result.success(profile)
@@ -49,7 +52,8 @@ class EnkaRepository(
             // Try to load from cache if network fails
             val cached = loadCachedResponse(uid)
             if (cached != null) {
-                Result.success(processResponse(cached))
+                val enkaDb = enkaDbManager.getDatabase()
+                Result.success(processResponse(cached, enkaDb))
             } else {
                 Result.failure(e)
             }
@@ -59,12 +63,15 @@ class EnkaRepository(
     /**
      * Process Enka response into summarized profile data.
      */
-    private fun processResponse(response: EnkaResponse): EnkaProfileSummarized {
+    private fun processResponse(
+        response: EnkaResponse,
+        enkaDb: com.chronie.helperunited.model.EnkaDatabase,
+    ): EnkaProfileSummarized {
         val playerInfo = response.playerInfo
         val avatarList = response.avatarInfoList.map { avatar ->
-            val characterMeta = getCharacterMeta(avatar.avatarId)
+            val characterMeta = enkaDb.characters[avatar.avatarId.toString()]
             val weapon = avatar.equipList.firstOrNull { it.weapon != null }?.let { equip ->
-                val weaponMeta = getWeaponMeta(equip.itemId)
+                val weaponMeta = enkaDb.weapons[equip.itemId.toString()]
                 EnkaWeaponSummarized(
                     id = equip.itemId,
                     name = weaponMeta?.name ?: "Unknown Weapon",
@@ -85,7 +92,7 @@ class EnkaRepository(
             val artifacts = avatar.equipList
                 .filter { it.reliquary != null }
                 .map { equip ->
-                    val artifactMeta = getArtifactMeta(equip.itemId)
+                    val artifactMeta = enkaDb.artifacts[equip.itemId.toString()]
                     EnkaArtifactSummarized(
                         id = equip.itemId,
                         name = artifactMeta?.name ?: equip.flat.nameTextMapHash,
@@ -144,33 +151,6 @@ class EnkaRepository(
             towerLevelIndex = playerInfo.towerLevelIndex,
             avatarList = avatarList,
         )
-    }
-
-    /**
-     * Get character metadata from database.
-     * TODO: Implement actual database lookup
-     */
-    private fun getCharacterMeta(avatarId: Int): EnkaCharacterMeta? {
-        // Placeholder - will be implemented with actual EnkaDB
-        return null
-    }
-
-    /**
-     * Get weapon metadata from database.
-     * TODO: Implement actual database lookup
-     */
-    private fun getWeaponMeta(itemId: Int): EnkaWeaponMeta? {
-        // Placeholder - will be implemented with actual EnkaDB
-        return null
-    }
-
-    /**
-     * Get artifact metadata from database.
-     * TODO: Implement actual database lookup
-     */
-    private fun getArtifactMeta(itemId: Int): EnkaArtifactMeta? {
-        // Placeholder - will be implemented with actual EnkaDB
-        return null
     }
 
     /**

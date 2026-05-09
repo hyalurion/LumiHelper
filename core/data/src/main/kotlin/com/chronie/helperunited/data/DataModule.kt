@@ -67,7 +67,8 @@ object DataModule {
         @ApplicationContext context: Context,
         enkaApi: EnkaNetworkApi,
         moshi: Moshi,
-    ): EnkaRepository = EnkaRepository(context, enkaApi, moshi)
+        enkaDbManager: EnkaDatabaseManager,
+    ): EnkaRepository = EnkaRepository(context, enkaApi, moshi, enkaDbManager)
 
     @Provides
     @Singleton
@@ -76,4 +77,19 @@ object DataModule {
         gachaProfileDao: GachaProfileDao,
         moshi: Moshi,
     ): GachaRepository = GachaRepository(gachaEntryDao, gachaProfileDao, moshi)
+
+    @Provides
+    @Singleton
+    fun provideEnkaDatabaseManager(
+        @ApplicationContext context: Context,
+        moshi: Moshi,
+    ): EnkaDatabaseManager = EnkaDatabaseManager(context, moshi)
+
+    @Provides
+    @Singleton
+    fun provideUIGFManager(
+        @ApplicationContext context: Context,
+        moshi: Moshi,
+        gachaRepository: GachaRepository,
+    ): UIGFManager = UIGFManager(context, moshi, gachaRepository)
 }

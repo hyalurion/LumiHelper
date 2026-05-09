@@ -6,11 +6,7 @@ plugins {
 
 android {
     namespace = "com.chronie.helperunited.base"
-    compileSdk {
-        version = release(37) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 35

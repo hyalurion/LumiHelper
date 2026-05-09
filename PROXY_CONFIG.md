@@ -33,19 +33,6 @@ systemProp.https.proxyPort=7890
 
 ## 配置说明
 
-### 阿里云镜像
-
-- **Maven Central**: `https://maven.aliyun.com/repository/central`
-- **Google Maven**: `https://maven.aliyun.com/repository/google`
-- **Gradle Plugin Portal**: `https://maven.aliyun.com/repository/gradle-plugin`
-
-### 备用仓库
-
-如果阿里云镜像不可用，Gradle 会自动回退到原始仓库：
-- Google Maven
-- Maven Central
-- Gradle Plugin Portal
-
 ## 验证配置
 
 运行以下命令验证配置是否生效：

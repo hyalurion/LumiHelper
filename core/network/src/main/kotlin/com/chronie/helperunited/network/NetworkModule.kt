@@ -1,6 +1,8 @@
 package com.chronie.helperunited.network
 
 import com.chronie.helperunited.base.AccountRegion
+import com.chronie.helperunited.base.AccountRegionAdapter
+import com.chronie.helperunited.base.SupportedGameAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -25,6 +27,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()
+        .add(AccountRegionAdapter())
+        .add(SupportedGameAdapter())
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
@@ -66,7 +70,7 @@ object NetworkModule {
     }
 
     /**
-     * Provides HoYoRecordApi for a specific account's region.
+     * Provides HoYoApiFactory for a specific account's region.
      * Note: For multi-account support, use [HoYoApiFactory] instead.
      */
     @Provides

@@ -1,13 +1,13 @@
 package com.chronie.helperunited.base
 
+import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.squareup.moshi.ToJson
 
 /**
  * Account region - HoyoLab (global) or Miyoushe (CN).
  * Ported from PizzaHelperUnited's HoYo.AccountRegion.
  */
-@JsonClass(generateAdapter = true)
 data class AccountRegion(
     val type: RegionType,
     val game: SupportedGame,
@@ -66,4 +66,16 @@ data class AccountRegion(
 enum class RegionType {
     @Json(name = "hoyolab") HOYOLAB,
     @Json(name = "miyoushe") MIYOUSHE,
+}
+
+/**
+ * Moshi adapter for AccountRegion.
+ * Serializes as raw value string (e.g., "hk4e_global").
+ */
+class AccountRegionAdapter {
+    @ToJson
+    fun toJson(region: AccountRegion): String = region.rawValue
+
+    @FromJson
+    fun fromJson(rawValue: String): AccountRegion? = AccountRegion.fromRawValue(rawValue)
 }

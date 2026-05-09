@@ -4,7 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import top.yukonga.miuix.kmp.basic.Button
+import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.MiuixCard
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
@@ -39,6 +49,8 @@ import com.chronie.helperunited.ui.enka.EnkaShowcaseScreen
 import com.chronie.helperunited.ui.enka.EnkaShowcaseViewModel
 import com.chronie.helperunited.ui.gacha.GachaScreen
 import com.chronie.helperunited.ui.gacha.GachaViewModel
+import com.chronie.helperunited.ui.gacha.analytics.GachaAnalyticsScreen
+import com.chronie.helperunited.ui.gacha.analytics.GachaAnalyticsViewModel
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterScreen
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterViewModel
 import com.chronie.helperunited.ui.account.AccountScreen
@@ -46,6 +58,12 @@ import com.chronie.helperunited.ui.account.AccountViewModel
 import com.chronie.helperunited.ui.settings.SettingsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsViewModel
+import com.chronie.helperunited.ui.legal.PrivacyPolicyScreen
+import com.chronie.helperunited.ui.sign.SignViewModel
+import com.chronie.helperunited.ui.challenge.ChallengeScreen
+import com.chronie.helperunited.ui.challenge.ChallengeViewModel
+import com.chronie.helperunited.ui.event.EventCalendarScreen
+import com.chronie.helperunited.ui.event.EventCalendarViewModel
 import com.chronie.helperunited.ui.zzz.ZZZShowcaseScreen
 import com.chronie.helperunited.ui.zzz.ZZZShowcaseViewModel
 
@@ -92,72 +110,143 @@ fun HelperUnitedApp() {
             )
         },
     ) { paddingValues ->
-        Column(
+        // Determine if we're switching tabs (fade) or navigating to sub-screen (slide)
+        val isSubScreen = subScreen != null
+
+        AnimatedContent(
+            targetState = subScreen,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-        ) {
-            when {
-                subScreen != null -> {
-                    when (subScreen) {
-                        SubScreen.Account -> {
-                            val vm: AccountViewModel = hiltViewModel()
-                            AccountScreen(viewModel = vm)
+            transitionSpec = {
+                if (targetState != null) {
+                    // Sub-screen: slide in from right
+                    (slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(300)
+                    ) + fadeIn(animationSpec = tween(300)))
+                        .togetherWith(
+                            slideOutHorizontally(
+                                targetOffsetX = { -it / 3 },
+                                animationSpec = tween(300)
+                            ) + fadeOut(animationSpec = tween(300))
+                        )
+                } else if (initialState != null) {
+                    // Returning from sub-screen: slide in from left
+                    (slideInHorizontally(
+                        initialOffsetX = { -it / 3 },
+                        animationSpec = tween(300)
+                    ) + fadeIn(animationSpec = tween(300)))
+                        .togetherWith(
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(300)
+                            ) + fadeOut(animationSpec = tween(300))
+                        )
+                } else {
+                    // Tab switch: fade
+                    fadeIn(animationSpec = tween(200))
+                        .togetherWith(fadeOut(animationSpec = tween(200)))
+                }
+            },
+            label = "NavContent",
+        ) { currentSubScreen ->
+            Column(modifier = Modifier.fillMaxSize()) {
+                when {
+                    currentSubScreen != null -> {
+                        when (currentSubScreen) {
+                            SubScreen.Account -> {
+                                val vm: AccountViewModel = hiltViewModel()
+                                AccountScreen(viewModel = vm)
+                            }
+                            SubScreen.Settings -> {
+                                SettingsScreen(
+                                    onNavigateToPrivacy = { subScreen = SubScreen.PrivacyPolicy },
+                                )
+                            }
+                            SubScreen.Materials -> {
+                                val vm: TodayMaterialsViewModel = hiltViewModel()
+                                TodayMaterialsScreen(viewModel = vm)
+                            }
+                            SubScreen.ZZZShowcase -> {
+                                val vm: ZZZShowcaseViewModel = hiltViewModel()
+                                ZZZShowcaseScreen(
+                                    profile = vm.uiState.value.profile,
+                                    isLoading = vm.uiState.value.isLoading,
+                                    error = vm.uiState.value.error,
+                                )
+                            }
+                            SubScreen.GachaAnalytics -> {
+                                val vm: GachaAnalyticsViewModel = hiltViewModel()
+                                GachaAnalyticsScreen(viewModel = vm)
+                            }
+                            SubScreen.Challenge -> {
+                                val vm: ChallengeViewModel = hiltViewModel()
+                                ChallengeScreen(viewModel = vm)
+                            }
+                            SubScreen.EventCalendar -> {
+                                val vm: EventCalendarViewModel = hiltViewModel()
+                                EventCalendarScreen(viewModel = vm)
+                            }
+                            SubScreen.PrivacyPolicy -> {
+                                PrivacyPolicyScreen()
+                            }
                         }
-                        SubScreen.Settings -> {
-                            SettingsScreen()
-                        }
-                        SubScreen.Materials -> {
-                            val vm: TodayMaterialsViewModel = hiltViewModel()
-                            TodayMaterialsScreen(viewModel = vm)
-                        }
-                        SubScreen.ZZZShowcase -> {
-                            val vm: ZZZShowcaseViewModel = hiltViewModel()
-                            ZZZShowcaseScreen(
-                                profile = vm.uiState.value.profile,
-                                isLoading = vm.uiState.value.isLoading,
-                                error = vm.uiState.value.error,
-                            )
-                        }
-                        null -> {}
                     }
-                }
-                currentTab == AppTab.Home -> {
-                    HomeScreen(
-                        onNavigate = { subScreen = it },
-                    )
-                }
-                currentTab == AppTab.DailyNote -> {
-                    val vm: DailyNoteViewModel = hiltViewModel()
-                    DailyNoteScreen(viewModel = vm)
-                }
-                currentTab == AppTab.Characters -> {
-                    val vm: HoYoLabCharacterViewModel = hiltViewModel()
-                    HoYoLabCharacterScreen(viewModel = vm)
-                }
-                currentTab == AppTab.Enka -> {
-                    val vm: EnkaShowcaseViewModel = hiltViewModel()
-                    EnkaShowcaseScreen(
-                        profile = vm.uiState.value.profile,
-                        isLoading = vm.uiState.value.isLoading,
-                        error = vm.uiState.value.error,
-                        onQuery = { vm.queryShowcase(it) },
-                    )
-                }
-                currentTab == AppTab.Gacha -> {
-                    val vm: GachaViewModel = hiltViewModel()
-                    val state by vm.uiState.collectAsState()
-                    GachaScreen(
-                        profiles = state.profiles,
-                        entries = state.entries,
-                        isLoading = state.isLoading,
-                        error = state.error,
-                        selectedProfile = state.selectedProfile,
-                        onProfileSelect = { vm.selectProfile(it) },
-                        onFetch = { uid, game -> vm.fetchGachaRecords(uid, game) },
-                        onImport = { vm.importUIGF(it) },
-                        onExport = { _, _ -> },
-                    )
+                    else -> {
+                        // Tab content also uses AnimatedContent for tab switches
+                        AnimatedContent(
+                            targetState = currentTab,
+                            transitionSpec = {
+                                fadeIn(animationSpec = tween(200))
+                                    .togetherWith(fadeOut(animationSpec = tween(200)))
+                            },
+                            label = "TabContent",
+                        ) { tab ->
+                            when (tab) {
+                                AppTab.Home -> {
+                                    HomeScreen(
+                                        onNavigate = { subScreen = it },
+                                    )
+                                }
+                                AppTab.DailyNote -> {
+                                    val vm: DailyNoteViewModel = hiltViewModel()
+                                    DailyNoteScreen(viewModel = vm)
+                                }
+                                AppTab.Characters -> {
+                                    val vm: HoYoLabCharacterViewModel = hiltViewModel()
+                                    HoYoLabCharacterScreen(viewModel = vm)
+                                }
+                                AppTab.Enka -> {
+                                    val vm: EnkaShowcaseViewModel = hiltViewModel()
+                                    EnkaShowcaseScreen(
+                                        profile = vm.uiState.value.profile,
+                                        isLoading = vm.uiState.value.isLoading,
+                                        error = vm.uiState.value.error,
+                                        onQuery = { vm.queryShowcase(it) },
+                                    )
+                                }
+                                AppTab.Gacha -> {
+                                    val vm: GachaViewModel = hiltViewModel()
+                                    val state by vm.uiState.collectAsState()
+                                    GachaScreen(
+                                        profiles = state.profiles,
+                                        entries = state.entries,
+                                        isLoading = state.isLoading,
+                                        error = state.error,
+                                        selectedProfile = state.selectedProfile,
+                                        onProfileSelect = { vm.selectProfile(it) },
+                                        onFetch = { uid, game -> vm.fetchGachaRecords(uid, game) },
+                                        onImport = { vm.importUIGF(it) },
+                                        onExport = { _, _ -> },
+                                        onNavigateToAnalytics = {
+                                            subScreen = SubScreen.GachaAnalytics
+                                        },
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -171,6 +260,9 @@ fun HelperUnitedApp() {
 private fun HomeScreen(
     onNavigate: (SubScreen) -> Unit,
 ) {
+    val signVm: SignViewModel = hiltViewModel()
+    val signState by signVm.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -194,6 +286,13 @@ private fun HomeScreen(
                 )
             }
         }
+
+        // HoYoLAB Auto Sign-in Card
+        SignInCard(
+            signState = signState,
+            onSignInAll = { signVm.signInAll() },
+            onRefresh = { signVm.loadSignStatus() },
+        )
 
         // Quick Actions
         Text(
@@ -228,6 +327,27 @@ private fun HomeScreen(
             title = "绝区零展柜",
             subtitle = "查看 ZZZ 角色、W-Engine、驱动盘",
             onClick = { onNavigate(SubScreen.ZZZShowcase) },
+        )
+
+        QuickActionCard(
+            icon = "📊",
+            title = "抽卡分析",
+            subtitle = "查看抽卡记录图表、保底统计、稀有度分布",
+            onClick = { onNavigate(SubScreen.GachaAnalytics) },
+        )
+
+        QuickActionCard(
+            icon = "🌙",
+            title = "挑战记录",
+            subtitle = "深境螺旋 · 混沌回忆 · 虚构叙事",
+            onClick = { onNavigate(SubScreen.Challenge) },
+        )
+
+        QuickActionCard(
+            icon = "📅",
+            title = "活动日历",
+            subtitle = "查看当前和即将开始的游戏活动、版本倒计时",
+            onClick = { onNavigate(SubScreen.EventCalendar) },
         )
 
         // Supported Games
@@ -309,6 +429,111 @@ private fun GameItem(emoji: String, name: String, subtitle: String, features: St
 }
 
 /**
+ * HoYoLAB Auto Sign-in card for the Home screen.
+ */
+@Composable
+private fun SignInCard(
+    signState: com.chronie.helperunited.ui.sign.SignUiState,
+    onSignInAll: () -> Unit,
+    onRefresh: () -> Unit,
+) {
+    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = "📝", style = MiuixTheme.textStyles.headlineMedium)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "HoYoLAB 签到",
+                        style = MiuixTheme.textStyles.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "每日签到获取奖励",
+                        style = MiuixTheme.textStyles.bodySmall,
+                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                    )
+                }
+                Button(
+                    onClick = onRefresh,
+                    enabled = !signState.isLoading && !signState.isSigning,
+                ) {
+                    Text("刷新")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = onSignInAll,
+                    enabled = !signState.isLoading && !signState.isSigning,
+                ) {
+                    Text(if (signState.isSigning) "签到中..." else "一键签到")
+                }
+            }
+
+            if (signState.error != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = signState.error,
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.error,
+                )
+            }
+
+            if (signState.signStatuses.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(12.dp))
+                signState.signStatuses.forEach { status ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = if (status.isSigned) "✅" else "❌",
+                            style = MiuixTheme.textStyles.bodyMedium,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = status.game.displayName,
+                            style = MiuixTheme.textStyles.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        if (status.error != null) {
+                            Text(
+                                text = status.error,
+                                style = MiuixTheme.textStyles.bodySmall,
+                                color = MiuixTheme.colorScheme.error,
+                            )
+                        } else {
+                            Text(
+                                text = if (status.isSigned) "已签到 (${status.totalSignDays}天)"
+                                else "未签到",
+                                style = MiuixTheme.textStyles.bodySmall,
+                                color = if (status.isSigned) MiuixTheme.colorScheme.primary
+                                else MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (signState.isLoading) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+}
+
+/**
  * Bottom navigation bar.
  */
 @Composable
@@ -361,5 +586,9 @@ enum class SubScreen(val title: String) {
     Account("账号管理"),
     Settings("设置"),
     Materials("今日素材"),
+    Challenge("挑战记录"),
     ZZZShowcase("绝区零展柜"),
+    GachaAnalytics("抽卡分析"),
+    EventCalendar("活动日历"),
+    PrivacyPolicy("隐私政策"),
 }

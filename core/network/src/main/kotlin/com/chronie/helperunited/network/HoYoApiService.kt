@@ -9,6 +9,11 @@ import com.chronie.helperunited.model.HoYoApiResponse
 import com.chronie.helperunited.model.HoYoLabCharacterListGI
 import com.chronie.helperunited.model.HoYoLabCharacterListHSR
 import com.chronie.helperunited.model.HoYoLabCharacterListZZZ
+import com.chronie.helperunited.model.SignInRequest
+import com.chronie.helperunited.model.SignInResult
+import com.chronie.helperunited.model.SignInfo
+import com.chronie.helperunited.model.SpiralAbyssResponse
+import com.chronie.helperunited.model.ChallengeResponse
 import com.chronie.helperunited.model.ZZZGachaResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -37,6 +42,15 @@ interface HoYoRecordApi {
         @Body body: CharacterListRequest,
     ): HoYoApiResponse<HoYoLabCharacterListGI>
 
+    /** GI Spiral Abyss (深渊螺旋) challenge record.
+     * schedule_type: 1 = current period, 2 = previous period */
+    @GET("game_record/genshin/api/spiralAbyss")
+    suspend fun getSpiralAbyss(
+        @Query("role_id") uid: String,
+        @Query("server") server: String,
+        @Query("schedule_type") scheduleType: Int = 1,
+    ): HoYoApiResponse<SpiralAbyssResponse>
+
     // ========== Star Rail ==========
 
     /** HSR real-time notes */
@@ -51,6 +65,17 @@ interface HoYoRecordApi {
     suspend fun getCharacterListHSR(
         @Body body: CharacterListRequest,
     ): HoYoApiResponse<HoYoLabCharacterListHSR>
+
+    /** HSR challenge record (Memory of Chaos / Pure Fiction).
+     * schedule_type: 1 = Memory of Chaos (混沌回忆), 2 = Pure Fiction (虚构叙事).
+     * server & role_id are passed as query params like other HSR endpoints. */
+    @GET("game_record/hkrpg/api/challenge")
+    suspend fun getChallengeHSR(
+        @Query("role_id") uid: String,
+        @Query("server") server: String,
+        @Query("schedule_type") scheduleType: Int = 1,
+        @Query("need_all") needAll: String = "true",
+    ): HoYoApiResponse<ChallengeResponse>
 
     // ========== Zenless Zone Zero ==========
 
@@ -78,6 +103,32 @@ interface HoYoRecordApi {
         @Query("end_id") endId: String = "0",
         @Query("lang") lang: String = "zh-cn",
     ): HoYoApiResponse<ZZZGachaResponse>
+
+    // ========== HoYoLAB Auto Sign-in ==========
+
+    /** Sign in (Miyoushe / CN) */
+    @POST("community/community/user/wap/signPost")
+    suspend fun signInMiyoushe(
+        @Body body: SignInRequest,
+    ): HoYoApiResponse<SignInResult>
+
+    /** Sign in (HoyoLab / Global) */
+    @POST("community/event/wapi/sign")
+    suspend fun signInHoyoLab(
+        @Body body: SignInRequest,
+    ): HoYoApiResponse<SignInResult>
+
+    /** Get sign-in info (Miyoushe / CN) */
+    @GET("community/community/user/wap/signInfo")
+    suspend fun getSignInfoMiyoushe(
+        @Query("act_id") actId: String,
+    ): HoYoApiResponse<SignInfo>
+
+    /** Get sign-in info (HoyoLab / Global) */
+    @GET("community/event/wapi/signInfo")
+    suspend fun getSignInfoHoyoLab(
+        @Query("act_id") actId: String,
+    ): HoYoApiResponse<SignInfo>
 }
 
 /**

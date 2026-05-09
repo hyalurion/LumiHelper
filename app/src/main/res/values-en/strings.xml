@@ -1,0 +1,204 @@
+<resources>
+    <!-- App -->
+    <string name="app_name">Helper United</string>
+    <string name="widget_description">Show Resin/Trailblaze Power/Battery in real-time</string>
+
+    <!-- Bottom Nav Tabs -->
+    <string name="tab_home">Home</string>
+    <string name="tab_daily_note">Daily Note</string>
+    <string name="tab_characters">Characters</string>
+    <string name="tab_showcase">Showcase</string>
+    <string name="tab_gacha">Gacha</string>
+
+    <!-- Home Screen -->
+    <string name="home_subtitle">Kotlin/Android Edition · Genshin · Star Rail · ZZZ</string>
+    <string name="home_quick_actions">Quick Actions</string>
+    <string name="home_materials">Today\'s Materials</string>
+    <string name="home_materials_desc">Check which talent/weapon materials are available today</string>
+    <string name="home_account">Account Management</string>
+    <string name="home_account_desc">Add and manage HoYoLAB / HoYoverse accounts</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_settings_desc">About, version, links</string>
+    <string name="home_zzz_showcase">ZZZ Showcase</string>
+    <string name="home_zzz_showcase_desc">View ZZZ characters, W-Engines, Drive Discs</string>
+    <string name="home_supported_games">Supported Games</string>
+    <string name="game_genshin_name">Genshin Impact</string>
+    <string name="game_genshin_en">Genshin Impact</string>
+    <string name="game_genshin_features">Daily Note · Character Showcase · Gacha Records</string>
+    <string name="game_starrail_name">Honkai: Star Rail</string>
+    <string name="game_starrail_en">Honkai: Star Rail</string>
+    <string name="game_starrail_features">Daily Note · Character Showcase · Gacha Records</string>
+    <string name="game_zzz_name">Zenless Zone Zero</string>
+    <string name="game_zzz_en">Zenless Zone Zero</string>
+    <string name="game_zzz_features">Daily Note · Character Showcase · Gacha Records</string>
+
+    <!-- Common -->
+    <string name="refresh">Refresh</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="hint">Hint</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">OK</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="query">Search</string>
+    <string name="set_as_wallpaper">Set as Wallpaper</string>
+    <string name="save_wallpaper">Save Wallpaper</string>
+    <string name="wallpaper_saved">Wallpaper saved to gallery</string>
+    <string name="wallpaper_set">Wallpaper set successfully</string>
+    <string name="wallpaper_failed">Wallpaper operation failed</string>
+
+    <!-- Daily Note -->
+    <string name="daily_note_title">Daily Note</string>
+    <string name="daily_note_resin">Original Resin</string>
+    <string name="daily_note_stamina">Trailblaze Power</string>
+    <string name="daily_note_energy">Battery</string>
+    <string name="daily_note_full">Full!</string>
+    <string name="daily_note_restoring">Restoring…</string>
+    <string name="daily_note_commissions">Daily Commissions</string>
+    <string name="daily_note_commission_done">Done</string>
+    <string name="daily_note_reward_received">Reward Claimed</string>
+    <string name="daily_note_realm_currency">Realm Currency</string>
+    <string name="daily_note_accumulating">Accumulating…</string>
+    <string name="daily_note_expeditions">Expeditions</string>
+    <string name="daily_note_expedition_done">Completed</string>
+    <string name="daily_note_expedition_ongoing">In Progress</string>
+    <string name="daily_note_weekly_boss">Weekly Boss Discount</string>
+    <string name="daily_note_remaining">Remaining</string>
+    <string name="daily_note_reserve_stamina">Reserve Trailblaze Power</string>
+    <string name="daily_note_sim_universe">Simulated Universe Score</string>
+    <string name="daily_note_vitality">Vitality</string>
+    <string name="daily_note_bounty">Bounty Commission</string>
+    <string name="daily_note_survey">Survey Points</string>
+    <string name="daily_note_full_time">Est. %s</string>
+    <string name="daily_note_full_status">Full</string>
+
+    <!-- Time -->
+    <string name="time_hours_minutes">%dh %dm</string>
+    <string name="time_minutes">%dm</string>
+    <string name="time_less_than_minute">&lt; 1min</string>
+
+    <!-- Error / Hint Messages -->
+    <string name="error_no_account">Please add a HoYoLAB account first in Account Management</string>
+    <string name="error_no_match">No matching characters</string>
+    <string name="error_no_match_hint">Try adjusting your filters</string>
+    <string name="hint_import_uigf">You can import UIGF format gacha record files</string>
+
+    <!-- Enka Showcase -->
+    <string name="enka_query_title">Query Character Showcase</string>
+    <string name="enka_uid_hint">Enter Game UID</string>
+    <string name="enka_world_level">World Level %d</string>
+    <string name="enka_achievements">Achievements %d</string>
+    <string name="enka_abyss">Spiral Abyss</string>
+    <string name="enka_artifacts">Artifacts</string>
+    <string name="enka_talents">Talent Levels</string>
+    <string name="enka_talent_item">Talent %d: %d</string>
+    <string name="enka_constellation">Constellation %d</string>
+    <string name="enka_friendship">Friendship %d</string>
+    <string name="enka_weapon_level">Lv.%d · Refinement %d</string>
+
+    <!-- HoYoLab Characters -->
+    <string name="hoyolab_character_list">Character List (%d)</string>
+    <string name="hoyolab_select_account">Select Account</string>
+    <string name="hoyolab_sort">Sort</string>
+    <string name="hoyolab_sort_level">Level</string>
+    <string name="hoyolab_sort_constellation">Constellation</string>
+    <string name="hoyolab_sort_friendship">Friendship</string>
+    <string name="hoyolab_sort_rarity">Rarity</string>
+    <string name="hoyolab_filter_element">Element</string>
+    <string name="hoyolab_filter_rarity">Rarity</string>
+
+    <!-- Gacha -->
+    <string name="gacha_title">Gacha Records</string>
+    <string name="gacha_saved_records">Saved Records</string>
+    <string name="gacha_more_records">And %d more records not shown…</string>
+    <string name="gacha_statistics">📊 Statistics</string>
+    <string name="gacha_total_pulls">Total Pulls</string>
+    <string name="gacha_5star_rate">5★ Rate</string>
+    <string name="gacha_pity">Pity Count</string>
+    <string name="gacha_pity_warning">⚠️ %d pulls until guaranteed 5★</string>
+    <string name="gacha_import">📥 Import UIGF</string>
+    <string name="gacha_export">📤 Export UIGF</string>
+    <string name="gacha_unknown">Unknown</string>
+
+    <!-- Account Management -->
+    <string name="account_title">Account Management</string>
+    <string name="account_add">Add Account</string>
+    <string name="account_empty">No accounts yet</string>
+    <string name="account_empty_hint">Tap \"Add Account\" to add your HoYoLAB account</string>
+    <string name="account_game">Game</string>
+    <string name="account_server">Server</string>
+    <string name="account_server_global">Global (HoYoLAB)</string>
+    <string name="account_server_cn">China (miHoYo)</string>
+    <string name="account_uid">Game UID</string>
+    <string name="account_name_hint">Nickname (optional)</string>
+    <string name="account_cookie">Cookie</string>
+    <string name="account_region_global">Global</string>
+    <string name="account_region_cn">China</string>
+    <string name="account_tips_title">💡 Tips</string>
+    <string name="account_tip_uid">• UID prefix 1-5: China server, 6-9: Global server</string>
+    <string name="account_tip_cookie">• Cookie is used to access HoYoLAB API for daily notes etc.</string>
+    <string name="account_tip_privacy">• All data is stored locally only, never uploaded to any server</string>
+
+    <!-- Today Materials -->
+    <string name="materials_title">📅 Today\'s Materials</string>
+    <string name="materials_sunday">Sunday: All Open</string>
+    <string name="materials_sunday_full">🎉 All material domains are open on Sunday!</string>
+    <string name="materials_sunday_desc">You can farm any talent and weapon ascension materials today</string>
+    <string name="materials_talent">📖 Talent Ascension Materials</string>
+    <string name="materials_weapon">⚔️ Weapon Ascension Materials</string>
+    <string name="materials_characters_need">Characters that need this</string>
+    <string name="materials_tips_title">💡 Farming Tips</string>
+    <string name="materials_tip_rotation">• Talent and weapon materials rotate Mon/Thu, Tue/Fri, Wed/Sat</string>
+    <string name="materials_tip_sunday">• All domains are open on Sunday</string>
+    <string name="materials_tip_transformer">• Use the Parametric Transformer for extra materials</string>
+
+    <!-- Day Names -->
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_version">Version 1.0.0 (Build 1)</string>
+    <string name="settings_subtitle">Kotlin/Android Edition</string>
+    <string name="settings_supported_games">Supported Games</string>
+    <string name="settings_full_support">Full Support</string>
+    <string name="settings_features">Features</string>
+    <string name="settings_feature_daily">Daily Note</string>
+    <string name="settings_feature_daily_desc">Real-time Resin/Trailblaze Power/Battery</string>
+    <string name="settings_feature_showcase">Character Showcase</string>
+    <string name="settings_feature_showcase_desc">Enka.Network character details</string>
+    <string name="settings_feature_gacha">Gacha Records</string>
+    <string name="settings_feature_gacha_desc">Record analysis, UIGF import/export</string>
+    <string name="settings_feature_account">Account Management</string>
+    <string name="settings_feature_account_desc">Multi-account support</string>
+    <string name="settings_feature_notification">Background Notifications</string>
+    <string name="settings_feature_notification_desc">Notify when Resin/Power/Battery is almost full</string>
+    <string name="settings_links">Related Links</string>
+    <string name="settings_credits">Credits</string>
+    <string name="settings_credit_pizza">• Pizza Studio team: Original iOS app development</string>
+    <string name="settings_credit_enka">• Enka.Network: Character showcase data API</string>
+    <string name="settings_credit_miuix">• MIUIX: UI component library</string>
+    <string name="settings_license">Open Source License</string>
+    <string name="settings_license_text">This project is open source under AGPL-3.0</string>
+    <string name="settings_license_original">Original project: (c) 2024 Pizza Studio</string>
+
+    <!-- Background Refresh -->
+    <string name="bg_refresh_title">🔔 Background Refresh Settings</string>
+    <string name="bg_refresh_enable">Enable Background Refresh</string>
+    <string name="bg_refresh_enable_desc">Periodically check Resin/Power/Battery and send notifications</string>
+    <string name="bg_refresh_enabled">Enabled</string>
+    <string name="bg_refresh_disabled">Disabled</string>
+    <string name="bg_refresh_interval">Refresh Interval</string>
+    <string name="bg_refresh_threshold">Notification Threshold</string>
+    <string name="bg_refresh_threshold_desc">Send notification when resource reaches this percentage of max</string>
+    <string name="bg_refresh_15min">15 min</string>
+    <string name="bg_refresh_30min">30 min</string>
+    <string name="bg_refresh_1hour">1 hour</string>
+</resources>

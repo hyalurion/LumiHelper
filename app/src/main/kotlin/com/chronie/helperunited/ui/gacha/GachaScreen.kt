@@ -56,6 +56,7 @@ fun GachaScreen(
     onImportUri: ((android.net.Uri) -> Unit)? = null,
     onExportShare: ((String, String) -> Unit)? = null,
     onDeleteProfile: ((GachaProfile) -> Unit)? = null,
+    onNavigateToAnalytics: (() -> Unit)? = null,
 ) {
     var uidInput by remember { mutableStateOf("") }
     var gameInput by remember { mutableStateOf("gi") }
@@ -138,6 +139,18 @@ fun GachaScreen(
                         modifier = Modifier.weight(1f),
                     ) {
                         Text("📤 导出 UIGF")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Analytics button
+                if (entries.isNotEmpty() && onNavigateToAnalytics != null) {
+                    Button(
+                        onClick = { onNavigateToAnalytics() },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("📊 查看抽卡分析图表")
                     }
                 }
             }

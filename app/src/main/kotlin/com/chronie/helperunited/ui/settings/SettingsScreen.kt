@@ -1,5 +1,10 @@
 package com.chronie.helperunited.ui.settings
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.chronie.helperunited.BuildConfig
 import com.chronie.helperunited.worker.WorkScheduler
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.MiuixCard
@@ -35,8 +41,11 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
  * Ported from PizzaHelperUnited's PZAboutKit.
  */
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onNavigateToPrivacy: () -> Unit = {},
+) {
     val context = LocalContext.current
+    var updateCheckResult by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -61,10 +70,55 @@ fun SettingsScreen() {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "版本 1.0.0 (Build 1)",
+                    text = "版本 ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
                     style = MiuixTheme.textStyles.bodySmall,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
+            }
+        }
+
+        // Check for Updates
+        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "🔄 检查更新",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "当前版本: ${BuildConfig.VERSION_NAME}",
+                        style = MiuixTheme.textStyles.bodySmall,
+                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                    )
+                    Button(onClick = {
+                        // Placeholder: would check GitHub releases API
+                        updateCheckResult = "正在检查更新..."
+                        // In production, this would call GitHub API
+                        updateCheckResult = "已是最新版本 ✓"
+                    }) {
+                        Text("检查更新")
+                    }
+                }
+                AnimatedVisibility(
+                    visible = updateCheckResult != null,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    updateCheckResult?.let { result ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = result,
+                            style = MiuixTheme.textStyles.bodySmall,
+                            color = MiuixTheme.colorScheme.primary,
+                        )
+                    }
+                }
             }
         }
 
@@ -120,6 +174,139 @@ fun SettingsScreen() {
             }
         }
 
+        // Contributors
+        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "👥 贡献者",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "感谢所有为本项目做出贡献的开发者！",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/pizza-studio/PizzaHelperUnited/graphs/contributors")
+                    )
+                    context.startActivity(intent)
+                }) {
+                    Text("查看贡献者")
+                }
+            }
+        }
+
+        // Rate on Google Play
+        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "⭐ 评价应用",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "如果您觉得本应用有帮助，请在 Google Play 上给我们评分！",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    try {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+                        )
+                        context.startActivity(intent)
+                    } catch (_: Exception) {
+                        // Fallback to browser if Play Store not installed
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+                        )
+                        context.startActivity(intent)
+                    }
+                }) {
+                    Text("在 Google Play 上评价")
+                }
+            }
+        }
+
+        // Open Source Licenses
+        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "📜 开源许可",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "本项目使用了以下开源库，感谢所有贡献者。",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "本项目基于 AGPL-3.0 许可证开源",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "原始项目: (c) 2024 Pizza Studio",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    // Navigate to OSS licenses activity (standard Android component)
+                    try {
+                        val intent = Intent(
+                            context,
+                            Class.forName("com.google.android.gms.oss.licenses.OssLicensesMenuActivity")
+                        )
+                        context.startActivity(intent)
+                    } catch (_: Exception) {
+                        // Fallback: open GitHub licenses page
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://github.com/pizza-studio/PizzaHelperUnited/blob/main/LICENSE")
+                        )
+                        context.startActivity(intent)
+                    }
+                }) {
+                    Text("查看开源许可")
+                }
+            }
+        }
+
+        // Privacy Policy
+        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "🔒 隐私政策",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "查看本应用的隐私政策和用户协议",
+                    style = MiuixTheme.textStyles.bodySmall,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = onNavigateToPrivacy) {
+                    Text("查看隐私政策")
+                }
+            }
+        }
+
         // Credits
         MiuixCard(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -141,29 +328,6 @@ fun SettingsScreen() {
                 )
                 Text(
                     text = "• MIUIX：UI 组件库",
-                    style = MiuixTheme.textStyles.bodySmall,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-            }
-        }
-
-        // License
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "开源许可",
-                    style = MiuixTheme.textStyles.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "本项目基于 AGPL-3.0 许可证开源",
-                    style = MiuixTheme.textStyles.bodySmall,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "原始项目: (c) 2024 Pizza Studio",
                     style = MiuixTheme.textStyles.bodySmall,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )

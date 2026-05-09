@@ -16,8 +16,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +29,11 @@ import androidx.compose.ui.unit.dp
 import com.chronie.helperunited.model.DailyNoteGI
 import com.chronie.helperunited.model.DailyNoteHSR
 import com.chronie.helperunited.model.DailyNoteZZZ
+import com.chronie.helperunited.model.ExpeditionGI
+import com.chronie.helperunited.model.ExpeditionHSR
 import com.chronie.helperunited.model.HoYoAccount
+import com.chronie.helperunited.model.TransformerGI
+import kotlinx.coroutines.delay
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.MiuixCard
@@ -206,29 +214,11 @@ private fun GenshinDailyNoteCard(note: DailyNoteGI) {
             subtitle = if (note.currentHomeCoin >= note.maxHomeCoin) "已满！" else "积累中...",
         )
 
-        // Expeditions
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "探索派遣",
-                    style = MiuixTheme.textStyles.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${note.currentExpeditionNum}/${note.maxExpeditionNum} 进行中",
-                    style = MiuixTheme.textStyles.bodyMedium,
-                )
-                note.expeditions.forEach { exp ->
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = if (exp.isFinished) "✅ 已完成" else "⏳ 进行中",
-                        style = MiuixTheme.textStyles.bodySmall,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                }
-            }
-        }
+        // Expeditions with countdown
+        ExpeditionCardGI(note)
+
+        // Parametric Transformer
+        TransformerCard(note.transformer)
 
         // Weekly Boss
         MiuixCard(modifier = Modifier.fillMaxWidth()) {
@@ -289,29 +279,8 @@ private fun StarRailDailyNoteCard(note: DailyNoteHSR) {
             }
         }
 
-        // Expeditions
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "探索派遣",
-                    style = MiuixTheme.textStyles.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${note.acceptedExpeditionNum}/${note.totalExpeditionNum} 进行中",
-                    style = MiuixTheme.textStyles.bodyMedium,
-                )
-                note.expeditions.forEach { exp ->
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "${exp.name ?: "探索"}: ${if (exp.isFinished) "✅ 已完成" else "⏳ 进行中"}",
-                        style = MiuixTheme.textStyles.bodySmall,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                }
-            }
-        }
+        // Expeditions with countdown
+        ExpeditionCardHSR(note)
 
         // Simulated Universe
         MiuixCard(modifier = Modifier.fillMaxWidth()) {
@@ -397,6 +366,234 @@ private fun ZZZDailyNoteCard(note: DailyNoteZZZ) {
     }
 }
 
+// ========== Expedition Countdown (GI) ==========
+
+@Composable
+private fun ExpeditionCardGI(note: DailyNoteGI) {
+    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "探索派遣",
+                style = MiuixTheme.textStyles.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "${note.currentExpeditionNum}/${note.maxExpeditionNum} 进行中",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            note.expeditions.forEachIndexed { index, exp ->
+                Spacer(modifier = Modifier.height(6.dp))
+                ExpeditionRowGI(exp, index)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExpeditionRowGI(exp: ExpeditionGI, index: Int) {
+    if (exp.isFinished) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "✅",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "派遣 #${index + 1} 已完成",
+                style = MiuixTheme.textStyles.bodyMedium,
+                color = MiuixTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    } else {
+        // Live countdown timer - updates every second
+        val remainingSeconds = exp.remainingTimeSeconds.toLongOrNull() ?: 0L
+        var currentRemaining by remember(exp) { mutableLongStateOf(remainingSeconds) }
+
+        LaunchedEffect(exp) {
+            while (currentRemaining > 0) {
+                delay(1000L)
+                currentRemaining = (currentRemaining - 1).coerceAtLeast(0)
+            }
+        }
+
+        val isAlmostDone = currentRemaining in 1..300 // < 5 minutes
+        val textColor = if (isAlmostDone) MiuixTheme.colorScheme.error
+        else MiuixTheme.colorScheme.onSurfaceVariantSummary
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = if (isAlmostDone) "⏰" else "⏳",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "派遣 #${index + 1}",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = formatCountdown(currentRemaining),
+                style = MiuixTheme.textStyles.bodyMedium,
+                fontWeight = if (isAlmostDone) FontWeight.Bold else FontWeight.Normal,
+                color = textColor,
+            )
+        }
+    }
+}
+
+// ========== Expedition Countdown (HSR) ==========
+
+@Composable
+private fun ExpeditionCardHSR(note: DailyNoteHSR) {
+    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "探索派遣",
+                style = MiuixTheme.textStyles.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "${note.acceptedExpeditionNum}/${note.totalExpeditionNum} 进行中",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            note.expeditions.forEach { exp ->
+                Spacer(modifier = Modifier.height(6.dp))
+                ExpeditionRowHSR(exp)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExpeditionRowHSR(exp: ExpeditionHSR) {
+    if (exp.isFinished) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "✅",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "${exp.name ?: "探索"} 已完成",
+                style = MiuixTheme.textStyles.bodyMedium,
+                color = MiuixTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    } else {
+        // Live countdown timer - updates every second
+        var currentRemaining by remember(exp) { mutableLongStateOf(exp.remainingTimeSeconds.toLong()) }
+
+        LaunchedEffect(exp) {
+            while (currentRemaining > 0) {
+                delay(1000L)
+                currentRemaining = (currentRemaining - 1).coerceAtLeast(0)
+            }
+        }
+
+        val isAlmostDone = currentRemaining in 1..300 // < 5 minutes
+        val textColor = if (isAlmostDone) MiuixTheme.colorScheme.error
+        else MiuixTheme.colorScheme.onSurfaceVariantSummary
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = if (isAlmostDone) "⏰" else "⏳",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = exp.name ?: "探索",
+                style = MiuixTheme.textStyles.bodyMedium,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = formatCountdown(currentRemaining),
+                style = MiuixTheme.textStyles.bodyMedium,
+                fontWeight = if (isAlmostDone) FontWeight.Bold else FontWeight.Normal,
+                color = textColor,
+            )
+        }
+    }
+}
+
+// ========== Parametric Transformer ==========
+
+@Composable
+private fun TransformerCard(transformer: TransformerGI?) {
+    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(text = "🔄", style = MiuixTheme.textStyles.headlineMedium)
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "参量质变仪",
+                    style = MiuixTheme.textStyles.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                when {
+                    transformer == null || !transformer.obtained -> {
+                        Text(
+                            text = "未获得",
+                            style = MiuixTheme.textStyles.bodyMedium,
+                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                        )
+                    }
+                    transformer.recoveryTime?.reached == true -> {
+                        Text(
+                            text = "✅ 可用",
+                            style = MiuixTheme.textStyles.bodyMedium,
+                            color = MiuixTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                    transformer.recoveryTime != null -> {
+                        val rt = transformer.recoveryTime
+                        val totalSeconds = rt.day * 86400L + rt.hour * 3600L + rt.minute * 60L + rt.second
+                        var remaining by remember(transformer) { mutableLongStateOf(totalSeconds) }
+
+                        LaunchedEffect(transformer) {
+                            while (remaining > 0) {
+                                delay(1000L)
+                                remaining = (remaining - 1).coerceAtLeast(0)
+                            }
+                        }
+
+                        val days = remaining / 86400
+                        val hours = (remaining % 86400) / 3600
+                        val minutes = (remaining % 3600) / 60
+
+                        val timeText = when {
+                            days > 0 -> "${days}天${hours}小时${minutes}分钟"
+                            hours > 0 -> "${hours}小时${minutes}分钟"
+                            minutes > 0 -> "${minutes}分钟"
+                            else -> "< 1分钟"
+                        }
+
+                        Text(
+                            text = "冷却中: $timeText",
+                            style = MiuixTheme.textStyles.bodyMedium,
+                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                        )
+                    }
+                    else -> {
+                        Text(
+                            text = "状态未知",
+                            style = MiuixTheme.textStyles.bodyMedium,
+                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 // ========== Shared Components ==========
 
 @Composable
@@ -465,4 +662,15 @@ private fun formatTimeRemaining(seconds: Long): String {
         minutes > 0 -> "${minutes}分钟"
         else -> "< 1分钟"
     }
+}
+
+/**
+ * Format countdown as HH:MM:SS for expedition timers.
+ */
+private fun formatCountdown(seconds: Long): String {
+    if (seconds <= 0) return "00:00:00"
+    val h = seconds / 3600
+    val m = (seconds % 3600) / 60
+    val s = seconds % 60
+    return "%02d:%02d:%02d".format(h, m, s)
 }

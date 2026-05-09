@@ -1,0 +1,204 @@
+<resources>
+    <!-- App -->
+    <string name="app_name">Helper United</string>
+    <string name="widget_description">リアルタイムで樹脂/開拓力/バッテリーを表示</string>
+
+    <!-- Bottom Nav Tabs -->
+    <string name="tab_home">ホーム</string>
+    <string name="tab_daily_note">日課メモ</string>
+    <string name="tab_characters">キャラ</string>
+    <string name="tab_showcase">ショーケース</string>
+    <string name="tab_gacha">ガチャ</string>
+
+    <!-- Home Screen -->
+    <string name="home_subtitle">Kotlin/Android版 · 原神 · 崩壊：スターレイル · ゼンレスゾーンゼロ</string>
+    <string name="home_quick_actions">クイックアクション</string>
+    <string name="home_materials">今日の素材</string>
+    <string name="home_materials_desc">今日入手可能な天賦/武器突破素材を確認</string>
+    <string name="home_account">アカウント管理</string>
+    <string name="home_account_desc">HoYoLAB / HoYoverseアカウントの追加・管理</string>
+    <string name="home_settings">設定</string>
+    <string name="home_settings_desc">アプリ情報、バージョン、リンク</string>
+    <string name="home_zzz_showcase">ZZZショーケース</string>
+    <string name="home_zzz_showcase_desc">ZZZキャラ、W-エンジン、ドライブディスクを表示</string>
+    <string name="home_supported_games">対応ゲーム</string>
+    <string name="game_genshin_name">原神</string>
+    <string name="game_genshin_en">Genshin Impact</string>
+    <string name="game_genshin_features">デイリーノート · キャラショーケース · ガチャ記録</string>
+    <string name="game_starrail_name">崩壊：スターレイル</string>
+    <string name="game_starrail_en">Honkai: Star Rail</string>
+    <string name="game_starrail_features">デイリーノート · キャラショーケース · ガチャ記録</string>
+    <string name="game_zzz_name">ゼンレスゾーンゼロ</string>
+    <string name="game_zzz_en">Zenless Zone Zero</string>
+    <string name="game_zzz_features">デイリーノート · キャラショーケース · ガチャ記録</string>
+
+    <!-- Common -->
+    <string name="refresh">更新</string>
+    <string name="loading">読み込み中…</string>
+    <string name="error">エラー</string>
+    <string name="hint">ヒント</string>
+    <string name="cancel">キャンセル</string>
+    <string name="confirm">OK</string>
+    <string name="add">追加</string>
+    <string name="delete">削除</string>
+    <string name="save">保存</string>
+    <string name="query">検索</string>
+    <string name="set_as_wallpaper">壁紙に設定</string>
+    <string name="save_wallpaper">壁紙を保存</string>
+    <string name="wallpaper_saved">壁紙をギャラリーに保存しました</string>
+    <string name="wallpaper_set">壁紙を設定しました</string>
+    <string name="wallpaper_failed">壁紙操作に失敗しました</string>
+
+    <!-- Daily Note -->
+    <string name="daily_note_title">リアルタイムメモ</string>
+    <string name="daily_note_resin">原粹樹脂</string>
+    <string name="daily_note_stamina">開拓力</string>
+    <string name="daily_note_energy">バッテリー</string>
+    <string name="daily_note_full">満タン！</string>
+    <string name="daily_note_restoring">回復中…</string>
+    <string name="daily_note_commissions">デイリー依頼</string>
+    <string name="daily_note_commission_done">完了</string>
+    <string name="daily_note_reward_received">報酬受取済み</string>
+    <string name="daily_note_realm_currency">洞天宝銭</string>
+    <string name="daily_note_accumulating">蓄積中…</string>
+    <string name="daily_note_expeditions">探索派遣</string>
+    <string name="daily_note_expedition_done">完了</string>
+    <string name="daily_note_expedition_ongoing">進行中</string>
+    <string name="daily_note_weekly_boss">週ボス割引</string>
+    <string name="daily_note_remaining">残り</string>
+    <string name="daily_note_reserve_stamina">予備開拓力</string>
+    <string name="daily_note_sim_universe">模擬宇宙スコア</string>
+    <string name="daily_note_vitality">バイタリティ</string>
+    <string name="daily_note_bounty">懸賞依頼</string>
+    <string name="daily_note_survey">調査ポイント</string>
+    <string name="daily_note_full_time">予想 %s</string>
+    <string name="daily_note_full_status">満タン</string>
+
+    <!-- Time -->
+    <string name="time_hours_minutes">%d時間%d分</string>
+    <string name="time_minutes">%d分</string>
+    <string name="time_less_than_minute">&lt; 1分</string>
+
+    <!-- Error / Hint Messages -->
+    <string name="error_no_account">まず「アカウント管理」でHoYoLABアカウントを追加してください</string>
+    <string name="error_no_match">一致するキャラクターがありません</string>
+    <string name="error_no_match_hint">フィルターを調整してみてください</string>
+    <string name="hint_import_uigf">UIGFフォーマットのガチャ記録ファイルをインポートできます</string>
+
+    <!-- Enka Showcase -->
+    <string name="enka_query_title">キャラクターショーケースを検索</string>
+    <string name="enka_uid_hint">ゲームUIDを入力</string>
+    <string name="enka_world_level">世界レベル %d</string>
+    <string name="enka_achievements">実績 %d</string>
+    <string name="enka_abyss">深境螺旋</string>
+    <string name="enka_artifacts">聖遺物</string>
+    <string name="enka_talents">天賦レベル</string>
+    <string name="enka_talent_item">天賦%d: %d</string>
+    <string name="enka_constellation">命ノ星座 %d</string>
+    <string name="enka_friendship">好感度 %d</string>
+    <string name="enka_weapon_level">Lv.%d · 精錬 %d</string>
+
+    <!-- HoYoLab Characters -->
+    <string name="hoyolab_character_list">キャラクターリスト (%d)</string>
+    <string name="hoyolab_select_account">アカウント選択</string>
+    <string name="hoyolab_sort">並べ替え</string>
+    <string name="hoyolab_sort_level">レベル</string>
+    <string name="hoyolab_sort_constellation">命ノ星座</string>
+    <string name="hoyolab_sort_friendship">好感度</string>
+    <string name="hoyolab_sort_rarity">レアリティ</string>
+    <string name="hoyolab_filter_element">元素</string>
+    <string name="hoyolab_filter_rarity">レアリティ</string>
+
+    <!-- Gacha -->
+    <string name="gacha_title">ガチャ記録</string>
+    <string name="gacha_saved_records">保存済み記録</string>
+    <string name="gacha_more_records">他 %d 件の記録は非表示…</string>
+    <string name="gacha_statistics">📊 統計</string>
+    <string name="gacha_total_pulls">総回数</string>
+    <string name="gacha_5star_rate">★★★★★確率</string>
+    <string name="gacha_pity">天井カウント</string>
+    <string name="gacha_pity_warning">⚠️ 天井まであと %d 回</string>
+    <string name="gacha_import">📥 UIGFインポート</string>
+    <string name="gacha_export">📤 UIGFエクスポート</string>
+    <string name="gacha_unknown">不明</string>
+
+    <!-- Account Management -->
+    <string name="account_title">アカウント管理</string>
+    <string name="account_add">アカウント追加</string>
+    <string name="account_empty">アカウントがありません</string>
+    <string name="account_empty_hint">「アカウント追加」をタップしてHoYoLABアカウントを追加</string>
+    <string name="account_game">ゲーム</string>
+    <string name="account_server">サーバー</string>
+    <string name="account_server_global">グローバル (HoYoLAB)</string>
+    <string name="account_server_cn">中国 (miHoYo)</string>
+    <string name="account_uid">ゲームUID</string>
+    <string name="account_name_hint">ニックネーム（任意）</string>
+    <string name="account_cookie">Cookie</string>
+    <string name="account_region_global">グローバル</string>
+    <string name="account_region_cn">中国</string>
+    <string name="account_tips_title">💡 ヒント</string>
+    <string name="account_tip_uid">• UID先頭1-5: 中国サーバー、6-9: グローバルサーバー</string>
+    <string name="account_tip_cookie">• CookieはHoYoLAB APIへのアクセスに使用されます</string>
+    <string name="account_tip_privacy">• すべてのデータはローカルにのみ保存され、外部に送信されません</string>
+
+    <!-- Today Materials -->
+    <string name="materials_title">📅 今日の素材</string>
+    <string name="materials_sunday">日曜日：全部開放</string>
+    <string name="materials_sunday_full">🎉 日曜日はすべての素材ドメインが開放！</string>
+    <string name="materials_sunday_desc">今日はずべての天賦・武器突破素材を入手できます</string>
+    <string name="materials_talent">📖 天賦突破素材</string>
+    <string name="materials_weapon">⚔️ 武器突破素材</string>
+    <string name="materials_characters_need">この素材が必要なキャラクター</string>
+    <string name="materials_tips_title">💡 素材収集のコツ</string>
+    <string name="materials_tip_rotation">• 天賦・武器素材は月/木、火/金、水/土でローテーション</string>
+    <string name="materials_tip_sunday">• 日曜日はすべてのドメインが開放</string>
+    <string name="materials_tip_transformer">• 「パラメトリック変換器」で追加素材を入手可能</string>
+
+    <!-- Day Names -->
+    <string name="day_monday">月曜日</string>
+    <string name="day_tuesday">火曜日</string>
+    <string name="day_wednesday">水曜日</string>
+    <string name="day_thursday">木曜日</string>
+    <string name="day_friday">金曜日</string>
+    <string name="day_saturday">土曜日</string>
+    <string name="day_sunday">日曜日</string>
+
+    <!-- Settings -->
+    <string name="settings_title">設定</string>
+    <string name="settings_version">バージョン 1.0.0 (Build 1)</string>
+    <string name="settings_subtitle">Kotlin/Android版</string>
+    <string name="settings_supported_games">対応ゲーム</string>
+    <string name="settings_full_support">完全対応</string>
+    <string name="settings_features">機能</string>
+    <string name="settings_feature_daily">デイリーノート</string>
+    <string name="settings_feature_daily_desc">リアルタイムで樹脂/開拓力/バッテリーを確認</string>
+    <string name="settings_feature_showcase">キャラクターショーケース</string>
+    <string name="settings_feature_showcase_desc">Enka.Network キャラクター詳細</string>
+    <string name="settings_feature_gacha">ガチャ記録</string>
+    <string name="settings_feature_gacha_desc">記録分析、UIGFインポート/エクスポート</string>
+    <string name="settings_feature_account">アカウント管理</string>
+    <string name="settings_feature_account_desc">マルチアカウント対応</string>
+    <string name="settings_feature_notification">バックグラウンド通知</string>
+    <string name="settings_feature_notification_desc">樹脂/開拓力/バッテリーが満タン近づいたら通知</string>
+    <string name="settings_links">関連リンク</string>
+    <string name="settings_credits">クレジット</string>
+    <string name="settings_credit_pizza">• Pizza Studioチーム：オリジナルiOSアプリ開発</string>
+    <string name="settings_credit_enka">• Enka.Network：キャラクターショーケースデータAPI</string>
+    <string name="settings_credit_miuix">• MIUIX：UIコンポーネントライブラリ</string>
+    <string name="settings_license">オープンソースライセンス</string>
+    <string name="settings_license_text">本プロジェクトはAGPL-3.0の下でオープンソースです</string>
+    <string name="settings_license_original">オリジナルプロジェクト: (c) 2024 Pizza Studio</string>
+
+    <!-- Background Refresh -->
+    <string name="bg_refresh_title">🔔 バックグラウンド更新設定</string>
+    <string name="bg_refresh_enable">バックグラウンド更新を有効化</string>
+    <string name="bg_refresh_enable_desc">定期的に樹脂/開拓力/バッテリーをチェックして通知</string>
+    <string name="bg_refresh_enabled">有効</string>
+    <string name="bg_refresh_disabled">無効</string>
+    <string name="bg_refresh_interval">更新間隔</string>
+    <string name="bg_refresh_threshold">通知しきい値</string>
+    <string name="bg_refresh_threshold_desc">リソースが最大値のこの割合に達したら通知</string>
+    <string name="bg_refresh_15min">15分</string>
+    <string name="bg_refresh_30min">30分</string>
+    <string name="bg_refresh_1hour">1時間</string>
+</resources>

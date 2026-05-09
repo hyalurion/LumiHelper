@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chronie.helperunited.data.GachaRepository
+import com.chronie.helperunited.data.GachaSessionHolder
 import com.chronie.helperunited.data.UIGFManager
 import com.chronie.helperunited.model.GachaEntry
 import com.chronie.helperunited.model.GachaProfile
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class GachaViewModel @Inject constructor(
     private val gachaRepository: GachaRepository,
     private val uigfManager: UIGFManager,
+    private val sessionHolder: GachaSessionHolder,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GachaUiState())
@@ -57,10 +59,12 @@ class GachaViewModel @Inject constructor(
 
             try {
                 val entries = gachaRepository.getEntries(uid, game)
+                val profile = GachaProfile(uid, game)
+                sessionHolder.setProfile(profile)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     entries = entries,
-                    selectedProfile = GachaProfile(uid, game),
+                    selectedProfile = profile,
                     error = if (entries.isEmpty()) "没有找到抽卡记录，请先导入或获取" else null,
                 )
                 loadProfiles()
@@ -79,6 +83,7 @@ class GachaViewModel @Inject constructor(
     fun selectProfile(profile: GachaProfile) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
+            sessionHolder.setProfile(profile)
             val entries = gachaRepository.getEntries(profile.uid, profile.game)
             _uiState.value = _uiState.value.copy(
                 isLoading = false,

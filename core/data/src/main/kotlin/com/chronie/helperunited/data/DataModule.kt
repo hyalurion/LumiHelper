@@ -98,6 +98,12 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideChallengeRepository(
+        apiFactory: HoYoApiFactory,
+    ): ChallengeRepository = ChallengeRepository(apiFactory)
+
+    @Provides
+    @Singleton
     fun provideZZZGachaFetchRepository(
         apiFactory: HoYoApiFactory,
         gachaRepository: GachaRepository,
@@ -109,6 +115,12 @@ object DataModule {
         @ApplicationContext context: Context,
         moshi: Moshi,
     ): EnkaDatabaseManager = EnkaDatabaseManager(context, moshi)
+
+    @Provides
+    @Singleton
+    fun provideHoYoLabSignRepository(
+        apiFactory: HoYoApiFactory,
+    ): HoYoLabSignRepository = HoYoLabSignRepository(apiFactory)
 
     @Provides
     @Singleton

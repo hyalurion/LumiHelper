@@ -1,7 +1,204 @@
 <resources>
+    <!-- App -->
     <string name="app_name">HelperUnited</string>
-    <string name="game_genshin_name">Genshin Impact</string>
-    <string name="game_starrail_name">Honkai: Star Rail</string>
-    <string name="game_zenlesszone_name">Zenless Zone Zero</string>
     <string name="widget_description">实时显示树脂/开拓力/电量</string>
+
+    <!-- Bottom Nav Tabs -->
+    <string name="tab_home">首页</string>
+    <string name="tab_daily_note">便笺</string>
+    <string name="tab_characters">角色</string>
+    <string name="tab_showcase">展柜</string>
+    <string name="tab_gacha">抽卡</string>
+
+    <!-- Home Screen -->
+    <string name="home_subtitle">Kotlin/Android Edition · 原神 · 星穹铁道 · 绝区零</string>
+    <string name="home_quick_actions">快捷功能</string>
+    <string name="home_materials">今日素材</string>
+    <string name="home_materials_desc">查看今天可以刷哪些天赋/武器素材</string>
+    <string name="home_account">账号管理</string>
+    <string name="home_account_desc">添加和管理 HoYoLAB / 米游社账号</string>
+    <string name="home_settings">设置</string>
+    <string name="home_settings_desc">关于、版本、链接</string>
+    <string name="home_zzz_showcase">绝区零展柜</string>
+    <string name="home_zzz_showcase_desc">查看 ZZZ 角色、W-Engine、驱动盘</string>
+    <string name="home_supported_games">支持的游戏</string>
+    <string name="game_genshin_name">原神</string>
+    <string name="game_genshin_en">Genshin Impact</string>
+    <string name="game_genshin_features">每日便笺 · 角色展柜 · 抽卡记录</string>
+    <string name="game_starrail_name">崩坏：星穹铁道</string>
+    <string name="game_starrail_en">Honkai: Star Rail</string>
+    <string name="game_starrail_features">每日便笺 · 角色展柜 · 抽卡记录</string>
+    <string name="game_zzz_name">绝区零</string>
+    <string name="game_zzz_en">Zenless Zone Zero</string>
+    <string name="game_zzz_features">每日便笺 · 角色展柜 · 抽卡记录</string>
+
+    <!-- Common -->
+    <string name="refresh">刷新</string>
+    <string name="loading">加载中…</string>
+    <string name="error">错误</string>
+    <string name="hint">提示</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="add">添加</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="query">查询</string>
+    <string name="set_as_wallpaper">设为壁纸</string>
+    <string name="save_wallpaper">保存壁纸</string>
+    <string name="wallpaper_saved">壁纸已保存到相册</string>
+    <string name="wallpaper_set">壁纸已设置</string>
+    <string name="wallpaper_failed">壁纸操作失败</string>
+
+    <!-- Daily Note -->
+    <string name="daily_note_title">实时便笺</string>
+    <string name="daily_note_resin">原粹树脂</string>
+    <string name="daily_note_stamina">开拓力</string>
+    <string name="daily_note_energy">电量</string>
+    <string name="daily_note_full">已满！</string>
+    <string name="daily_note_restoring">恢复中…</string>
+    <string name="daily_note_commissions">每日委托</string>
+    <string name="daily_note_commission_done">完成</string>
+    <string name="daily_note_reward_received">奖励已领</string>
+    <string name="daily_note_realm_currency">洞天宝钱</string>
+    <string name="daily_note_accumulating">积累中…</string>
+    <string name="daily_note_expeditions">探索派遣</string>
+    <string name="daily_note_expedition_done">已完成</string>
+    <string name="daily_note_expedition_ongoing">进行中</string>
+    <string name="daily_note_weekly_boss">周本折扣</string>
+    <string name="daily_note_remaining">剩余</string>
+    <string name="daily_note_reserve_stamina">后备开拓力</string>
+    <string name="daily_note_sim_universe">模拟宇宙积分</string>
+    <string name="daily_note_vitality">活力</string>
+    <string name="daily_note_bounty">悬赏委托</string>
+    <string name="daily_note_survey">调查点数</string>
+    <string name="daily_note_full_time">预计 %s</string>
+    <string name="daily_note_full_status">已满</string>
+
+    <!-- Time -->
+    <string name="time_hours_minutes">%d小时%d分钟</string>
+    <string name="time_minutes">%d分钟</string>
+    <string name="time_less_than_minute">&lt; 1分钟</string>
+
+    <!-- Error / Hint Messages -->
+    <string name="error_no_account">请先在「账号管理」中添加 HoYoLAB / 米游社账号</string>
+    <string name="error_no_match">没有匹配的角色</string>
+    <string name="error_no_match_hint">尝试调整筛选条件</string>
+    <string name="hint_import_uigf">您可以导入 UIGF 格式的抽卡记录文件</string>
+
+    <!-- Enka Showcase -->
+    <string name="enka_query_title">查询角色展柜</string>
+    <string name="enka_uid_hint">输入游戏 UID</string>
+    <string name="enka_world_level">世界等级 %d</string>
+    <string name="enka_achievements">成就 %d</string>
+    <string name="enka_abyss">深境螺旋</string>
+    <string name="enka_artifacts">圣遗物</string>
+    <string name="enka_talents">天赋等级</string>
+    <string name="enka_talent_item">天赋%d: %d</string>
+    <string name="enka_constellation">命座 %d</string>
+    <string name="enka_friendship">好感 %d</string>
+    <string name="enka_weapon_level">Lv.%d · 精炼 %d</string>
+
+    <!-- HoYoLab Characters -->
+    <string name="hoyolab_character_list">角色列表 (%d)</string>
+    <string name="hoyolab_select_account">选择账号</string>
+    <string name="hoyolab_sort">排序</string>
+    <string name="hoyolab_sort_level">等级</string>
+    <string name="hoyolab_sort_constellation">命座</string>
+    <string name="hoyolab_sort_friendship">好感</string>
+    <string name="hoyolab_sort_rarity">稀有度</string>
+    <string name="hoyolab_filter_element">元素</string>
+    <string name="hoyolab_filter_rarity">稀有度</string>
+
+    <!-- Gacha -->
+    <string name="gacha_title">抽卡记录</string>
+    <string name="gacha_saved_records">已保存的记录</string>
+    <string name="gacha_more_records">还有 %d 条记录未显示…</string>
+    <string name="gacha_statistics">📊 统计</string>
+    <string name="gacha_total_pulls">总抽数</string>
+    <string name="gacha_5star_rate">五星率</string>
+    <string name="gacha_pity">保底计数</string>
+    <string name="gacha_pity_warning">⚠️ 距离保底还有 %d 抽</string>
+    <string name="gacha_import">📥 导入 UIGF</string>
+    <string name="gacha_export">📤 导出 UIGF</string>
+    <string name="gacha_unknown">未知</string>
+
+    <!-- Account Management -->
+    <string name="account_title">账号管理</string>
+    <string name="account_add">添加账号</string>
+    <string name="account_empty">还没有账号</string>
+    <string name="account_empty_hint">点击「添加账号」来添加你的 HoYoLAB 或米游社账号</string>
+    <string name="account_game">游戏</string>
+    <string name="account_server">服务器</string>
+    <string name="account_server_global">国际服 (HoYoLAB)</string>
+    <string name="account_server_cn">国服 (米游社)</string>
+    <string name="account_uid">游戏 UID</string>
+    <string name="account_name_hint">备注名（可选）</string>
+    <string name="account_cookie">Cookie</string>
+    <string name="account_region_global">国际服</string>
+    <string name="account_region_cn">国服</string>
+    <string name="account_tips_title">💡 提示</string>
+    <string name="account_tip_uid">• UID 前缀 1-5 为国服（米游社），6-9 为国际服（HoYoLAB）</string>
+    <string name="account_tip_cookie">• Cookie 用于访问 HoYoLAB/米游社 API 获取每日便笺等数据</string>
+    <string name="account_tip_privacy">• 所有数据仅存储在本地，不会上传到任何服务器</string>
+
+    <!-- Today Materials -->
+    <string name="materials_title">📅 今日素材</string>
+    <string name="materials_sunday">周日：全部开放</string>
+    <string name="materials_sunday_full">🎉 周日所有素材副本全部开放！</string>
+    <string name="materials_sunday_desc">今天可以刷取任何天赋突破素材和武器突破素材</string>
+    <string name="materials_talent">📖 天赋突破素材</string>
+    <string name="materials_weapon">⚔️ 武器突破素材</string>
+    <string name="materials_characters_need">需要此素材的角色</string>
+    <string name="materials_tips_title">💡 刷素材小贴士</string>
+    <string name="materials_tip_rotation">• 天赋素材和武器素材在周一/周四、周二/周五、周三/周六轮换</string>
+    <string name="materials_tip_sunday">• 周日所有副本素材均可掉落</string>
+    <string name="materials_tip_transformer">• 使用「参量质变仪」可以额外获得素材</string>
+
+    <!-- Day Names -->
+    <string name="day_monday">周一</string>
+    <string name="day_tuesday">周二</string>
+    <string name="day_wednesday">周三</string>
+    <string name="day_thursday">周四</string>
+    <string name="day_friday">周五</string>
+    <string name="day_saturday">周六</string>
+    <string name="day_sunday">周日</string>
+
+    <!-- Settings -->
+    <string name="settings_title">设置</string>
+    <string name="settings_version">版本 1.0.0 (Build 1)</string>
+    <string name="settings_subtitle">Kotlin/Android Edition</string>
+    <string name="settings_supported_games">支持的游戏</string>
+    <string name="settings_full_support">完整支持</string>
+    <string name="settings_features">功能</string>
+    <string name="settings_feature_daily">每日便笺</string>
+    <string name="settings_feature_daily_desc">实时查看树脂/开拓力/电量</string>
+    <string name="settings_feature_showcase">角色展柜</string>
+    <string name="settings_feature_showcase_desc">Enka.Network 角色详情</string>
+    <string name="settings_feature_gacha">抽卡记录</string>
+    <string name="settings_feature_gacha_desc">记录分析、UIGF 导入导出</string>
+    <string name="settings_feature_account">账号管理</string>
+    <string name="settings_feature_account_desc">多账号支持</string>
+    <string name="settings_feature_notification">后台提醒</string>
+    <string name="settings_feature_notification_desc">树脂/开拓力/电量即将满时通知</string>
+    <string name="settings_links">相关链接</string>
+    <string name="settings_credits">致谢</string>
+    <string name="settings_credit_pizza">• Pizza Studio 团队：原始 iOS 应用开发</string>
+    <string name="settings_credit_enka">• Enka.Network：角色展柜数据 API</string>
+    <string name="settings_credit_miuix">• MIUIX：UI 组件库</string>
+    <string name="settings_license">开源许可</string>
+    <string name="settings_license_text">本项目基于 AGPL-3.0 许可证开源</string>
+    <string name="settings_license_original">原始项目: (c) 2024 Pizza Studio</string>
+
+    <!-- Background Refresh -->
+    <string name="bg_refresh_title">🔔 后台刷新设置</string>
+    <string name="bg_refresh_enable">启用后台刷新</string>
+    <string name="bg_refresh_enable_desc">定期检查树脂/开拓力/电量并发送通知</string>
+    <string name="bg_refresh_enabled">已开启</string>
+    <string name="bg_refresh_disabled">已关闭</string>
+    <string name="bg_refresh_interval">刷新间隔</string>
+    <string name="bg_refresh_threshold">通知阈值</string>
+    <string name="bg_refresh_threshold_desc">当资源达到最大值的百分比时发送通知</string>
+    <string name="bg_refresh_15min">15 分钟</string>
+    <string name="bg_refresh_30min">30 分钟</string>
+    <string name="bg_refresh_1hour">1 小时</string>
 </resources>

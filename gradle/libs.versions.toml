@@ -22,6 +22,7 @@ activityCompose = "1.13.0"
 lifecycle = "2.10.0"
 navigation = "2.9.8"
 ksp = "2.3.7"
+glance = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,7 +35,6 @@ gradlePlugin-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 
 # Miuix
-
 miuix = { group = "top.yukonga.miuix.kmp", name = "miuix-ui-android", version.ref = "miuix" }
 miuix-icons = { group = "top.yukonga.miuix.kmp", name = "miuix-icons-android", version.ref = "miuix" }
 miuix-preference = { group = "top.yukonga.miuix.kmp", name = "miuix-preference-android", version.ref = "miuix" }
@@ -78,6 +78,10 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 
 # Navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
+# Glance (Widgets)
+androidx-glance = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

@@ -3,4 +3,5 @@
     <string name="game_genshin_name">Genshin Impact</string>
     <string name="game_starrail_name">Honkai: Star Rail</string>
     <string name="game_zenlesszone_name">Zenless Zone Zero</string>
+    <string name="widget_description">实时显示树脂/开拓力/电量</string>
 </resources>

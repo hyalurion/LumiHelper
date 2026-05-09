@@ -78,6 +78,10 @@ dependencies {
     // Image Loading (Coil)
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    // Glance (Widgets)
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.material3)
+
     // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)

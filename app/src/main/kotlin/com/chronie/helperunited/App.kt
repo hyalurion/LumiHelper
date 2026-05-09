@@ -1,7 +1,27 @@
 package com.chronie.helperunited
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import com.chronie.helperunited.notification.NotificationHelper
+import com.chronie.helperunited.worker.WorkScheduler
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application()
+class App : Application(), Configuration.Provider {
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
+    override fun onCreate() {
+        super.onCreate()
+        NotificationHelper.createNotificationChannel(this)
+        WorkScheduler.initialize(this)
+    }
+}

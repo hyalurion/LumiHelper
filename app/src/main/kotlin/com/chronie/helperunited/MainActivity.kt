@@ -39,11 +39,15 @@ import com.chronie.helperunited.ui.enka.EnkaShowcaseScreen
 import com.chronie.helperunited.ui.enka.EnkaShowcaseViewModel
 import com.chronie.helperunited.ui.gacha.GachaScreen
 import com.chronie.helperunited.ui.gacha.GachaViewModel
+import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterScreen
+import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterViewModel
 import com.chronie.helperunited.ui.account.AccountScreen
 import com.chronie.helperunited.ui.account.AccountViewModel
 import com.chronie.helperunited.ui.settings.SettingsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsViewModel
+import com.chronie.helperunited.ui.zzz.ZZZShowcaseScreen
+import com.chronie.helperunited.ui.zzz.ZZZShowcaseViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -107,6 +111,14 @@ fun HelperUnitedApp() {
                             val vm: TodayMaterialsViewModel = hiltViewModel()
                             TodayMaterialsScreen(viewModel = vm)
                         }
+                        SubScreen.ZZZShowcase -> {
+                            val vm: ZZZShowcaseViewModel = hiltViewModel()
+                            ZZZShowcaseScreen(
+                                profile = vm.uiState.value.profile,
+                                isLoading = vm.uiState.value.isLoading,
+                                error = vm.uiState.value.error,
+                            )
+                        }
                         null -> {}
                     }
                 }
@@ -118,6 +130,10 @@ fun HelperUnitedApp() {
                 currentTab == AppTab.DailyNote -> {
                     val vm: DailyNoteViewModel = hiltViewModel()
                     DailyNoteScreen(viewModel = vm)
+                }
+                currentTab == AppTab.Characters -> {
+                    val vm: HoYoLabCharacterViewModel = hiltViewModel()
+                    HoYoLabCharacterScreen(viewModel = vm)
                 }
                 currentTab == AppTab.Enka -> {
                     val vm: EnkaShowcaseViewModel = hiltViewModel()
@@ -207,6 +223,13 @@ private fun HomeScreen(
             onClick = { onNavigate(SubScreen.Settings) },
         )
 
+        QuickActionCard(
+            icon = "🎮",
+            title = "绝区零展柜",
+            subtitle = "查看 ZZZ 角色、W-Engine、驱动盘",
+            onClick = { onNavigate(SubScreen.ZZZShowcase) },
+        )
+
         // Supported Games
         Text(
             text = "支持的游戏",
@@ -220,7 +243,7 @@ private fun HomeScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 GameItem("🚂", "崩坏：星穹铁道", "Honkai: Star Rail", "每日便笺 · 角色展柜 · 抽卡记录")
                 Spacer(modifier = Modifier.height(12.dp))
-                GameItem("🎮", "绝区零", "Zenless Zone Zero", "每日便笺")
+                GameItem("🎮", "绝区零", "Zenless Zone Zero", "每日便笺 · 角色展柜 · 抽卡记录")
             }
         }
     }
@@ -329,6 +352,7 @@ enum class AppTab(
 ) {
     Home("🏠", "Helper United", "首页"),
     DailyNote("⚡", "实时便笺", "便笺"),
+    Characters("👥", "角色列表", "角色"),
     Enka("🎭", "角色展柜", "展柜"),
     Gacha("🎰", "抽卡记录", "抽卡"),
 }
@@ -337,4 +361,5 @@ enum class SubScreen(val title: String) {
     Account("账号管理"),
     Settings("设置"),
     Materials("今日素材"),
+    ZZZShowcase("绝区零展柜"),
 }

@@ -111,7 +111,17 @@ class HoYoAuthInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val query = original.url.query.orEmpty()
-        val ds = HoYoApiConfig.generateDsSignature(region, query)
+
+        // For POST requests, include the body in DS signature
+        val bodyStr = if (original.method == "POST") {
+            original.body?.let { body ->
+                val buffer = okio.Buffer()
+                body.writeTo(buffer)
+                buffer.readUtf8()
+            } ?: ""
+        } else ""
+
+        val ds = HoYoApiConfig.generateDsSignature(region, query, bodyStr)
 
         val request = original.newBuilder()
             .header("Cookie", cookie)

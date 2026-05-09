@@ -49,6 +49,11 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideHoYoLabCharacterDao(database: AppDatabase): HoYoLabCharacterDao =
+        database.hoyolabCharacterDao()
+
+    @Provides
+    @Singleton
     fun provideAccountRepository(
         accountDao: AccountDao,
     ): AccountRepository = AccountRepository(accountDao)
@@ -77,6 +82,26 @@ object DataModule {
         gachaProfileDao: GachaProfileDao,
         moshi: Moshi,
     ): GachaRepository = GachaRepository(gachaEntryDao, gachaProfileDao, moshi)
+
+    @Provides
+    @Singleton
+    fun provideHoYoLabCharacterRepository(
+        apiFactory: HoYoApiFactory,
+        characterDao: HoYoLabCharacterDao,
+    ): HoYoLabCharacterRepository = HoYoLabCharacterRepository(apiFactory, characterDao)
+
+    @Provides
+    @Singleton
+    fun provideZZZShowcaseRepository(
+        apiFactory: HoYoApiFactory,
+    ): ZZZShowcaseRepository = ZZZShowcaseRepository(apiFactory)
+
+    @Provides
+    @Singleton
+    fun provideZZZGachaFetchRepository(
+        apiFactory: HoYoApiFactory,
+        gachaRepository: GachaRepository,
+    ): ZZZGachaFetchRepository = ZZZGachaFetchRepository(apiFactory, gachaRepository)
 
     @Provides
     @Singleton

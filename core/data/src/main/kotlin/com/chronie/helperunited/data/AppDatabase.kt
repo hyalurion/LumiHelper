@@ -9,8 +9,9 @@ import androidx.room.RoomDatabase
         DailyNoteCacheEntity::class,
         GachaEntryEntity::class,
         GachaProfileEntity::class,
+        HoYoLabCharacterEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -18,6 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun dailyNoteCacheDao(): DailyNoteCacheDao
     abstract fun gachaEntryDao(): GachaEntryDao
     abstract fun gachaProfileDao(): GachaProfileDao
+    abstract fun hoyolabCharacterDao(): HoYoLabCharacterDao
 
     companion object {
         const val DATABASE_NAME = "helper_united.db"

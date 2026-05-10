@@ -23,6 +23,11 @@ dependencies {
     api(project(":core:model"))
     api(project(":core:network"))
 
+    // Moshi
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
+
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

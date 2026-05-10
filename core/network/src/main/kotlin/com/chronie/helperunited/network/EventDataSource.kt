@@ -163,7 +163,7 @@ class EventDataSource @Inject constructor(
  * Internal model for parsing bundled_events.json.
  */
 @JsonClass(generateAdapter = true)
-private data class BundledEventsData(
+internal data class BundledEventsData(
     val version_info: List<VersionInfo> = emptyList(),
     val events: List<GameEvent> = emptyList(),
 )

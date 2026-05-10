@@ -28,10 +28,7 @@ data class EnkaCharacterMeta(
     @Json(name = "WeaponType") val weaponType: String? = null,
     @Json(name = "Costumes") val costumes: Map<String, EnkaCostume>? = null,
     @Json(name = "name") val name: String? = null, // Resolved from locTable
-) {
-    val icon: String?
-        get() = sideIconName?.replace("Side_", "")
-}
+)
 
 @JsonClass(generateAdapter = true)
 data class EnkaCostume(

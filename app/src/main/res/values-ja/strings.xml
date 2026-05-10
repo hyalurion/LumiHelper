@@ -75,7 +75,7 @@
     <string name="daily_note_full_status">満タン</string>
 
     <!-- Time -->
-    <string name="time_hours_minutes">%d時間%d分</string>
+    <string name="time_hours_minutes">%1$d時間%2$d分</string>
     <string name="time_minutes">%d分</string>
     <string name="time_less_than_minute">&lt; 1分</string>
 
@@ -93,10 +93,10 @@
     <string name="enka_abyss">深境螺旋</string>
     <string name="enka_artifacts">聖遺物</string>
     <string name="enka_talents">天賦レベル</string>
-    <string name="enka_talent_item">天賦%d: %d</string>
+    <string name="enka_talent_item">天賦%1$d: %2$d</string>
     <string name="enka_constellation">命ノ星座 %d</string>
     <string name="enka_friendship">好感度 %d</string>
-    <string name="enka_weapon_level">Lv.%d · 精錬 %d</string>
+    <string name="enka_weapon_level">Lv.%1$d · 精錬 %2$d</string>
 
     <!-- HoYoLab Characters -->
     <string name="hoyolab_character_list">キャラクターリスト (%d)</string>

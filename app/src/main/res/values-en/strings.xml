@@ -75,7 +75,7 @@
     <string name="daily_note_full_status">Full</string>
 
     <!-- Time -->
-    <string name="time_hours_minutes">%dh %dm</string>
+    <string name="time_hours_minutes">%1$dh %2$dm</string>
     <string name="time_minutes">%dm</string>
     <string name="time_less_than_minute">&lt; 1min</string>
 
@@ -93,10 +93,10 @@
     <string name="enka_abyss">Spiral Abyss</string>
     <string name="enka_artifacts">Artifacts</string>
     <string name="enka_talents">Talent Levels</string>
-    <string name="enka_talent_item">Talent %d: %d</string>
+    <string name="enka_talent_item">Talent %1$d: %2$d</string>
     <string name="enka_constellation">Constellation %d</string>
     <string name="enka_friendship">Friendship %d</string>
-    <string name="enka_weapon_level">Lv.%d · Refinement %d</string>
+    <string name="enka_weapon_level">Lv.%1$d · Refinement %2$d</string>
 
     <!-- HoYoLab Characters -->
     <string name="hoyolab_character_list">Character List (%d)</string>

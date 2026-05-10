@@ -84,7 +84,7 @@
     <string name="daily_note_full_status">已满</string>
 
     <!-- Time -->
-    <string name="time_hours_minutes">%d小时%d分钟</string>
+    <string name="time_hours_minutes">%1$d小时%2$d分钟</string>
     <string name="time_minutes">%d分钟</string>
     <string name="time_less_than_minute">&lt; 1分钟</string>
 
@@ -102,10 +102,10 @@
     <string name="enka_abyss">深境螺旋</string>
     <string name="enka_artifacts">圣遗物</string>
     <string name="enka_talents">天赋等级</string>
-    <string name="enka_talent_item">天赋%d: %d</string>
+    <string name="enka_talent_item">天赋%1$d: %2$d</string>
     <string name="enka_constellation">命座 %d</string>
     <string name="enka_friendship">好感 %d</string>
-    <string name="enka_weapon_level">Lv.%d · 精炼 %d</string>
+    <string name="enka_weapon_level">Lv.%1$d · 精炼 %2$d</string>
 
     <!-- HoYoLab Characters -->
     <string name="hoyolab_character_list">角色列表 (%d)</string>

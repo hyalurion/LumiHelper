@@ -6,6 +6,7 @@ import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.CharacterListRequest
 import com.chronie.helperunited.model.HoYoLabCharacterListZZZ
 import com.chronie.helperunited.model.HoYoLabCharacterZZZ
+import com.chronie.helperunited.model.HoYoLabDiscPropertyZZZ
 import com.chronie.helperunited.model.HoYoLabDriveDiscZZZ
 import com.chronie.helperunited.model.HoYoLabWEngineZZZ
 import com.chronie.helperunited.model.HoYoAccount
@@ -135,10 +136,10 @@ class ZZZShowcaseRepository(
     }
 
     private fun HoYoLabDiscPropertyZZZ.toDiscProperty() = ZZZDiscProperty(
-        propertyName = propertyName,
-        propertyId = propertyId,
-        value = value,
-        times = times,
+        propertyName = this.propertyName,
+        propertyId = this.propertyId,
+        value = this.value,
+        times = this.times,
     )
 
     /**

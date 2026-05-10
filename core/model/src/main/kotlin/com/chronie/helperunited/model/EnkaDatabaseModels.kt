@@ -21,41 +21,48 @@ data class EnkaDatabase(
 
 @JsonClass(generateAdapter = true)
 data class EnkaCharacterMeta(
-    @Json(name = "id") val id: Int,
-    @Json(name = "nameTextMapHash") val nameTextMapHash: String,
-    @Json(name = "icon") val icon: String,
-    @Json(name = "sideIcon") val sideIcon: String? = null,
-    @Json(name = "qualityType") val qualityType: String? = null,
-    @Json(name = "costElemType") val costElemType: String? = null,
-    @Json(name = "weaponType") val weaponType: String? = null,
+    @Json(name = "NameTextMapHash") val nameTextMapHash: Long? = null,
+    @Json(name = "SideIconName") val sideIconName: String? = null,
+    @Json(name = "QualityType") val qualityType: String? = null,
+    @Json(name = "Element") val element: String? = null,
+    @Json(name = "WeaponType") val weaponType: String? = null,
+    @Json(name = "Costumes") val costumes: Map<String, EnkaCostume>? = null,
     @Json(name = "name") val name: String? = null, // Resolved from locTable
+) {
+    val icon: String?
+        get() = sideIconName?.replace("Side_", "")
+}
+
+@JsonClass(generateAdapter = true)
+data class EnkaCostume(
+    @Json(name = "icon") val icon: String? = null,
+    @Json(name = "sideIconName") val sideIconName: String? = null,
+    @Json(name = "art") val art: String? = null,
 )
 
 @JsonClass(generateAdapter = true)
 data class EnkaWeaponMeta(
-    @Json(name = "id") val id: Int,
-    @Json(name = "nameTextMapHash") val nameTextMapHash: String,
-    @Json(name = "icon") val icon: String,
-    @Json(name = "rankLevel") val rankLevel: Int,
-    @Json(name = "weaponType") val weaponType: String? = null,
+    @Json(name = "NameTextMapHash") val nameTextMapHash: Long? = null,
+    @Json(name = "Icon") val icon: String? = null,
+    @Json(name = "RankLevel") val rankLevel: Int? = null,
+    @Json(name = "WeaponType") val weaponType: String? = null,
     @Json(name = "name") val name: String? = null, // Resolved from locTable
 )
 
 @JsonClass(generateAdapter = true)
 data class EnkaArtifactMeta(
-    @Json(name = "id") val id: Int,
-    @Json(name = "nameTextMapHash") val nameTextMapHash: String,
-    @Json(name = "icon") val icon: String,
-    @Json(name = "setID") val setID: Int,
-    @Json(name = "rankLevel") val rankLevel: Int,
-    @Json(name = "equipType") val equipType: String,
+    @Json(name = "NameTextMapHash") val nameTextMapHash: Long? = null,
+    @Json(name = "Icon") val icon: String? = null,
+    @Json(name = "SetID") val setID: Int? = null,
+    @Json(name = "RankLevel") val rankLevel: Int? = null,
+    @Json(name = "EquipType") val equipType: String? = null,
     @Json(name = "name") val name: String? = null, // Resolved from locTable
 )
 
 @JsonClass(generateAdapter = true)
 data class EnkaProfilePicture(
-    @Json(name = "id") val id: Int,
-    @Json(name = "iconPath") val iconPath: String,
+    @Json(name = "Id") val id: Int? = null,
+    @Json(name = "IconPath") val iconPath: String? = null,
 )
 
 // ========== Enka Avatar Summarized ==========

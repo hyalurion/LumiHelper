@@ -1,8 +1,13 @@
 package com.chronie.helperunited.data
 
 import android.content.Context
+import com.chronie.helperunited.model.EnkaArtifactMeta
+import com.chronie.helperunited.model.EnkaCharacterMeta
 import com.chronie.helperunited.model.EnkaDatabase
+import com.chronie.helperunited.model.EnkaProfilePicture
+import com.chronie.helperunited.model.EnkaWeaponMeta
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,7 +20,7 @@ import javax.inject.Singleton
 /**
  * Enka database manager.
  * Downloads and caches character/weapon/artifact metadata from Enka.Network.
- * Ported from PizzaHelperUnited's EnkaDB.
+ * Ported from PizzaHelperUnited's EnkaKit.
  */
 @Singleton
 class EnkaDatabaseManager(
@@ -28,9 +33,10 @@ class EnkaDatabaseManager(
     private var cachedDb: EnkaDatabase? = null
 
     companion object {
-        private const val ENKA_DB_URL = "https://raw.githubusercontent.com/EnkaNetwork/starRail_res/main/"
+        private const val ENKA_DB_URL = "https://raw.githubusercontent.com/pizza-studio/EnkaDBGenerator/main/Sources/EnkaDBFiles/Resources/Specimen/"
         private const val CACHE_FILE = "enkadb_cache.json"
         private const val CACHE_TTL_MS = 24 * 60 * 60 * 1000L // 24 hours
+        private const val DEFAULT_LANG = "chs"
     }
 
     /**
@@ -111,42 +117,133 @@ class EnkaDatabaseManager(
     /**
      * Download database from Enka.Network resources.
      */
-    private fun downloadDatabase(): EnkaDatabase? {
-        // Download character data
-        val characters = downloadMap("characters")
-        val weapons = downloadMap("weapons")
-        val artifacts = downloadMap("artifacts")
+    private suspend fun downloadDatabase(): EnkaDatabase? = withContext(Dispatchers.IO) {
+        try {
+            // Download loc tables (localization) first
+            val rawLocTables = downloadRawLocTables() ?: return@withContext null
+            val locTable = rawLocTables[DEFAULT_LANG] ?: rawLocTables.values.firstOrNull() ?: emptyMap()
 
-        return EnkaDatabase(
-            characters = characters,
-            weapons = weapons,
-            artifacts = artifacts,
-        )
+            // Download GI data
+            val characters = downloadCharacters() ?: emptyMap()
+            val weapons = downloadWeapons() ?: emptyMap()
+            val artifacts = downloadArtifacts() ?: emptyMap()
+            val profilePictures = downloadProfilePictures() ?: emptyMap()
+
+            // Process characters to resolve names using locTable
+            val processedCharacters = characters.mapValues { (_, char) ->
+                char.copy(
+                    name = char.nameTextMapHash?.let { hash ->
+                        locTable[hash.toString()]
+                    }
+                )
+            }
+
+            val processedWeapons = weapons.mapValues { (_, weapon) ->
+                weapon.copy(
+                    name = weapon.nameTextMapHash?.let { hash ->
+                        locTable[hash.toString()]
+                    }
+                )
+            }
+
+            val processedArtifacts = artifacts.mapValues { (_, artifact) ->
+                artifact.copy(
+                    name = artifact.nameTextMapHash?.let { hash ->
+                        locTable[hash.toString()]
+                    }
+                )
+            }
+
+            EnkaDatabase(
+                locTable = locTable,
+                characters = processedCharacters,
+                weapons = processedWeapons,
+                artifacts = processedArtifacts,
+                profilePictures = profilePictures,
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    /**
-     * Download a metadata map from Enka resources.
-     */
-    private fun downloadMap(type: String): Map<String, com.chronie.helperunited.model.EnkaCharacterMeta> {
+    private fun downloadCharacters(): Map<String, EnkaCharacterMeta>? {
         return try {
-            val url = URL("$ENKA_DB_URL$type.json")
+            val type = Types.newParameterizedType(Map::class.java, String::class.java, EnkaCharacterMeta::class.java)
+            downloadJson("GI/characters.json", type)
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    private fun downloadWeapons(): Map<String, EnkaWeaponMeta>? {
+        return try {
+            val type = Types.newParameterizedType(Map::class.java, String::class.java, EnkaWeaponMeta::class.java)
+            downloadJson("GI/weapons.json", type)
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    private fun downloadArtifacts(): Map<String, EnkaArtifactMeta>? {
+        return try {
+            val type = Types.newParameterizedType(Map::class.java, String::class.java, EnkaArtifactMeta::class.java)
+            downloadJson("GI/reliquaries.json", type)
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    private fun downloadProfilePictures(): Map<String, EnkaProfilePicture>? {
+        return try {
+            val type = Types.newParameterizedType(Map::class.java, String::class.java, EnkaProfilePicture::class.java)
+            downloadJson("GI/pfps.json", type)
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    private fun <T> downloadJson(path: String, type: java.lang.reflect.Type): T? {
+        return try {
+            val url = URL("${ENKA_DB_URL}$path")
             val conn = url.openConnection() as HttpURLConnection
-            conn.connectTimeout = 10000
-            conn.readTimeout = 10000
+            conn.connectTimeout = 30000
+            conn.readTimeout = 30000
             conn.requestMethod = "GET"
 
             if (conn.responseCode == 200) {
                 val json = conn.inputStream.bufferedReader().readText()
-                // Parse as raw map and convert
-                val adapter = moshi.adapter(Map::class.java)
-                val raw = adapter.fromJson(json) as? Map<*, *> ?: return emptyMap()
-                // This is simplified - actual implementation would parse each entry
-                emptyMap()
+                val adapter = moshi.adapter<T>(type)
+                adapter.fromJson(json)
             } else {
-                emptyMap()
+                null
             }
-        } catch (_: Exception) {
-            emptyMap()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Download raw localization tables.
+     */
+    private fun downloadRawLocTables(): Map<String, Map<String, String>>? {
+        return try {
+            // Try GI loc table first
+            val url = URL("${ENKA_DB_URL}GI/loc.json")
+            val conn = url.openConnection() as HttpURLConnection
+            conn.connectTimeout = 30000
+            conn.readTimeout = 30000
+            conn.requestMethod = "GET"
+
+            if (conn.responseCode == 200) {
+                val json = conn.inputStream.bufferedReader().readText()
+                val type = Types.newParameterizedType(Map::class.java, String::class.java, Types.newParameterizedType(Map::class.java, String::class.java, String::class.java))
+                val adapter = moshi.adapter<Map<String, Map<String, String>>>(type)
+                adapter.fromJson(json)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 

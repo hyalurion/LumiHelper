@@ -10,6 +10,7 @@ import com.chronie.helperunited.model.HoYoLabDriveDiscZZZ
 import com.chronie.helperunited.model.HoYoLabWEngineZZZ
 import com.chronie.helperunited.model.HoYoAccount
 import com.chronie.helperunited.model.ZZZAgentSummarized
+import com.chronie.helperunited.model.ZZZDiscProperty
 import com.chronie.helperunited.model.ZZZDriveDiscSummarized
 import com.chronie.helperunited.model.ZZZElementType
 import com.chronie.helperunited.model.ZZZProfileSummarized
@@ -128,10 +129,17 @@ class ZZZShowcaseRepository(
             suitName = disc.suitName,
             slot = disc.equipmentType,
             iconUrl = disc.icon,
-            mainStat = disc.mainProperty,
-            subStats = disc.subProperties,
+            mainStat = disc.mainProperty?.toDiscProperty(),
+            subStats = disc.subProperties.map { it.toDiscProperty() },
         )
     }
+
+    private fun HoYoLabDiscPropertyZZZ.toDiscProperty() = ZZZDiscProperty(
+        propertyName = propertyName,
+        propertyId = propertyId,
+        value = value,
+        times = times,
+    )
 
     /**
      * Maps UID to the server string that the API expects.

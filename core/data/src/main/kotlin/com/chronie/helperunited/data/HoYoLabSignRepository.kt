@@ -6,6 +6,7 @@ import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.GameSignStatus
 import com.chronie.helperunited.model.HoYoAccount
 import com.chronie.helperunited.model.SignInRequest
+import com.chronie.helperunited.model.SignInResult
 import com.chronie.helperunited.model.SignInfo
 import com.chronie.helperunited.network.HoYoApiFactory
 import kotlinx.coroutines.async

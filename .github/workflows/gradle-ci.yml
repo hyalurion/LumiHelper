@@ -18,8 +18,8 @@ jobs:
         run: |
           file=gradle/wrapper/gradle-wrapper.properties
           if [ ! -f "$file" ]; then echo "Missing $file"; exit 1; fi
-          sed -i 's|^distributionUrl=.*$|distributionUrl=https://services.gradle.org/distributions/gradle-9.5.0-bin.zip|' "$file"
-          echo "Updated distUrl to https://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
+          sed -i 's|^distributionUrl=.*$|distributionUrl=https://services.gradle.org/distributions/gradle-9.5.1-bin.zip|' "$file"
+          echo "Updated distUrl to https://services.gradle.org/distributions/gradle-9.5.1-bin.zip"
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

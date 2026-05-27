@@ -23,7 +23,7 @@ composeMaterial3 = "1.5.0-alpha20"
 activityCompose = "1.13.0"
 lifecycle = "2.10.0"
 navigation = "2.9.8"
-ksp = "2.3.7"
+ksp = "2.3.9"
 glance = "1.1.1"
 
 [libraries]

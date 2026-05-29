@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
@@ -160,6 +161,16 @@ private fun MaterialDomainCard(domain: MaterialDomain) {
                     text = "• $material",
                     style = MiuixTheme.textStyles.body2,
                     modifier = Modifier.padding(vertical = 2.dp),
+                )
+            }
+            if (domain.charactersForDomain.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = domain.charactersForDomain.joinToString("、"),
+                    style = MiuixTheme.textStyles.main,
+                    color = MiuixTheme.colorScheme.primary,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

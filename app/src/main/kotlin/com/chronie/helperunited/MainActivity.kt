@@ -53,8 +53,7 @@ import top.yukonga.miuix.kmp.icon.extended.Contacts
 import top.yukonga.miuix.kmp.icon.extended.FolderFill
 import top.yukonga.miuix.kmp.icon.extended.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.chronie.helperunited.ui.daily.DailyNoteScreen
-import com.chronie.helperunited.ui.daily.DailyNoteViewModel
+import com.chronie.helperunited.ui.today.TodayScreen
 import com.chronie.helperunited.ui.enka.EnkaShowcaseScreen
 import com.chronie.helperunited.ui.enka.EnkaShowcaseViewModel
 import com.chronie.helperunited.ui.gacha.GachaScreen
@@ -232,8 +231,10 @@ fun HelperUnitedApp() {
                         ) { tab ->
                             when (tab) {
                                 AppTab.Today -> {
-                                    val vm: DailyNoteViewModel = hiltViewModel()
-                                    DailyNoteScreen(viewModel = vm)
+                                    TodayScreen(
+                                        onNavigateToMaterials = { subScreen = SubScreen.Materials },
+                                        onNavigateToEvents = { subScreen = SubScreen.EventCalendar },
+                                    )
                                 }
                                 AppTab.Showcase -> {
                                     val vm: EnkaShowcaseViewModel = hiltViewModel()

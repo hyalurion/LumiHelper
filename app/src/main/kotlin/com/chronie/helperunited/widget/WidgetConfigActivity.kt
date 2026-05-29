@@ -101,7 +101,7 @@ class WidgetConfigActivity : ComponentActivity() {
 
         // Determine which widget type was requested
         val widgetClassName = intent?.extras?.getString("widget_type")
-        val widgetClass: Class<*> = when (widgetClassName) {
+        val widgetClass: Class<out GlanceAppWidget> = when (widgetClassName) {
             "small" -> SmallDailyNoteWidget::class.java
             "large" -> LargeDailyNoteWidget::class.java
             else -> MediumDailyNoteWidget::class.java
@@ -194,17 +194,17 @@ private fun WidgetConfigScreen(
                 title = { Text("配置小组件") },
             )
         },
-    ) { padding ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(paddingValues)
                 .padding(16.dp),
         ) {
             // Game selection
             Text(
                 text = "选择游戏",
-                style = MaterialTheme.typography.title2,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -239,7 +239,7 @@ private fun WidgetConfigScreen(
             // Account selection
             Text(
                 text = "选择账号",
-                style = MaterialTheme.typography.title2,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -257,13 +257,13 @@ private fun WidgetConfigScreen(
                     ) {
                         Text(
                             text = "没有找到该游戏的账号",
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "请先在「账号管理」中添加账号",
-                            style = MaterialTheme.typography.main,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -294,17 +294,17 @@ private fun WidgetConfigScreen(
                             ) {
                                 Text(
                                     text = account.name.ifEmpty { "UID: ${account.uid}" },
-                                    style = MaterialTheme.typography.body1,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
                                     text = "UID: ${account.displayUid}",
-                                    style = MaterialTheme.typography.main,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                                 Text(
                                     text = if (account.region.isGlobal) "国际服" else "国服",
-                                    style = MaterialTheme.typography.main,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }

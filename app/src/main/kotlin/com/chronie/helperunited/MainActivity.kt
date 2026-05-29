@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -93,12 +94,7 @@ fun HelperUnitedApp() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = subScreen?.title ?: currentTab.title,
-                        fontWeight = FontWeight.Bold,
-                    )
-                },
+                title = subScreen?.title ?: currentTab.title,
             )
         },
         bottomBar = {

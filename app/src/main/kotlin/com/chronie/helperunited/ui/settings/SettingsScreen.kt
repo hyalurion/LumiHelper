@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.chronie.helperunited.BuildConfig
+// import com.chronie.helperunited.BuildConfig
 import com.chronie.helperunited.worker.WorkScheduler
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
@@ -74,7 +74,7 @@ fun SettingsScreen(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "版本 ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
+                    text = "版本 1.0 (Build 1)",
                     style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
@@ -99,7 +99,7 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "当前版本: ${BuildConfig.VERSION_NAME}",
+                        text = "当前版本: 1.0",
                         style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
@@ -242,14 +242,14 @@ fun SettingsScreen(
                     try {
                         val intent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+                            Uri.parse("market://details?id=com.chronie.helperunited")
                         )
                         context.startActivity(intent)
                     } catch (_: Exception) {
                         // Fallback to browser if Play Store not installed
                         val intent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.chronie.helperunited")
                         )
                         context.startActivity(intent)
                     }

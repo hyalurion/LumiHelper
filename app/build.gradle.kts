@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     // Miuix
@@ -57,6 +58,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
     ksp(libs.hilt.compiler)
 
     // WorkManager + Hilt

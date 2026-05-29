@@ -41,9 +41,9 @@ import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.TopAppBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import com.chronie.helperunited.ui.daily.DailyNoteScreen
 import com.chronie.helperunited.ui.daily.DailyNoteViewModel
@@ -94,7 +94,12 @@ fun HelperUnitedApp() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = subScreen?.title ?: currentTab.title,
+                title = {
+                    Text(
+                        text = subScreen?.title ?: currentTab.title,
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
             )
         },
         bottomBar = {

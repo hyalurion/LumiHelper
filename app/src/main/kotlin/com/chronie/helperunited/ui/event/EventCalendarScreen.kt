@@ -42,7 +42,8 @@ import com.chronie.helperunited.model.VersionInfo
 import kotlinx.coroutines.delay
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import java.time.Instant
@@ -74,7 +75,7 @@ fun EventCalendarScreen(
         ) {
             Text(
                 text = "🎮 活动日历",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -106,7 +107,10 @@ fun EventCalendarScreen(
 
         // Error message
         uiState.error?.let { error ->
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                pressFeedbackType = PressFeedbackType.Sink,
+            ) {
                 Text(
                     text = "⚠️ $error",
                     modifier = Modifier.padding(16.dp),
@@ -120,7 +124,7 @@ fun EventCalendarScreen(
         if (versionInfoList.isNotEmpty()) {
             Text(
                 text = "版本倒计时",
-                style = MiuixTheme.textStyles.titleLarge,
+                style = MiuixTheme.textStyles.title1,
                 fontWeight = FontWeight.Bold,
             )
             versionInfoList.forEach { versionInfo ->
@@ -133,7 +137,7 @@ fun EventCalendarScreen(
         if (activeEvents.isNotEmpty()) {
             Text(
                 text = "🔴 进行中的活动",
-                style = MiuixTheme.textStyles.titleLarge,
+                style = MiuixTheme.textStyles.title1,
                 fontWeight = FontWeight.Bold,
             )
             activeEvents.forEach { event ->
@@ -153,7 +157,7 @@ fun EventCalendarScreen(
         if (upcomingEvents.isNotEmpty()) {
             Text(
                 text = "🟡 即将开始",
-                style = MiuixTheme.textStyles.titleLarge,
+                style = MiuixTheme.textStyles.title1,
                 fontWeight = FontWeight.Bold,
             )
             upcomingEvents.forEach { event ->
@@ -173,7 +177,7 @@ fun EventCalendarScreen(
         if (endedEvents.isNotEmpty()) {
             Text(
                 text = "⚫ 已结束",
-                style = MiuixTheme.textStyles.titleLarge,
+                style = MiuixTheme.textStyles.title1,
                 fontWeight = FontWeight.Bold,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
@@ -200,7 +204,7 @@ fun EventCalendarScreen(
             ) {
                 Text(
                     text = "暂无活动数据\n请点击刷新获取最新信息",
-                    style = MiuixTheme.textStyles.bodyLarge,
+                    style = MiuixTheme.textStyles.body1,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -231,8 +235,9 @@ private fun GameFilterChips(
     ) {
         games.forEach { (gameId, label) ->
             val isSelected = gameId == selectedGame
-            MiuixCard(
+            Card(
                 modifier = Modifier.clickable { onSelect(gameId) },
+                pressFeedbackType = PressFeedbackType.Sink,
             ) {
                 Text(
                     text = label,
@@ -280,20 +285,23 @@ private fun VersionCountdownCard(versionInfo: VersionInfo) {
     val minutes = (remainingSeconds % 3600) / 60
     val secs = remainingSeconds % 60
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = gameEmoji, style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = gameEmoji, style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
                         text = "$gameName ${versionInfo.displayVersion}",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "版本倒计时",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -325,7 +333,7 @@ private fun VersionCountdownCard(versionInfo: VersionInfo) {
 
             Text(
                 text = "$startDate → $endDate",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
@@ -337,13 +345,13 @@ private fun CountdownUnit(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MiuixTheme.textStyles.headlineLarge,
+            style = MiuixTheme.textStyles.headline1,
             fontWeight = FontWeight.Bold,
             color = MiuixTheme.colorScheme.primary,
         )
         Text(
             text = label,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }
@@ -379,10 +387,11 @@ private fun EventCard(
 
     val alpha = if (dimmed) 0.5f else 1f
 
-    MiuixCard(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
+        pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -402,11 +411,11 @@ private fun EventCard(
             Column(modifier = Modifier.weight(1f)) {
                 // Title row
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = gameEmoji, style = MiuixTheme.textStyles.bodyMedium)
+                    Text(text = gameEmoji, style = MiuixTheme.textStyles.body2)
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = event.name,
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -416,7 +425,7 @@ private fun EventCard(
                 // Type badge
                 Text(
                     text = "${event.type.icon} ${event.type.displayName}",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = typeColor,
                 )
 
@@ -431,7 +440,7 @@ private fun EventCard(
 
                 Text(
                     text = "⏰ $start → $end",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
 
@@ -443,7 +452,7 @@ private fun EventCard(
                     val label = if (event.isActive) "剩余" else "开始于"
                     Text(
                         text = "⏳ $label ${days}天${hours}小时",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = if (event.isActive) Color(0xFF4CAF50) else Color(0xFFFFD700),
                     )
                 }
@@ -452,7 +461,7 @@ private fun EventCard(
                 if (event.description.isNotBlank()) {
                     Text(
                         text = event.description,
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,

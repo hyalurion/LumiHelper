@@ -35,7 +35,8 @@ import com.chronie.helperunited.model.EnkaAvatarSummarized
 import com.chronie.helperunited.model.EnkaProfileSummarized
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextField
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -59,15 +60,16 @@ fun EnkaShowcaseScreen(
             .padding(16.dp),
     ) {
         // UID Input Card
-        MiuixCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
             ) {
                 Text(
                     text = "查询角色展柜",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -105,22 +107,23 @@ fun EnkaShowcaseScreen(
                 }
             }
             error != null -> {
-                MiuixCard(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                     ) {
                         Text(
                             text = "错误",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                             color = MiuixTheme.colorScheme.error,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = error,
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onErrorContainer,
                         )
                     }
@@ -148,8 +151,9 @@ fun EnkaShowcaseScreen(
 
 @Composable
 private fun ProfileHeader(profile: EnkaProfileSummarized) {
-    MiuixCard(
+    Card(
         modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -173,19 +177,19 @@ private fun ProfileHeader(profile: EnkaProfileSummarized) {
                 Column {
                     Text(
                         text = profile.nickname,
-                        style = MiuixTheme.textStyles.headlineSmall,
+                        style = MiuixTheme.textStyles.headline3,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Lv.${profile.level} · 世界等级 ${profile.worldLevel}",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                     if (profile.finishAchievementNum > 0) {
                         Text(
                             text = "成就 ${profile.finishAchievementNum}",
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -195,8 +199,9 @@ private fun ProfileHeader(profile: EnkaProfileSummarized) {
             // Abyss Progress
             if (profile.towerFloorIndex != null) {
                 Spacer(modifier = Modifier.height(12.dp))
-                MiuixCard(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
                 ) {
                     Row(
                         modifier = Modifier.padding(12.dp),
@@ -204,18 +209,18 @@ private fun ProfileHeader(profile: EnkaProfileSummarized) {
                     ) {
                         Text(
                             text = "🌙",
-                            style = MiuixTheme.textStyles.titleLarge,
+                            style = MiuixTheme.textStyles.title1,
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
                                 text = "深境螺旋",
-                                style = MiuixTheme.textStyles.titleSmall,
+                                style = MiuixTheme.textStyles.title3,
                                 fontWeight = FontWeight.Bold,
                             )
                             Text(
                                 text = "${profile.towerFloorIndex}-${profile.towerLevelIndex ?: 0}",
-                                style = MiuixTheme.textStyles.bodyLarge,
+                                style = MiuixTheme.textStyles.body1,
                                 color = MiuixTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -230,8 +235,9 @@ private fun ProfileHeader(profile: EnkaProfileSummarized) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AvatarCard(avatar: EnkaAvatarSummarized) {
-    MiuixCard(
+    Card(
         modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -256,7 +262,7 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                 Column {
                     Text(
                         text = avatar.name,
-                        style = MiuixTheme.textStyles.titleLarge,
+                        style = MiuixTheme.textStyles.title1,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -273,8 +279,9 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
             // Weapon
             avatar.weapon?.let { weapon ->
                 Spacer(modifier = Modifier.height(12.dp))
-                MiuixCard(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
                 ) {
                     Row(
                         modifier = Modifier.padding(12.dp),
@@ -292,12 +299,12 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                         Column {
                             Text(
                                 text = weapon.name,
-                                style = MiuixTheme.textStyles.titleSmall,
+                                style = MiuixTheme.textStyles.title3,
                                 fontWeight = FontWeight.Bold,
                             )
                             Text(
                                 text = "Lv.${weapon.level} · 精炼 ${weapon.refinement}",
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
@@ -310,7 +317,7 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "圣遗物",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -335,7 +342,7 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "+${artifact.level}",
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -349,7 +356,7 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "天赋等级",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -358,10 +365,13 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     avatar.talentLevels.entries.forEach { (talentId, level) ->
-                        MiuixCard {
+                        Card(
+                            modifier = Modifier.width(56.dp),
+                            pressFeedbackType = PressFeedbackType.Sink,
+                        ) {
                             Text(
                                 text = "天赋${talentId}: $level",
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             )
                         }
@@ -374,10 +384,13 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
 
 @Composable
 private fun StatChip(text: String) {
-    MiuixCard {
+    Card(
+        modifier = Modifier.width(56.dp),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Text(
             text = text,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
     }

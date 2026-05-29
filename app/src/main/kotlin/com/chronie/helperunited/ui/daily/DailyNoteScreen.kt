@@ -36,7 +36,8 @@ import com.chronie.helperunited.model.TransformerGI
 import kotlinx.coroutines.delay
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -73,7 +74,7 @@ fun DailyNoteScreen(
         ) {
             Text(
                 text = "实时便笺",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -98,23 +99,23 @@ fun DailyNoteScreen(
                 }
             }
             uiState.error != null -> {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "提示",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                             color = MiuixTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = uiState.error ?: "",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "请先在「账号管理」中添加 HoYoLAB / 米游社账号",
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -139,11 +140,11 @@ private fun AccountSelector(
     selectedAccount: HoYoAccount?,
     onSelect: (HoYoAccount) -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "选择账号",
-                style = MiuixTheme.textStyles.titleSmall,
+                style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -182,23 +183,23 @@ private fun GenshinDailyNoteCard(note: DailyNoteGI) {
         )
 
         // Daily Commissions
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Row(
                 modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "📋", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "📋", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "每日委托",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "${note.finishedTaskNum}/${note.totalTaskNum} 完成" +
                             if (note.isExtraTaskRewardReceived) " · 奖励已领" else "",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -221,19 +222,19 @@ private fun GenshinDailyNoteCard(note: DailyNoteGI) {
         TransformerCard(note.transformer)
 
         // Weekly Boss
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Row(modifier = Modifier.padding(16.dp)) {
-                Text(text = "🐉", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "🐉", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "周本折扣",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "${note.remainResinDiscountNum}/${note.resinDiscountNumLimit} 剩余",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -259,19 +260,19 @@ private fun StarRailDailyNoteCard(note: DailyNoteHSR) {
 
         // Reserve Stamina
         if (note.currentReserveStamina > 0) {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                 Row(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "🔋", style = MiuixTheme.textStyles.headlineMedium)
+                    Text(text = "🔋", style = MiuixTheme.textStyles.headline2)
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
                             text = "后备开拓力",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
                             text = "${note.currentReserveStamina}",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -283,19 +284,19 @@ private fun StarRailDailyNoteCard(note: DailyNoteHSR) {
         ExpeditionCardHSR(note)
 
         // Simulated Universe
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Row(modifier = Modifier.padding(16.dp)) {
-                Text(text = "🌌", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "🌌", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "模拟宇宙积分",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "${note.currentTrainScore}/${note.maxTrainScore}",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -327,38 +328,38 @@ private fun ZZZDailyNoteCard(note: DailyNoteZZZ) {
         )
 
         // Bounty Commission
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Row(modifier = Modifier.padding(16.dp)) {
-                Text(text = "📋", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "📋", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "悬赏委托",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "${note.bountyCommission.num}/${note.bountyCommission.total}",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                     )
                 }
             }
         }
 
         // Survey Points
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Row(modifier = Modifier.padding(16.dp)) {
-                Text(text = "🔍", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "🔍", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "调查点数",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "${note.surveyPoints.num}/${note.surveyPoints.total}",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                     )
                 }
             }
@@ -370,17 +371,17 @@ private fun ZZZDailyNoteCard(note: DailyNoteZZZ) {
 
 @Composable
 private fun ExpeditionCardGI(note: DailyNoteGI) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "探索派遣",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "${note.currentExpeditionNum}/${note.maxExpeditionNum} 进行中",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             note.expeditions.forEachIndexed { index, exp ->
                 Spacer(modifier = Modifier.height(6.dp))
@@ -396,12 +397,12 @@ private fun ExpeditionRowGI(exp: ExpeditionGI, index: Int) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "✅",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "派遣 #${index + 1} 已完成",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 color = MiuixTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
             )
@@ -425,17 +426,17 @@ private fun ExpeditionRowGI(exp: ExpeditionGI, index: Int) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = if (isAlmostDone) "⏰" else "⏳",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "派遣 #${index + 1}",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = formatCountdown(currentRemaining),
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = if (isAlmostDone) FontWeight.Bold else FontWeight.Normal,
                 color = textColor,
             )
@@ -447,17 +448,17 @@ private fun ExpeditionRowGI(exp: ExpeditionGI, index: Int) {
 
 @Composable
 private fun ExpeditionCardHSR(note: DailyNoteHSR) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "探索派遣",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "${note.acceptedExpeditionNum}/${note.totalExpeditionNum} 进行中",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             note.expeditions.forEach { exp ->
                 Spacer(modifier = Modifier.height(6.dp))
@@ -473,12 +474,12 @@ private fun ExpeditionRowHSR(exp: ExpeditionHSR) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "✅",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "${exp.name ?: "探索"} 已完成",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 color = MiuixTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
             )
@@ -501,17 +502,17 @@ private fun ExpeditionRowHSR(exp: ExpeditionHSR) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = if (isAlmostDone) "⏰" else "⏳",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = exp.name ?: "探索",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = formatCountdown(currentRemaining),
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = if (isAlmostDone) FontWeight.Bold else FontWeight.Normal,
                 color = textColor,
             )
@@ -523,31 +524,31 @@ private fun ExpeditionRowHSR(exp: ExpeditionHSR) {
 
 @Composable
 private fun TransformerCard(transformer: TransformerGI?) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = "🔄", style = MiuixTheme.textStyles.headlineMedium)
+            Text(text = "🔄", style = MiuixTheme.textStyles.headline2)
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = "参量质变仪",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 when {
                     transformer == null || !transformer.obtained -> {
                         Text(
                             text = "未获得",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
                     transformer.recoveryTime?.reached == true -> {
                         Text(
                             text = "✅ 可用",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
                         )
@@ -577,14 +578,14 @@ private fun TransformerCard(transformer: TransformerGI?) {
 
                         Text(
                             text = "冷却中: $timeText",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
                     else -> {
                         Text(
                             text = "状态未知",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -608,20 +609,20 @@ private fun ProgressCard(
     val progress = if (max > 0) current.toFloat() / max else 0f
     val isFull = current >= max
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = icon, style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = icon, style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = title,
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = subtitle,
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = if (isFull) MiuixTheme.colorScheme.primary
                         else MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
@@ -629,14 +630,14 @@ private fun ProgressCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = "$current/$max",
-                        style = MiuixTheme.textStyles.headlineSmall,
+                        style = MiuixTheme.textStyles.headline3,
                         fontWeight = FontWeight.Bold,
                         color = if (isFull) MiuixTheme.colorScheme.primary
                         else MiuixTheme.colorScheme.onSurface,
                     )
                     Text(
                         text = "${(progress * 100).toInt()}%",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -645,7 +646,7 @@ private fun ProgressCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = extra,
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }

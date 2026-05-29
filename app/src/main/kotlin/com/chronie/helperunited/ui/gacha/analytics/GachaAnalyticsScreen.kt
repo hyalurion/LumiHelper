@@ -41,7 +41,8 @@ import com.chronie.helperunited.model.PieChartSlice
 import com.chronie.helperunited.model.PityTracker
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -83,15 +84,18 @@ private fun GachaAnalyticsContent(
                     .padding(16.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "提示",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = state.error, style = MiuixTheme.textStyles.bodyMedium)
+                        Text(text = state.error, style = MiuixTheme.textStyles.body2)
                     }
                 }
             }
@@ -149,7 +153,7 @@ private fun GachaAnalyticsContent(
                     item {
                         Text(
                             text = "★5 历史记录",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                         )
                     }
@@ -193,11 +197,14 @@ private fun GachaTypeTabs(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SummaryCards(analytics: GachaTypeAnalytics) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "📊 ${analytics.gachaTypeName} 统计",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -227,12 +234,12 @@ private fun MetricItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MiuixTheme.textStyles.titleLarge,
+            style = MiuixTheme.textStyles.title1,
             fontWeight = FontWeight.Bold,
         )
         Text(
             text = label,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }
@@ -250,7 +257,10 @@ private fun PityCard(pity: PityTracker) {
         else -> Color(0xFF66BB6A) // Green
     }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -259,12 +269,12 @@ private fun PityCard(pity: PityTracker) {
             ) {
                 Text(
                     text = "🎯 保底计数",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = "${pity.currentPity} / ${pity.hardPity}",
-                    style = MiuixTheme.textStyles.headlineSmall,
+                    style = MiuixTheme.textStyles.headline3,
                     fontWeight = FontWeight.Bold,
                     color = progressColor,
                 )
@@ -300,12 +310,12 @@ private fun PityCard(pity: PityTracker) {
             ) {
                 Text(
                     text = "剩余 ${pity.hardPity - pity.currentPity} 抽保底",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "最长无金: ${pity.maxPity} 抽",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -314,7 +324,7 @@ private fun PityCard(pity: PityTracker) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "⚠️ 已接近硬保底！",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFFFF5252),
                 )
@@ -327,11 +337,14 @@ private fun PityCard(pity: PityTracker) {
 
 @Composable
 private fun DonutChartCard(slices: List<PieChartSlice>, totalPulls: Int) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "🎯 稀有度分布",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -393,7 +406,7 @@ private fun DonutChartCard(slices: List<PieChartSlice>, totalPulls: Int) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "${slice.label}: ${slice.value.toInt()} (${"%.1f".format(slice.percentage)}%)",
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                             )
                         }
                     }
@@ -407,11 +420,14 @@ private fun DonutChartCard(slices: List<PieChartSlice>, totalPulls: Int) {
 
 @Composable
 private fun LineChartCard(points: List<LineChartPoint>) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "📈 ★5 累计趋势",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -487,7 +503,7 @@ private fun LineChartCard(points: List<LineChartPoint>) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "共 ${points.size} 个 ★5 角色/物品",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
@@ -500,11 +516,14 @@ private fun LineChartCard(points: List<LineChartPoint>) {
 private fun BarChartCard(entries: List<BarChartEntry>) {
     val maxVal = entries.maxOfOrNull { it.value } ?: 1f
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "📊 各期抽数分布",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -582,7 +601,10 @@ private fun FiveStarHistoryCard(record: FiveStarRecord) {
         else -> Color(0xFF66BB6A) // Green
     }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -598,7 +620,7 @@ private fun FiveStarHistoryCard(record: FiveStarRecord) {
                     text = "${record.pityCount}",
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                 )
             }
 
@@ -607,20 +629,20 @@ private fun FiveStarHistoryCard(record: FiveStarRecord) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = record.name ?: "未知 ★5",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFFFFD700),
                 )
                 Text(
                     text = record.time,
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
 
             Text(
                 text = "★★★★★",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = Color(0xFFFFD700),
                 fontWeight = FontWeight.Bold,
             )

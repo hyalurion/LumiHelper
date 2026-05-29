@@ -38,7 +38,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
@@ -271,17 +272,17 @@ private fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // Welcome
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = "🍕 Helper United",
-                    style = MiuixTheme.textStyles.headlineLarge,
+                    style = MiuixTheme.textStyles.headline1,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Kotlin/Android Edition · 原神 · 星穹铁道 · 绝区零",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -297,7 +298,7 @@ private fun HomeScreen(
         // Quick Actions
         Text(
             text = "快捷功能",
-            style = MiuixTheme.textStyles.titleLarge,
+            style = MiuixTheme.textStyles.title1,
             fontWeight = FontWeight.Bold,
         )
 
@@ -353,11 +354,11 @@ private fun HomeScreen(
         // Supported Games
         Text(
             text = "支持的游戏",
-            style = MiuixTheme.textStyles.titleLarge,
+            style = MiuixTheme.textStyles.title1,
             fontWeight = FontWeight.Bold,
         )
 
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Column(modifier = Modifier.padding(16.dp)) {
                 GameItem("⚡", "原神", "Genshin Impact", "每日便笺 · 角色展柜 · 抽卡记录")
                 Spacer(modifier = Modifier.height(12.dp))
@@ -376,29 +377,28 @@ private fun QuickActionCard(
     subtitle: String,
     onClick: () -> Unit,
 ) {
-    MiuixCard(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = onClick,
+    Card(
+        modifier = Modifier.fillMaxWidth()        onClick = onClick,
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = icon, style = MiuixTheme.textStyles.headlineMedium)
+            Text(text = icon, style = MiuixTheme.textStyles.headline2)
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = subtitle,
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
-            Text(text = "›", style = MiuixTheme.textStyles.headlineSmall)
+            Text(text = "›", style = MiuixTheme.textStyles.headline3)
         }
     }
 }
@@ -406,22 +406,22 @@ private fun QuickActionCard(
 @Composable
 private fun GameItem(emoji: String, name: String, subtitle: String, features: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = emoji, style = MiuixTheme.textStyles.headlineMedium)
+        Text(text = emoji, style = MiuixTheme.textStyles.headline2)
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Text(
                 text = name,
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = subtitle,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
             Text(
                 text = features,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.primary,
             )
         }
@@ -437,23 +437,23 @@ private fun SignInCard(
     onSignInAll: () -> Unit,
     onRefresh: () -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "📝", style = MiuixTheme.textStyles.headlineMedium)
+                Text(text = "📝", style = MiuixTheme.textStyles.headline2)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "HoYoLAB 签到",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "每日签到获取奖励",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -476,7 +476,7 @@ private fun SignInCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = signState.error,
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.error,
                 )
             }
@@ -492,26 +492,26 @@ private fun SignInCard(
                     ) {
                         Text(
                             text = if (status.isSigned) "✅" else "❌",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = status.game.displayName,
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             fontWeight = FontWeight.Bold,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         if (status.error != null) {
                             Text(
                                 text = status.error,
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                                 color = MiuixTheme.colorScheme.error,
                             )
                         } else {
                             Text(
                                 text = if (status.isSigned) "已签到 (${status.totalSignDays}天)"
                                 else "未签到",
-                                style = MiuixTheme.textStyles.bodySmall,
+                                style = MiuixTheme.textStyles.main,
                                 color = if (status.isSigned) MiuixTheme.colorScheme.primary
                                 else MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
@@ -555,11 +555,11 @@ private fun BottomNavBar(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = tab.icon,
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                     )
                     Text(
                         text = tab.shortTitle,
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                         color = if (isSelected) MiuixTheme.colorScheme.primary
                         else MiuixTheme.colorScheme.onSurfaceVariantSummary,

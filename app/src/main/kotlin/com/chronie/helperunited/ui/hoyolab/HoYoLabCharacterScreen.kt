@@ -33,7 +33,8 @@ import com.chronie.helperunited.model.HoYoAccount
 import com.chronie.helperunited.model.HoYoLabCharacterDisplay
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -89,7 +90,7 @@ fun HoYoLabCharacterScreen(
         ) {
             Text(
                 text = "角色列表 (${uiState.filteredCharacters.size})",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -116,40 +117,46 @@ fun HoYoLabCharacterScreen(
                 }
             }
             uiState.error != null -> {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "提示",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                             color = MiuixTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = uiState.error ?: "",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "请先在「账号管理」中添加 HoYoLAB / 米游社账号",
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
                 }
             }
             uiState.filteredCharacters.isEmpty() && uiState.allCharacters.isNotEmpty() -> {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "没有匹配的角色",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "尝试调整筛选条件",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -176,11 +183,14 @@ private fun HoYoLabAccountSelector(
     selectedAccount: HoYoAccount?,
     onSelect: (HoYoAccount) -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "选择账号",
-                style = MiuixTheme.textStyles.titleSmall,
+                style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -208,11 +218,14 @@ private fun SortSelector(
     currentSort: SortOption,
     onSortChange: (SortOption) -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
                 text = "排序",
-                style = MiuixTheme.textStyles.titleSmall,
+                style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -250,13 +263,16 @@ private fun FilterChips(
     onElementClick: (String?) -> Unit,
     onRarityClick: (Int?) -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(12.dp)) {
             // Element filters
             if (elements.isNotEmpty()) {
                 Text(
                     text = "元素",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(6.dp))
@@ -281,7 +297,7 @@ private fun FilterChips(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "稀有度",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(6.dp))
@@ -306,8 +322,9 @@ private fun FilterChips(
 
 @Composable
 private fun HoYoLabCharacterCard(character: HoYoLabCharacterDisplay) {
-    MiuixCard(
+    Card(
         modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -330,7 +347,7 @@ private fun HoYoLabCharacterCard(character: HoYoLabCharacterDisplay) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = character.name,
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -357,7 +374,7 @@ private fun HoYoLabCharacterCard(character: HoYoLabCharacterDisplay) {
                             character.weaponLevel?.let { append(" Lv.$it") }
                             character.weaponRefinement?.let { append(" 精$it") }
                         },
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -370,10 +387,13 @@ private fun HoYoLabCharacterCard(character: HoYoLabCharacterDisplay) {
 
 @Composable
 private fun StatChip(text: String) {
-    MiuixCard {
+    Card(
+        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Text(
             text = text,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
         )
     }

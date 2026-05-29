@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.chronie.helperunited.BuildConfig
 import com.chronie.helperunited.worker.WorkScheduler
 import top.yukonga.miuix.kmp.basic.Button
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -55,34 +56,40 @@ fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // App Info
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = "🍕 Helper United",
-                    style = MiuixTheme.textStyles.headlineMedium,
+                    style = MiuixTheme.textStyles.headline2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Kotlin/Android Edition",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "版本 ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
         }
 
         // Check for Updates
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "🔄 检查更新",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -93,7 +100,7 @@ fun SettingsScreen(
                 ) {
                     Text(
                         text = "当前版本: ${BuildConfig.VERSION_NAME}",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                     Button(onClick = {
@@ -114,7 +121,7 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = result,
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.primary,
                         )
                     }
@@ -126,11 +133,14 @@ fun SettingsScreen(
         BackgroundRefreshCard()
 
         // Supported Games
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "支持的游戏",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -143,11 +153,14 @@ fun SettingsScreen(
         }
 
         // Features
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "功能",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -160,11 +173,14 @@ fun SettingsScreen(
         }
 
         // Links
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "相关链接",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -175,17 +191,20 @@ fun SettingsScreen(
         }
 
         // Contributors
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "👥 贡献者",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "感谢所有为本项目做出贡献的开发者！",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -202,17 +221,20 @@ fun SettingsScreen(
         }
 
         // Rate on Google Play
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "⭐ 评价应用",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "如果您觉得本应用有帮助，请在 Google Play 上给我们评分！",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -238,29 +260,32 @@ fun SettingsScreen(
         }
 
         // Open Source Licenses
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "📜 开源许可",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "本项目使用了以下开源库，感谢所有贡献者。",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "本项目基于 AGPL-3.0 许可证开源",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "原始项目: (c) 2024 Pizza Studio",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -287,17 +312,20 @@ fun SettingsScreen(
         }
 
         // Privacy Policy
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "🔒 隐私政策",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "查看本应用的隐私政策和用户协议",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -308,27 +336,30 @@ fun SettingsScreen(
         }
 
         // Credits
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "致谢",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "• Pizza Studio 团队：原始 iOS 应用开发",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "• Enka.Network：角色展柜数据 API",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "• MIUIX：UI 组件库",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -348,11 +379,14 @@ private fun BackgroundRefreshCard() {
     val thresholdOptions = listOf(70, 80, 90)
     val thresholdLabels = listOf("70%", "80%", "90%")
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "🔔 后台刷新设置",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -366,12 +400,12 @@ private fun BackgroundRefreshCard() {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "启用后台刷新",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = "定期检查树脂/开拓力/电量并发送通知",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -390,7 +424,7 @@ private fun BackgroundRefreshCard() {
                 // Refresh interval
                 Text(
                     text = "刷新间隔",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -424,12 +458,12 @@ private fun BackgroundRefreshCard() {
                 // Notification threshold
                 Text(
                     text = "通知阈值",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = "当资源达到最大值的百分比时发送通知",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -465,23 +499,23 @@ private fun BackgroundRefreshCard() {
 @Composable
 private fun GameRow(emoji: String, name: String, subtitle: String, status: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = emoji, style = MiuixTheme.textStyles.headlineSmall)
+        Text(text = emoji, style = MiuixTheme.textStyles.headline3)
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = name,
-                style = MiuixTheme.textStyles.titleSmall,
+                style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = subtitle,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
         Text(
             text = status,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.primary,
         )
     }
@@ -493,17 +527,17 @@ private fun FeatureRow(emoji: String, title: String, description: String) {
         modifier = Modifier.padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = emoji, style = MiuixTheme.textStyles.titleMedium)
+        Text(text = emoji, style = MiuixTheme.textStyles.title2)
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Text(
                 text = title,
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = description,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
@@ -519,13 +553,13 @@ private fun LinkRow(title: String, subtitle: String) {
     ) {
         Text(
             text = title,
-            style = MiuixTheme.textStyles.bodyMedium,
+            style = MiuixTheme.textStyles.body2,
             fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = subtitle,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }

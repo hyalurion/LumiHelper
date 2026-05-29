@@ -32,8 +32,9 @@ import com.chronie.helperunited.model.ZZZDriveDiscSummarized
 import com.chronie.helperunited.model.ZZZElementType
 import com.chronie.helperunited.model.ZZZProfileSummarized
 import com.chronie.helperunited.model.ZZZWEngineSummarized
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -62,23 +63,23 @@ fun ZZZShowcaseScreen(
                 }
             }
             error != null -> {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "提示",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                             color = MiuixTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = error,
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "💡 请在账号管理中添加 ZZZ 账号后重试",
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -105,25 +106,25 @@ fun ZZZShowcaseScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                         Column(
                             modifier = Modifier.padding(24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Text(
                                 text = "🎮",
-                                style = MiuixTheme.textStyles.headlineLarge,
+                                style = MiuixTheme.textStyles.headline1,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
                                 text = "绝区零角色展柜",
-                                style = MiuixTheme.textStyles.titleLarge,
+                                style = MiuixTheme.textStyles.title1,
                                 fontWeight = FontWeight.Bold,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "请先在账号管理中添加 ZZZ 账号",
-                                style = MiuixTheme.textStyles.bodyMedium,
+                                style = MiuixTheme.textStyles.body2,
                                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
@@ -136,7 +137,7 @@ fun ZZZShowcaseScreen(
 
 @Composable
 private fun ZZZProfileHeader(profile: ZZZProfileSummarized) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -154,13 +155,13 @@ private fun ZZZProfileHeader(profile: ZZZProfileSummarized) {
             Column {
                 Text(
                     text = profile.nickname.ifEmpty { "绳匠" },
-                    style = MiuixTheme.textStyles.headlineSmall,
+                    style = MiuixTheme.textStyles.headline3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Lv.${profile.level} · ${profile.agentList.size} 位代理人",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -174,12 +175,12 @@ private fun ZZZAgentCard(agent: ZZZAgentSummarized) {
     val elementColor = when (agent.elementType) {
         ZZZElementType.FIRE -> MiuixTheme.colorScheme.error
         ZZZElementType.ICE -> MiuixTheme.colorScheme.primary
-        ZZZElementType.ELECTRIC -> MiuixTheme.colorScheme.tertiary
+        ZZZElementType.ELECTRIC -> MiuixTheme.colorScheme.onSurfaceContainerVariant
         ZZZElementType.ETHER -> MiuixTheme.colorScheme.secondary
         ZZZElementType.PHYSICAL -> MiuixTheme.colorScheme.onSurface
     }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Agent Header
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -196,13 +197,13 @@ private fun ZZZAgentCard(agent: ZZZAgentSummarized) {
                 Column {
                     Text(
                         text = agent.name,
-                        style = MiuixTheme.textStyles.titleLarge,
+                        style = MiuixTheme.textStyles.title1,
                         fontWeight = FontWeight.Bold,
                     )
                     if (agent.fullName != null && agent.fullName != agent.name) {
                         Text(
                             text = agent.fullName,
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -235,7 +236,7 @@ private fun ZZZAgentCard(agent: ZZZAgentSummarized) {
 
 @Composable
 private fun WEngineSection(wEngine: ZZZWEngineSummarized) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -253,12 +254,12 @@ private fun WEngineSection(wEngine: ZZZWEngineSummarized) {
             Column {
                 Text(
                     text = "🔫 ${wEngine.name}",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = "Lv.${wEngine.level} · 精炼 ${wEngine.enhancementLevel} · ${starText(wEngine.rarity)}",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -272,7 +273,7 @@ private fun DriveDiscSection(driveDiscs: List<ZZZDriveDiscSummarized>) {
     Column {
         Text(
             text = "💿 驱动盘",
-            style = MiuixTheme.textStyles.titleSmall,
+            style = MiuixTheme.textStyles.title3,
             fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -305,13 +306,13 @@ private fun DriveDiscItem(disc: ZZZDriveDiscSummarized) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "+${disc.level}",
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
         )
         Text(
             text = "#${disc.slot}",
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             textAlign = TextAlign.Center,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
@@ -320,10 +321,10 @@ private fun DriveDiscItem(disc: ZZZDriveDiscSummarized) {
 
 @Composable
 private fun StatChip(text: String) {
-    MiuixCard {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Text(
             text = text,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
     }

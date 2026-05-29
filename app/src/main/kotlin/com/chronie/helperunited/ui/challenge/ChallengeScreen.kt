@@ -35,7 +35,8 @@ import com.chronie.helperunited.model.HsrChallengeType
 import com.chronie.helperunited.model.SpiralAbyssResponse
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -72,7 +73,7 @@ fun ChallengeScreen(
         ) {
             Text(
                 text = "挑战记录",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -122,11 +123,11 @@ private fun ChallengeAccountSelector(
     selectedAccount: HoYoAccount?,
     onSelect: (HoYoAccount) -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "选择账号",
-                style = MiuixTheme.textStyles.titleSmall,
+                style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -152,23 +153,23 @@ private fun ChallengeAccountSelector(
 
 @Composable
 private fun ErrorCard(message: String) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "提示",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
                 color = MiuixTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = message,
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "请先在「账号管理」中添加 HoYoLAB / 米游社账号",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
@@ -186,11 +187,11 @@ private fun SpiralAbyssContent(data: SpiralAbyssResponse) {
         // Floor breakdown
         val floors = data.floors.filter { it.isUnlock }
         if (floors.isEmpty()) {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                 Text(
                     text = "暂无深境螺旋数据",
                     modifier = Modifier.padding(16.dp),
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -204,11 +205,11 @@ private fun SpiralAbyssContent(data: SpiralAbyssResponse) {
 
 @Composable
 private fun AbyssSummaryCard(data: SpiralAbyssResponse) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "🌙 深境螺旋",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -228,7 +229,7 @@ private fun AbyssSummaryCard(data: SpiralAbyssResponse) {
             if (data.damageRank.isNotEmpty()) {
                 Text(
                     text = "最高伤害",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -236,7 +237,7 @@ private fun AbyssSummaryCard(data: SpiralAbyssResponse) {
                     text = data.damageRank.firstOrNull()?.let {
                         "角色 #${it.avatarId} - ${formatDamage(it.value)}"
                     } ?: "暂无数据",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -246,7 +247,7 @@ private fun AbyssSummaryCard(data: SpiralAbyssResponse) {
 
 @Composable
 private fun AbyssFloorCard(floor: AbyssFloor) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Floor header with star count
             Row(
@@ -256,7 +257,7 @@ private fun AbyssFloorCard(floor: AbyssFloor) {
             ) {
                 Text(
                     text = "第${floor.index}层",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 StarDisplay(current = floor.star, max = floor.maxStar)
@@ -274,7 +275,7 @@ private fun AbyssFloorCard(floor: AbyssFloor) {
                     ) {
                         Text(
                             text = "  第${level.index}间",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             fontWeight = FontWeight.Medium,
                         )
                         StarDisplay(current = level.star, max = level.maxStar)
@@ -301,7 +302,7 @@ private fun BattleRow(battle: AbyssBattle) {
     ) {
         Text(
             text = "上半" + if (battle.index == 1) "" else "(下)",
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             modifier = Modifier.width(48.dp),
         )
@@ -315,24 +316,24 @@ private fun BattleRow(battle: AbyssBattle) {
 @Composable
 private fun CharacterChip(id: Int, level: Int, rarity: Int) {
     val starText = "★".repeat(rarity.coerceIn(1, 5))
-    MiuixCard(modifier = Modifier.padding(end = 4.dp)) {
+    Card(modifier = Modifier.padding(end = 4.dp), pressFeedbackType = PressFeedbackType.Sink) {
         Column(
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "#$id",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = "Lv.$level",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
             Text(
                 text = starText,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.primary,
             )
         }
@@ -350,11 +351,11 @@ private fun HsrChallengeContent(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         // Challenge type switcher
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "挑战类型",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -379,11 +380,11 @@ private fun HsrChallengeContent(
 
         // Groups/floors
         if (data.groups.isEmpty() && !data.hasData) {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                 Text(
                     text = "暂无${selectedType.displayName}数据",
                     modifier = Modifier.padding(16.dp),
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -407,11 +408,11 @@ private fun HsrChallengeSummaryCard(
         HsrChallengeType.PURE_FICTION -> "📖"
     }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "$icon ${selectedType.displayName}",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -428,7 +429,7 @@ private fun HsrChallengeSummaryCard(
             } else {
                 Text(
                     text = "战斗次数: ${data.totalBattleNum}",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                 )
             }
         }
@@ -437,7 +438,7 @@ private fun HsrChallengeSummaryCard(
 
 @Composable
 private fun HsrChallengeGroupCard(group: com.chronie.helperunited.model.ChallengeGroup) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -446,7 +447,7 @@ private fun HsrChallengeGroupCard(group: com.chronie.helperunited.model.Challeng
             ) {
                 Text(
                     text = "第${group.scheduleId}期",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 StarDisplay(current = group.star, max = group.maxStar)
@@ -472,7 +473,7 @@ private fun HsrFloorRow(floor: ChallengeFloor) {
         ) {
             Text(
                 text = floor.name,
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = FontWeight.Medium,
             )
             StarDisplay(current = floor.star, max = floor.maxStar)
@@ -498,7 +499,7 @@ private fun ChallengeNodeRow(label: String, node: ChallengeNode) {
     ) {
         Text(
             text = label,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             modifier = Modifier.width(36.dp),
         )
@@ -511,24 +512,24 @@ private fun ChallengeNodeRow(label: String, node: ChallengeNode) {
 @Composable
 private fun HsrCharacterChip(avatar: ChallengeAvatar) {
     val starText = "★".repeat(avatar.rarity.coerceIn(1, 5))
-    MiuixCard(modifier = Modifier.padding(end = 4.dp)) {
+    Card(modifier = Modifier.padding(end = 4.dp), pressFeedbackType = PressFeedbackType.Sink) {
         Column(
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = avatar.name ?: "#${avatar.id}",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = "Lv.${avatar.level} E${avatar.rank}",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
             Text(
                 text = starText,
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
                 color = MiuixTheme.colorScheme.primary,
             )
         }
@@ -542,12 +543,12 @@ private fun SummaryItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MiuixTheme.textStyles.titleMedium,
+            style = MiuixTheme.textStyles.title2,
             fontWeight = FontWeight.Bold,
         )
         Text(
             text = label,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }
@@ -559,7 +560,7 @@ private fun StarDisplay(current: Int, max: Int) {
         repeat(max) { index ->
             Text(
                 text = if (index < current) "⭐" else "☆",
-                style = MiuixTheme.textStyles.bodySmall,
+                style = MiuixTheme.textStyles.main,
             )
         }
     }

@@ -32,7 +32,8 @@ import com.chronie.helperunited.model.GachaEntry
 import com.chronie.helperunited.model.GachaProfile
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextField
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -74,11 +75,14 @@ fun GachaScreen(
             .padding(16.dp),
     ) {
         // Input Card
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "抽卡记录",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -160,11 +164,14 @@ fun GachaScreen(
 
         // Profile List
         if (profiles.isNotEmpty()) {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                pressFeedbackType = PressFeedbackType.Sink,
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "已保存的记录",
-                        style = MiuixTheme.textStyles.titleSmall,
+                        style = MiuixTheme.textStyles.title3,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -199,20 +206,23 @@ fun GachaScreen(
                 }
             }
             error != null -> {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    pressFeedbackType = PressFeedbackType.Sink,
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             text = "提示",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                             color = MiuixTheme.colorScheme.primary,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = error, style = MiuixTheme.textStyles.bodyMedium)
+                        Text(text = error, style = MiuixTheme.textStyles.body2)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "💡 您可以导入 UIGF 格式的抽卡记录文件",
-                            style = MiuixTheme.textStyles.bodySmall,
+                            style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -233,11 +243,14 @@ fun GachaScreen(
                     }
                     if (entries.size > 200) {
                         item {
-                            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                pressFeedbackType = PressFeedbackType.Sink,
+                            ) {
                                 Text(
                                     text = "还有 ${entries.size - 200} 条记录未显示...",
                                     modifier = Modifier.padding(16.dp),
-                                    style = MiuixTheme.textStyles.bodySmall,
+                                    style = MiuixTheme.textStyles.main,
                                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                 )
                             }
@@ -288,11 +301,14 @@ private fun GachaStatisticsCard(entries: List<GachaEntry>) {
     val lastFiveIdx = entries.indexOfFirst { it.rankType == 5 }
     val pity = if (lastFiveIdx >= 0) lastFiveIdx else total
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "📊 统计",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -316,7 +332,7 @@ private fun GachaStatisticsCard(entries: List<GachaEntry>) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "⚠️ 距离保底还有 ${90 - pity} 抽",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                 )
@@ -330,12 +346,12 @@ private fun StatItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MiuixTheme.textStyles.headlineSmall,
+            style = MiuixTheme.textStyles.headline3,
             fontWeight = FontWeight.Bold,
         )
         Text(
             text = label,
-            style = MiuixTheme.textStyles.bodySmall,
+            style = MiuixTheme.textStyles.main,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }
@@ -345,11 +361,14 @@ private fun StatItem(label: String, value: String) {
 private fun GachaEntryCard(entry: GachaEntry) {
     val rarityColor = when (entry.rankType) {
         5 -> MiuixTheme.colorScheme.primary
-        4 -> MiuixTheme.colorScheme.tertiary
+        4 -> MiuixTheme.colorScheme.onSurfaceContainerVariant
         else -> MiuixTheme.colorScheme.onSurface
     }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -357,14 +376,14 @@ private fun GachaEntryCard(entry: GachaEntry) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = entry.name ?: "未知",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                     color = rarityColor,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "${entry.itemType ?: ""} · ${entry.time}",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -374,7 +393,7 @@ private fun GachaEntryCard(entry: GachaEntry) {
                     4 -> "★★★★"
                     else -> "★★★"
                 },
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 color = rarityColor,
                 fontWeight = FontWeight.Bold,
             )

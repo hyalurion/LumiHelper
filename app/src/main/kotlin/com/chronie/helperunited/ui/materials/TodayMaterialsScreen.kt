@@ -18,7 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -47,30 +48,33 @@ fun TodayMaterialsScreen(
         ) {
             Text(
                 text = "📅 今日素材",
-                style = MiuixTheme.textStyles.headlineSmall,
+                style = MiuixTheme.textStyles.headline3,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
             Text(
                 text = if (uiState.isSunday) "周日：全部开放" else dayName(uiState.dayOfWeek),
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 color = MiuixTheme.colorScheme.primary,
             )
         }
 
         if (uiState.isSunday) {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                pressFeedbackType = PressFeedbackType.Sink,
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "🎉 周日所有素材副本全部开放！",
-                        style = MiuixTheme.textStyles.titleMedium,
+                        style = MiuixTheme.textStyles.title2,
                         fontWeight = FontWeight.Bold,
                         color = MiuixTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "今天可以刷取任何天赋突破素材和武器突破素材",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -90,27 +94,30 @@ fun TodayMaterialsScreen(
         }
 
         // Tips
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "💡 刷素材小贴士",
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "• 天赋素材和武器素材在周一/周四、周二/周五、周三/周六轮换",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "• 周日所有副本素材均可掉落",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "• 使用「参量质变仪」可以额外获得素材",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -122,25 +129,28 @@ fun TodayMaterialsScreen(
 private fun SectionHeader(title: String) {
     Text(
         text = title,
-        style = MiuixTheme.textStyles.titleMedium,
+        style = MiuixTheme.textStyles.title2,
         fontWeight = FontWeight.Bold,
     )
 }
 
 @Composable
 private fun MaterialDomainCard(domain: MaterialDomain) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = domain.name,
-                    style = MiuixTheme.textStyles.titleSmall,
+                    style = MiuixTheme.textStyles.title3,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = domain.region,
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -148,7 +158,7 @@ private fun MaterialDomainCard(domain: MaterialDomain) {
             domain.materials.forEach { material ->
                 Text(
                     text = "• $material",
-                    style = MiuixTheme.textStyles.bodyMedium,
+                    style = MiuixTheme.textStyles.body2,
                     modifier = Modifier.padding(vertical = 2.dp),
                 )
             }

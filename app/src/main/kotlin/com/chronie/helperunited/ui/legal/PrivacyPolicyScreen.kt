@@ -20,7 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.Button
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -47,24 +48,30 @@ fun PrivacyPolicyScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // Header
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = "🔒 隐私政策",
-                    style = MiuixTheme.textStyles.headlineMedium,
+                    style = MiuixTheme.textStyles.headline2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "最后更新：2024 年 12 月",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
         }
 
         // Privacy Policy Content
-        MiuixCard(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            pressFeedbackType = PressFeedbackType.Sink,
+        ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 PrivacySection(
                     title = "1. 信息收集",
@@ -146,16 +153,19 @@ fun PrivacyPolicyScreen(
             ) {
                 Text(
                     text = "我已阅读并同意隐私政策",
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
             }
         } else {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                pressFeedbackType = PressFeedbackType.Sink,
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "✅ 您已于之前同意本隐私政策",
-                        style = MiuixTheme.textStyles.bodyMedium,
+                        style = MiuixTheme.textStyles.body2,
                         color = MiuixTheme.colorScheme.primary,
                     )
                 }
@@ -170,13 +180,13 @@ fun PrivacyPolicyScreen(
 private fun PrivacySection(title: String, content: String) {
     Text(
         text = title,
-        style = MiuixTheme.textStyles.titleSmall,
+        style = MiuixTheme.textStyles.title3,
         fontWeight = FontWeight.Bold,
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = content,
-        style = MiuixTheme.textStyles.bodySmall,
+        style = MiuixTheme.textStyles.main,
         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
     )
 }

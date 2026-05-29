@@ -27,7 +27,7 @@ import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.HoYoAccount
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.MiuixCard
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextField
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -57,7 +57,7 @@ fun AccountScreen(
             ) {
                 Text(
                     text = "账号管理",
-                    style = MiuixTheme.textStyles.headlineSmall,
+                    style = MiuixTheme.textStyles.headline3,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
                 )
@@ -82,20 +82,20 @@ fun AccountScreen(
         // Account List
         if (uiState.accounts.isEmpty() && !uiState.showAddDialog) {
             item {
-                MiuixCard(modifier = Modifier.fillMaxWidth()) {
+                Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                     Column(
                         modifier = Modifier.padding(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
                             text = "还没有账号",
-                            style = MiuixTheme.textStyles.titleMedium,
+                            style = MiuixTheme.textStyles.title2,
                             fontWeight = FontWeight.Bold,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "点击「添加账号」来添加你的 HoYoLAB 或米游社账号",
-                            style = MiuixTheme.textStyles.bodyMedium,
+                            style = MiuixTheme.textStyles.body2,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
@@ -112,27 +112,27 @@ fun AccountScreen(
 
         // Tips
         item {
-            MiuixCard(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "💡 提示",
-                        style = MiuixTheme.textStyles.titleSmall,
+                        style = MiuixTheme.textStyles.title3,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "• UID 前缀 1-5 为国服（米游社），6-9 为国际服（HoYoLAB）",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                     Text(
                         text = "• Cookie 用于访问 HoYoLAB/米游社 API 获取每日便笺等数据",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                     Text(
                         text = "• 所有数据仅存储在本地，不会上传到任何服务器",
-                        style = MiuixTheme.textStyles.bodySmall,
+                        style = MiuixTheme.textStyles.main,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
                 }
@@ -146,7 +146,7 @@ private fun AccountCard(
     account: HoYoAccount,
     onDelete: () -> Unit,
 ) {
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -159,7 +159,7 @@ private fun AccountCard(
                     SupportedGame.ZENLESS_ZONE -> "🎮"
                     else -> "🎮"
                 },
-                style = MiuixTheme.textStyles.headlineMedium,
+                style = MiuixTheme.textStyles.headline2,
             )
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -167,12 +167,12 @@ private fun AccountCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = account.name,
-                    style = MiuixTheme.textStyles.titleMedium,
+                    style = MiuixTheme.textStyles.title2,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = "UID: ${account.uid} · ${if (account.region.isGlobal) "国际服" else "国服"}",
-                    style = MiuixTheme.textStyles.bodySmall,
+                    style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
@@ -197,11 +197,11 @@ private fun AddAccountCard(
     var selectedGame by remember { mutableStateOf(SupportedGame.GENSHIN_IMPACT) }
     var isGlobal by remember { mutableStateOf(true) }
 
-    MiuixCard(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "添加账号",
-                style = MiuixTheme.textStyles.titleMedium,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -209,7 +209,7 @@ private fun AddAccountCard(
             // Game selection
             Text(
                 text = "游戏",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -231,7 +231,7 @@ private fun AddAccountCard(
             // Region
             Text(
                 text = "服务器",
-                style = MiuixTheme.textStyles.bodyMedium,
+                style = MiuixTheme.textStyles.body2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(4.dp))

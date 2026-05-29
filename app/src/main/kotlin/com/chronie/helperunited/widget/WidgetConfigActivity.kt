@@ -204,7 +204,7 @@ private fun WidgetConfigScreen(
             // Game selection
             Text(
                 text = "选择游戏",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -239,7 +239,7 @@ private fun WidgetConfigScreen(
             // Account selection
             Text(
                 text = "选择账号",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -257,13 +257,13 @@ private fun WidgetConfigScreen(
                     ) {
                         Text(
                             text = "没有找到该游戏的账号",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.body2,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "请先在「账号管理」中添加账号",
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.main,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -294,17 +294,17 @@ private fun WidgetConfigScreen(
                             ) {
                                 Text(
                                     text = account.name.ifEmpty { "UID: ${account.uid}" },
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = MaterialTheme.typography.body1,
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
                                     text = "UID: ${account.displayUid}",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    style = MaterialTheme.typography.main,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                                 Text(
                                     text = if (account.region.isGlobal) "国际服" else "国服",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    style = MaterialTheme.typography.main,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }

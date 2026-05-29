@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.TimeZone
 import javax.inject.Inject
 
 /**
@@ -33,8 +34,29 @@ class TodayMaterialsViewModel @Inject constructor(
     private fun loadMaterials() {
         viewModelScope.launch {
             val context = getApplication<Application>()
-            val dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-            val todayIndex = when (dayOfWeek) {
+
+            // Use server timezone (UTC+8) and account for 4:00 AM daily reset.
+            // In HoYoverse games, a new day starts at 4:00 AM (UTC+8), not midnight.
+            // Monday materials are available from Mon 4:00 to Tue 3:59, etc.
+            val serverTimeZone = TimeZone.getTimeZone("Asia/Shanghai")
+            val serverCalendar = Calendar.getInstance(serverTimeZone)
+
+            val fourAmToday = Calendar.getInstance(serverTimeZone).apply {
+                set(Calendar.HOUR_OF_DAY, 4)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val isAfter4am = serverCalendar.timeInMillis >= fourAmToday.timeInMillis
+
+            val adjustedDayOfWeek = if (isAfter4am) {
+                serverCalendar.get(Calendar.DAY_OF_WEEK)
+            } else {
+                serverCalendar.apply { add(Calendar.DAY_OF_YEAR, -1) }
+                    .get(Calendar.DAY_OF_WEEK)
+            }
+
+            val todayIndex = when (adjustedDayOfWeek) {
                 Calendar.MONDAY, Calendar.THURSDAY -> 0
                 Calendar.TUESDAY, Calendar.FRIDAY -> 1
                 Calendar.WEDNESDAY, Calendar.SATURDAY -> 2
@@ -42,11 +64,10 @@ class TodayMaterialsViewModel @Inject constructor(
                 else -> 0
             }
 
-            // Load character-material mappings
             val mappings = MaterialCharacterMapper.loadMappings(context)
 
             _uiState.value = TodayMaterialsUiState(
-                dayOfWeek = dayOfWeek,
+                dayOfWeek = adjustedDayOfWeek,
                 todayIndex = todayIndex,
                 isSunday = todayIndex == -1,
                 characterMappings = mappings,

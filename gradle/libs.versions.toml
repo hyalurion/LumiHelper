@@ -1,6 +1,6 @@
 [versions]
 agp = "9.2.1"
-kotlin = "2.3.21"
+kotlin = "2.0.21"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -23,7 +23,7 @@ composeMaterial3 = "1.5.0-alpha20"
 activityCompose = "1.13.0"
 lifecycle = "2.10.0"
 navigation = "2.9.8"
-ksp = "2.3.9"
+ksp = "2.0.21-1.0.27"
 glance = "1.1.1"
 
 [libraries]

@@ -6,8 +6,11 @@ import com.chronie.helperunited.base.SupportedGame
 import com.chronie.helperunited.model.ChallengeResponse
 import com.chronie.helperunited.model.HoYoAccount
 import com.chronie.helperunited.model.HsrChallengeType
+import com.chronie.helperunited.model.LedgerData4GI
+import com.chronie.helperunited.model.LedgerData4HSR
 import com.chronie.helperunited.model.SpiralAbyssResponse
 import com.chronie.helperunited.network.HoYoApiFactory
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -94,6 +97,62 @@ class ChallengeRepository @Inject constructor(
             uid = account.uid,
             server = server,
             scheduleType = challengeType.scheduleType,
+        )
+        if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)
+        response.data ?: throw HoYoApiException(-1, "Empty data")
+    }
+
+    // ========== Ledger (Monthly Income) ==========
+
+    suspend fun fetchLedgerGI(account: HoYoAccount): Result<LedgerData4GI> = runCatching {
+        val month = Calendar.getInstance().get(Calendar.MONTH) + 1
+        try {
+            fetchLedgerGI(account, month)
+        } catch (e: Exception) {
+            when {
+                e is HoYoApiException && e.code == -2 -> {
+                    val prevMonth = if (month == 1) 12 else month - 1
+                    fetchLedgerGI(account, prevMonth)
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    private suspend fun fetchLedgerGI(account: HoYoAccount, month: Int): LedgerData4GI {
+        val api = apiFactory.createLedgerApi(account.region, account.cookie)
+        val server = uidToServer(account.region, account.uid)
+        val monthStr = month.toString()
+        val response = when (account.region.type) {
+            RegionType.MIYOUSHE -> api.getLedgerGI_Miyoushe(
+                lang = "zh-cn",
+                server = server,
+                uid = account.uid,
+                month = monthStr,
+            )
+            RegionType.HOYOLAB -> api.getLedgerGI_HoyoLab(
+                server = server,
+                uid = account.uid,
+                month = monthStr,
+            )
+        }
+        if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)
+        response.data ?: throw HoYoApiException(-1, "Empty data")
+    }
+
+    suspend fun fetchLedgerHSR(account: HoYoAccount): Result<LedgerData4HSR> = runCatching {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR).toString()
+        var month = (calendar.get(Calendar.MONTH) + 1).toString()
+        if (month.length == 1) month = "0$month"
+        val monthStr = year + month
+
+        val api = apiFactory.createLedgerApi(account.region, account.cookie)
+        val server = uidToServer(account.region, account.uid)
+        val response = api.getLedgerHSR(
+            server = server,
+            uid = account.uid,
+            month = monthStr,
         )
         if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)
         response.data ?: throw HoYoApiException(-1, "Empty data")

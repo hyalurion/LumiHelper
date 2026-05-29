@@ -132,4 +132,23 @@ class HoYoApiFactory(
 
         return retrofit.create(EnkaNetworkApi::class.java)
     }
+
+    fun createLedgerApi(
+        region: AccountRegion,
+        cookie: String,
+        deviceId: String = "",
+    ): HoYoLedgerApi {
+        val host = HoYoApiConfig.ledgerApiHost(region)
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://$host/")
+            .client(
+                baseClient.newBuilder()
+                    .addInterceptor(HoYoAuthInterceptor(cookie, region, deviceId))
+                    .build()
+            )
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+
+        return retrofit.create(HoYoLedgerApi::class.java)
+    }
 }

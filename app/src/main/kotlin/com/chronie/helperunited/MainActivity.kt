@@ -215,6 +215,9 @@ fun HelperUnitedApp() {
                             SubScreen.PrivacyPolicy -> {
                                 PrivacyPolicyScreen()
                             }
+                            SubScreen.Ledger -> {
+                                subScreen = null
+                            }
                         }
                     }
                     else -> {
@@ -237,10 +240,10 @@ fun HelperUnitedApp() {
                                 AppTab.Showcase -> {
                                     val vm: EnkaShowcaseViewModel = hiltViewModel()
                                     EnkaShowcaseScreen(
-                                        profile = vm.uiState.value.profile,
-                                        isLoading = vm.uiState.value.isLoading,
-                                        error = vm.uiState.value.error,
-                                        onQuery = { vm.queryShowcase(it) },
+                                        onNavigateToCharacters = { subScreen = SubScreen.Characters },
+                                        onNavigateToChallenge = { subScreen = SubScreen.Challenge },
+                                        onNavigateToLedger = { subScreen = SubScreen.Ledger },
+                                        viewModel = vm,
                                     )
                                 }
                                 AppTab.Utils -> {
@@ -595,4 +598,5 @@ enum class SubScreen(val title: String) {
     GachaAnalytics("抽卡分析"),
     EventCalendar("活动日历"),
     PrivacyPolicy("隐私政策"),
+    Ledger("月度账本"),
 }

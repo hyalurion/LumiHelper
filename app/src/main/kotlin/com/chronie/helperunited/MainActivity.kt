@@ -35,7 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
@@ -62,8 +62,7 @@ import com.chronie.helperunited.ui.gacha.analytics.GachaAnalyticsScreen
 import com.chronie.helperunited.ui.gacha.analytics.GachaAnalyticsViewModel
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterScreen
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterViewModel
-import com.chronie.helperunited.ui.account.AccountScreen
-import com.chronie.helperunited.ui.account.AccountViewModel
+import com.chronie.helperunited.ui.account.AccountNavigation
 import com.chronie.helperunited.ui.settings.SettingsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsViewModel
@@ -165,8 +164,7 @@ fun HelperUnitedApp() {
                     currentSubScreen != null -> {
                         when (currentSubScreen) {
                             SubScreen.Account -> {
-                                val vm: AccountViewModel = hiltViewModel()
-                                AccountScreen(viewModel = vm)
+                                AccountNavigation()
                             }
                             SubScreen.Characters -> {
                                 val vm: HoYoLabCharacterViewModel = hiltViewModel()

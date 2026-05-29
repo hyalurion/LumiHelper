@@ -45,6 +45,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
+    // ZXing
+    implementation(libs.zxing.core)
+
     // Jetpack Compose
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)

@@ -40,11 +40,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.FloatingNavigationBar
+import top.yukonga.miuix.kmp.basic.FloatingNavigationBarItem
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
+import top.yukonga.miuix.kmp.icon.MiuixIcons
+import top.yukonga.miuix.kmp.icon.extended.Alarm
+import top.yukonga.miuix.kmp.icon.extended.Contacts
+import top.yukonga.miuix.kmp.icon.extended.FolderFill
+import top.yukonga.miuix.kmp.icon.extended.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.chronie.helperunited.ui.daily.DailyNoteScreen
 import com.chronie.helperunited.ui.daily.DailyNoteViewModel
 import com.chronie.helperunited.ui.enka.EnkaShowcaseScreen
@@ -83,12 +91,12 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Main app composable with bottom navigation.
- * Tabs: Home, Daily Note, Enka, Gacha, More (Materials, Account, Settings).
+ * Main app composable with floating bottom navigation.
+ * Tabs: Today (daily note), Showcase (character builds), Utils, AppSettings.
  */
 @Composable
 fun HelperUnitedApp() {
-    var currentTab by remember { mutableStateOf<AppTab>(AppTab.Home) }
+    var currentTab by remember { mutableStateOf<AppTab>(AppTab.Today) }
     var subScreen by remember { mutableStateOf<SubScreen?>(null) }
 
     Scaffold(
@@ -161,9 +169,26 @@ fun HelperUnitedApp() {
                                 val vm: AccountViewModel = hiltViewModel()
                                 AccountScreen(viewModel = vm)
                             }
-                            SubScreen.Settings -> {
-                                SettingsScreen(
-                                    onNavigateToPrivacy = { subScreen = SubScreen.PrivacyPolicy },
+                            SubScreen.Characters -> {
+                                val vm: HoYoLabCharacterViewModel = hiltViewModel()
+                                HoYoLabCharacterScreen(viewModel = vm)
+                            }
+                            SubScreen.Gacha -> {
+                                val vm: GachaViewModel = hiltViewModel()
+                                val state by vm.uiState.collectAsState()
+                                GachaScreen(
+                                    profiles = state.profiles,
+                                    entries = state.entries,
+                                    isLoading = state.isLoading,
+                                    error = state.error,
+                                    selectedProfile = state.selectedProfile,
+                                    onProfileSelect = { vm.selectProfile(it) },
+                                    onFetch = { uid, game -> vm.fetchGachaRecords(uid, game) },
+                                    onImport = { vm.importUIGF(it) },
+                                    onExport = { _, _ -> },
+                                    onNavigateToAnalytics = {
+                                        subScreen = SubScreen.GachaAnalytics
+                                    },
                                 )
                             }
                             SubScreen.Materials -> {
@@ -206,20 +231,11 @@ fun HelperUnitedApp() {
                             label = "TabContent",
                         ) { tab ->
                             when (tab) {
-                                AppTab.Home -> {
-                                    HomeScreen(
-                                        onNavigate = { subScreen = it },
-                                    )
-                                }
-                                AppTab.DailyNote -> {
+                                AppTab.Today -> {
                                     val vm: DailyNoteViewModel = hiltViewModel()
                                     DailyNoteScreen(viewModel = vm)
                                 }
-                                AppTab.Characters -> {
-                                    val vm: HoYoLabCharacterViewModel = hiltViewModel()
-                                    HoYoLabCharacterScreen(viewModel = vm)
-                                }
-                                AppTab.Enka -> {
+                                AppTab.Showcase -> {
                                     val vm: EnkaShowcaseViewModel = hiltViewModel()
                                     EnkaShowcaseScreen(
                                         profile = vm.uiState.value.profile,
@@ -228,22 +244,14 @@ fun HelperUnitedApp() {
                                         onQuery = { vm.queryShowcase(it) },
                                     )
                                 }
-                                AppTab.Gacha -> {
-                                    val vm: GachaViewModel = hiltViewModel()
-                                    val state by vm.uiState.collectAsState()
-                                    GachaScreen(
-                                        profiles = state.profiles,
-                                        entries = state.entries,
-                                        isLoading = state.isLoading,
-                                        error = state.error,
-                                        selectedProfile = state.selectedProfile,
-                                        onProfileSelect = { vm.selectProfile(it) },
-                                        onFetch = { uid, game -> vm.fetchGachaRecords(uid, game) },
-                                        onImport = { vm.importUIGF(it) },
-                                        onExport = { _, _ -> },
-                                        onNavigateToAnalytics = {
-                                            subScreen = SubScreen.GachaAnalytics
-                                        },
+                                AppTab.Utils -> {
+                                    HomeScreen(
+                                        onNavigate = { subScreen = it },
+                                    )
+                                }
+                                AppTab.Settings -> {
+                                    SettingsScreen(
+                                        onNavigateToPrivacy = { subScreen = SubScreen.PrivacyPolicy },
                                     )
                                 }
                             }
@@ -318,10 +326,17 @@ private fun HomeScreen(
         )
 
         QuickActionCard(
-            icon = "⚙️",
-            title = "设置",
-            subtitle = "关于、版本、链接",
-            onClick = { onNavigate(SubScreen.Settings) },
+            icon = "👥",
+            title = "角色列表",
+            subtitle = "查看 HoYoLAB 角色信息、天赋、命之座",
+            onClick = { onNavigate(SubScreen.Characters) },
+        )
+
+        QuickActionCard(
+            icon = "🎰",
+            title = "抽卡记录",
+            subtitle = "导入 UIGF 格式抽卡记录、查看统计",
+            onClick = { onNavigate(SubScreen.Gacha) },
         )
 
         QuickActionCard(
@@ -538,57 +553,43 @@ private fun SignInCard(
 }
 
 /**
- * Bottom navigation bar.
+ * Floating bottom navigation bar with MIUIX style.
  */
 @Composable
 private fun BottomNavBar(
     currentTab: AppTab,
     onTabSelected: (AppTab) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+    FloatingNavigationBar(
+        cornerRadius = 28.dp,
+        color = MiuixTheme.colorScheme.surfaceContainer,
     ) {
         AppTab.entries.forEach { tab ->
-            val isSelected = tab == currentTab
-            Button(
+            FloatingNavigationBarItem(
+                selected = tab == currentTab,
                 onClick = { onTabSelected(tab) },
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = tab.icon,
-                        style = MiuixTheme.textStyles.title2,
-                    )
-                    Text(
-                        text = tab.shortTitle,
-                        style = MiuixTheme.textStyles.main,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                        color = if (isSelected) MiuixTheme.colorScheme.primary
-                        else MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                }
-            }
+                icon = tab.icon,
+                label = tab.shortTitle,
+            )
         }
     }
 }
 
 enum class AppTab(
-    val icon: String,
+    val icon: ImageVector,
     val title: String,
     val shortTitle: String,
 ) {
-    Home("🏠", "Helper United", "首页"),
-    DailyNote("⚡", "实时便笺", "便笺"),
-    Characters("👥", "角色列表", "角色"),
-    Enka("🎭", "角色展柜", "展柜"),
-    Gacha("🎰", "抽卡记录", "抽卡"),
+    Today(MiuixIcons.Alarm, "实时便笺", "便笺"),
+    Showcase(MiuixIcons.Contacts, "角色展柜", "展柜"),
+    Utils(MiuixIcons.FolderFill, "工具", "工具"),
+    Settings(MiuixIcons.Settings, "设置", "设置"),
 }
 
 enum class SubScreen(val title: String) {
     Account("账号管理"),
-    Settings("设置"),
+    Characters("角色列表"),
+    Gacha("抽卡记录"),
     Materials("今日素材"),
     Challenge("挑战记录"),
     ZZZShowcase("绝区零展柜"),

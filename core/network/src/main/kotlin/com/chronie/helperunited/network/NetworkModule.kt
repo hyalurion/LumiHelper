@@ -79,6 +79,11 @@ object NetworkModule {
         moshi: Moshi,
         baseClient: OkHttpClient,
     ): HoYoApiFactory = HoYoApiFactory(moshi, baseClient)
+
+    @Provides
+    @Singleton
+    fun provideEnkaNetworkApi(factory: HoYoApiFactory): EnkaNetworkApi =
+        factory.createEnkaNetworkApi()
 }
 
 /**

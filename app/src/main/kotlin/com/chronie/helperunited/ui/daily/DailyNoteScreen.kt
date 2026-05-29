@@ -74,7 +74,7 @@ fun DailyNoteScreen(
         ) {
             Text(
                 text = "实时便笺",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -325,6 +325,7 @@ private fun ZZZDailyNoteCard(note: DailyNoteZZZ) {
             title = "活力",
             current = note.vitality.current,
             max = note.vitality.max,
+            subtitle = if (note.vitality.current >= note.vitality.max) "已满！" else "恢复中...",
         )
 
         // Bounty Commission
@@ -554,7 +555,7 @@ private fun TransformerCard(transformer: TransformerGI?) {
                         )
                     }
                     transformer.recoveryTime != null -> {
-                        val rt = transformer.recoveryTime
+                        val rt = transformer.recoveryTime!!
                         val totalSeconds = rt.day * 86400L + rt.hour * 3600L + rt.minute * 60L + rt.second
                         var remaining by remember(transformer) { mutableLongStateOf(totalSeconds) }
 
@@ -630,7 +631,7 @@ private fun ProgressCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = "$current/$max",
-                        style = MiuixTheme.textStyles.headline3,
+                        style = MiuixTheme.textStyles.headline2,
                         fontWeight = FontWeight.Bold,
                         color = if (isFull) MiuixTheme.colorScheme.primary
                         else MiuixTheme.colorScheme.onSurface,

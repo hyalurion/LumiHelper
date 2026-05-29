@@ -75,7 +75,7 @@ fun EventCalendarScreen(
         ) {
             Text(
                 text = "🎮 活动日历",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )

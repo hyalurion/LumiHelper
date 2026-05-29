@@ -346,7 +346,7 @@ private fun StatItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MiuixTheme.textStyles.headline3,
+            style = MiuixTheme.textStyles.headline2,
             fontWeight = FontWeight.Bold,
         )
         Text(

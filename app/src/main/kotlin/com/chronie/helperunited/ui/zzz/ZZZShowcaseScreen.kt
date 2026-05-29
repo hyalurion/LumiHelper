@@ -155,7 +155,7 @@ private fun ZZZProfileHeader(profile: ZZZProfileSummarized) {
             Column {
                 Text(
                     text = profile.nickname.ifEmpty { "绳匠" },
-                    style = MiuixTheme.textStyles.headline3,
+                    style = MiuixTheme.textStyles.headline2,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -202,7 +202,7 @@ private fun ZZZAgentCard(agent: ZZZAgentSummarized) {
                     )
                     if (agent.fullName != null && agent.fullName != agent.name) {
                         Text(
-                            text = agent.fullName,
+                            text = agent.fullName!!,
                             style = MiuixTheme.textStyles.main,
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )

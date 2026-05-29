@@ -57,7 +57,7 @@ fun AccountScreen(
             ) {
                 Text(
                     text = "账号管理",
-                    style = MiuixTheme.textStyles.headline3,
+                    style = MiuixTheme.textStyles.headline2,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
                 )

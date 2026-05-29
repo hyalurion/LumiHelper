@@ -73,7 +73,7 @@ fun ChallengeScreen(
         ) {
             Text(
                 text = "挑战记录",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
@@ -209,7 +209,7 @@ private fun AbyssSummaryCard(data: SpiralAbyssResponse) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "🌙 深境螺旋",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -412,7 +412,7 @@ private fun HsrChallengeSummaryCard(
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "$icon ${selectedType.displayName}",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))

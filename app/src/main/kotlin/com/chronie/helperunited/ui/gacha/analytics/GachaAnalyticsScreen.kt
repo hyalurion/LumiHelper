@@ -274,7 +274,7 @@ private fun PityCard(pity: PityTracker) {
                 )
                 Text(
                     text = "${pity.currentPity} / ${pity.hardPity}",
-                    style = MiuixTheme.textStyles.headline3,
+                    style = MiuixTheme.textStyles.headline2,
                     fontWeight = FontWeight.Bold,
                     color = progressColor,
                 )

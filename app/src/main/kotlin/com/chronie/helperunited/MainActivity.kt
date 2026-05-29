@@ -378,7 +378,10 @@ private fun QuickActionCard(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -398,7 +401,7 @@ private fun QuickActionCard(
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
-            Text(text = "›", style = MiuixTheme.textStyles.headline3)
+            Text(text = "›", style = MiuixTheme.textStyles.headline2)
         }
     }
 }
@@ -503,7 +506,7 @@ private fun SignInCard(
                         Spacer(modifier = Modifier.weight(1f))
                         if (status.error != null) {
                             Text(
-                                text = status.error,
+                                text = status.error!!,
                                 style = MiuixTheme.textStyles.main,
                                 color = MiuixTheme.colorScheme.error,
                             )

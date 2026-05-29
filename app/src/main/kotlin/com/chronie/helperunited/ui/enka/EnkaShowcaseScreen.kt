@@ -177,7 +177,7 @@ private fun ProfileHeader(profile: EnkaProfileSummarized) {
                 Column {
                     Text(
                         text = profile.nickname,
-                        style = MiuixTheme.textStyles.headline3,
+                        style = MiuixTheme.textStyles.headline2,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(modifier = Modifier.height(4.dp))

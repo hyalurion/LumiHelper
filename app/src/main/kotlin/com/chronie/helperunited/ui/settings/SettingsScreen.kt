@@ -499,7 +499,7 @@ private fun BackgroundRefreshCard() {
 @Composable
 private fun GameRow(emoji: String, name: String, subtitle: String, status: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = emoji, style = MiuixTheme.textStyles.headline3)
+        Text(text = emoji, style = MiuixTheme.textStyles.headline2)
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(

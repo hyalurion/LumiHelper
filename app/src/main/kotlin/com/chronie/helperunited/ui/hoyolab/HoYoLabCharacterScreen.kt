@@ -90,7 +90,7 @@ fun HoYoLabCharacterScreen(
         ) {
             Text(
                 text = "角色列表 (${uiState.filteredCharacters.size})",
-                style = MiuixTheme.textStyles.headline3,
+                style = MiuixTheme.textStyles.headline2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )

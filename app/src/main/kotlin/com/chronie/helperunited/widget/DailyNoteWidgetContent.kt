@@ -9,7 +9,6 @@ import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.components.Scaffold
-import androidx.glance.appwidget.components.Title
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
@@ -103,8 +102,12 @@ private fun SmallContent(
     GlanceTheme {
         Scaffold(
             titleBar = {
-                Title(
-                    title = getResourceLabel(game),
+                Text(
+                    text = getResourceLabel(game),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                    ),
                 )
             },
         ) {
@@ -186,7 +189,13 @@ private fun MediumContent(
     GlanceTheme {
         Scaffold(
             titleBar = {
-                Title(title = getResourceLabel(game))
+                Text(
+                    text = getResourceLabel(game),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                    ),
+                )
             },
         ) {
             Column(
@@ -201,7 +210,7 @@ private fun MediumContent(
                         style = TextStyle(
                             fontSize = 12.sp,
                             color = GlanceTheme.colors.error,
-                        ),
+                        )
                     )
                     return@Column
                 }
@@ -382,7 +391,13 @@ private fun LargeContent(
     GlanceTheme {
         Scaffold(
             titleBar = {
-                Title(title = getResourceLabel(game))
+                Text(
+                    text = getResourceLabel(game),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                    ),
+                )
             },
         ) {
             Column(

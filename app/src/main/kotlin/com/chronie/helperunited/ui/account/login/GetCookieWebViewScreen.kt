@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,12 +27,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
-import top.yukonga.miuix.kmp.basic.ProgressIndicator
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
+import top.yukonga.miuix.kmp.icon.MiuixIcons
+import top.yukonga.miuix.kmp.icon.extended.Back
+import top.yukonga.miuix.kmp.icon.extended.Refresh
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import com.chronie.helperunited.base.RegionType
 import com.chronie.helperunited.base.SupportedGame
@@ -77,22 +77,20 @@ fun GetCookieWebViewScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(text = pageTitle.ifBlank { titleText })
-                },
+                title = pageTitle.ifBlank { titleText },
                 navigationIcon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "返回",
-                        modifier = Modifier,
-                    )
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = MiuixIcons.Back,
+                            contentDescription = "返回",
+                        )
+                    }
                 },
                 actions = {
                     IconButton(onClick = { isLoading = true }) {
                         Icon(
-                            imageVector = Icons.Filled.Refresh,
+                            imageVector = MiuixIcons.Refresh,
                             contentDescription = "刷新",
-                            modifier = Modifier,
                         )
                     }
                     Button(
@@ -109,12 +107,10 @@ fun GetCookieWebViewScreen(
                             }
                         },
                         colors = ButtonDefaults.buttonColorsPrimary(),
-                        modifier = Modifier,
                     ) {
                         Text("完成")
                     }
                 },
-                onNavigationClick = onBack,
             )
         },
         bottomBar = {
@@ -191,7 +187,7 @@ fun GetCookieWebViewScreen(
                 visible = isLoading,
                 modifier = Modifier.align(Alignment.Center),
             ) {
-                ProgressIndicator()
+                CircularProgressIndicator()
             }
 
             if (regionType == RegionType.HOYOLAB) {
@@ -217,8 +213,8 @@ fun GetCookieWebViewScreen(
                             )
                             Text(
                                 text = "登录成功后点击下方按钮获取 Cookie",
-                                style = MiuixTheme.textStyles.caption,
-                                color = MiuixTheme.colorScheme.textSecondary,
+                                style = MiuixTheme.textStyles.body2,
+                                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                 textAlign = TextAlign.Center,
                             )
                         }

@@ -25,6 +25,7 @@ data class AccountRegion(
 
     val isGlobal: Boolean get() = type == RegionType.HOYOLAB
     val isCN: Boolean get() = type == RegionType.MIYOUSHE
+    val displayName: String get() = type.displayName
 
     companion object {
         fun fromRawValue(rawValue: String): AccountRegion? = when (rawValue.lowercase()) {
@@ -58,9 +59,9 @@ data class AccountRegion(
     }
 }
 
-enum class RegionType {
-    HOYOLAB,
-    MIYOUSHE,
+enum class RegionType(val displayName: String) {
+    HOYOLAB("HoYoLAB"),
+    MIYOUSHE("米游社"),
 }
 
 object AccountRegionAdapterFactory : JsonAdapter.Factory {

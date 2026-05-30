@@ -16,9 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,12 +40,14 @@ import com.google.zxing.qrcode.QRCodeWriter
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Icon
-import top.yukonga.miuix.kmp.basic.LazyColumn
-import top.yukonga.miuix.kmp.basic.ProgressIndicator
+import top.yukonga.miuix.kmp.basic.IconButton
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
+import top.yukonga.miuix.kmp.icon.MiuixIcons
+import top.yukonga.miuix.kmp.icon.extended.Back
 import top.yukonga.miuix.kmp.overlay.OverlayDialog
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import java.io.File
@@ -72,19 +73,17 @@ fun QrCodeLoginScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text("扫码登录")
-                },
+                title = "扫码登录",
                 navigationIcon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "返回",
-                        modifier = Modifier,
-                    )
-                },
-                onNavigationClick = {
-                    viewModel.reset()
-                    onBack()
+                    IconButton(onClick = {
+                        viewModel.reset()
+                        onBack()
+                    }) {
+                        Icon(
+                            imageVector = MiuixIcons.Back,
+                            contentDescription = "返回",
+                        )
+                    }
                 },
             )
         },
@@ -113,11 +112,9 @@ fun QrCodeLoginScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.Error,
-                                contentDescription = null,
-                                tint = MiuixTheme.colorScheme.error,
-                                modifier = Modifier.size(20.dp),
+                            Text(
+                                text = "\u26A0\uFE0F",
+                                style = MiuixTheme.textStyles.headline2,
                             )
                             Text(
                                 text = uiState.error!!,
@@ -146,7 +143,7 @@ fun QrCodeLoginScreen(
                                     modifier = Modifier.size(220.dp),
                                     contentAlignment = Alignment.Center,
                                 ) {
-                                    ProgressIndicator(
+                                    CircularProgressIndicator(
                                         modifier = Modifier.size(48.dp),
                                     )
                                 }
@@ -161,16 +158,14 @@ fun QrCodeLoginScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.spacedBy(8.dp),
                                     ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Error,
-                                            contentDescription = null,
-                                            tint = MiuixTheme.colorScheme.textSecondary,
-                                            modifier = Modifier.size(48.dp),
+                                        Text(
+                                            text = "\u26A0\uFE0F",
+                                            style = MiuixTheme.textStyles.headline1,
                                         )
                                         Text(
                                             text = "二维码生成失败",
                                             style = MiuixTheme.textStyles.body2,
-                                            color = MiuixTheme.colorScheme.textSecondary,
+                                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                         )
                                     }
                                 }
@@ -198,15 +193,15 @@ fun QrCodeLoginScreen(
 
                                     Text(
                                         text = "点击二维码分享",
-                                        style = MiuixTheme.textStyles.caption,
-                                        color = MiuixTheme.colorScheme.textSecondary,
+                                        style = MiuixTheme.textStyles.body2,
+                                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                     )
                                 } else {
                                     Box(
                                         modifier = Modifier.size(220.dp),
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        ProgressIndicator(modifier = Modifier.size(48.dp))
+                                        CircularProgressIndicator(modifier = Modifier.size(48.dp))
                                     }
                                 }
 
@@ -218,7 +213,7 @@ fun QrCodeLoginScreen(
                                         else -> ""
                                     },
                                     style = MiuixTheme.textStyles.body1,
-                                    color = MiuixTheme.colorScheme.textSecondary,
+                                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                     textAlign = TextAlign.Center,
                                 )
                             }
@@ -281,8 +276,8 @@ fun QrCodeLoginScreen(
             item {
                 Text(
                     text = "请使用米游社App扫描二维码登录。\n扫描成功后，请在手机上点击确认登录。\n确认后本页面将自动获取您的游戏账号信息。",
-                    style = MiuixTheme.textStyles.caption,
-                    color = MiuixTheme.colorScheme.textSecondary,
+                    style = MiuixTheme.textStyles.body2,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -378,7 +373,7 @@ private fun FetchedAccountCard(account: FetchedAccount) {
             Text(
                 text = "UID: ${account.gameUid} | Lv.${account.level}",
                 style = MiuixTheme.textStyles.body2,
-                color = MiuixTheme.colorScheme.textSecondary,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
     }

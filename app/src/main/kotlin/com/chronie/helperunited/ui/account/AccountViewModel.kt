@@ -307,8 +307,9 @@ class AccountViewModel @Inject constructor(
                 val bodyString = response.body?.string() ?: continue
                 val adapter = moshi.adapter(UserGameRolesResponse::class.java)
                 val result = adapter.fromJson(bodyString) ?: continue
-                if (result.retCode == 0 && result.data != null) {
-                    allAccounts.addAll(result.data.list)
+                val rolesData = result.data
+                if (result.retCode == 0 && rolesData != null) {
+                    allAccounts.addAll(rolesData.list)
                 }
             } catch (_: Exception) {
                 // skip failed game biz
@@ -370,11 +371,12 @@ class AccountViewModel @Inject constructor(
             val adapter = moshi.adapter(UserGameRolesResponse::class.java)
             val result = adapter.fromJson(bodyString)
                 ?: throw Exception("Failed to parse response")
-            if (result.retCode != 0 || result.data == null) {
+            val rolesData = result.data
+            if (result.retCode != 0 || rolesData == null) {
                 throw Exception(result.message)
             }
 
-            val accounts = result.data.list
+            val accounts = rolesData.list
             _uiState.value = _uiState.value.copy(
                 fetchedAccounts = accounts,
                 isFetchingAccounts = false,

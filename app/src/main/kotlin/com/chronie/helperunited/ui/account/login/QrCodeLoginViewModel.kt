@@ -97,7 +97,7 @@ class QrCodeLoginViewModel @Inject constructor(
                     )
                     return@launch
                 }
-                val data = response.data
+                val data = response.data!!
                 _uiState.value = _uiState.value.copy(
                     qrCodeUrl = data.url,
                     ticket = data.ticket,
@@ -134,7 +134,7 @@ class QrCodeLoginViewModel @Inject constructor(
                                 status = QrCodeStatus.Confirmed,
                                 stoken = data.tokens?.firstOrNull()?.token,
                             )
-                            cancel()
+                            pollingJob?.cancel()
                             onQRCodeConfirmed(data)
                             return@launch
                         }
@@ -143,7 +143,7 @@ class QrCodeLoginViewModel @Inject constructor(
                                 status = QrCodeStatus.Error,
                                 error = "二维码已过期，请重新生成",
                             )
-                            cancel()
+                            pollingJob?.cancel()
                             return@launch
                         }
                         else -> { /* Created - still waiting */ }
@@ -251,8 +251,9 @@ class QrCodeLoginViewModel @Inject constructor(
                     com.chronie.helperunited.network.UserGameRolesResponse::class.java
                 )
                 val result = adapter.fromJson(bodyString) ?: continue
-                if (result.retCode == 0 && result.data != null) {
-                    allAccounts.addAll(result.data.list)
+                val rolesData = result.data
+                if (result.retCode == 0 && rolesData != null) {
+                    allAccounts.addAll(rolesData.list)
                 }
             } catch (_: Exception) {
                 // skip failed game

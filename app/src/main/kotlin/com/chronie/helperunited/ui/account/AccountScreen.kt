@@ -43,9 +43,9 @@ import com.chronie.helperunited.network.FetchedAccount
 import kotlinx.coroutines.launch
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
-import top.yukonga.miuix.kmp.basic.ProgressIndicator
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SnackbarHost
 import top.yukonga.miuix.kmp.basic.SnackbarHostState
@@ -83,7 +83,7 @@ fun AccountScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("账号管理") })
+            TopAppBar(title = "账号管理")
         },
         snackbarHost = { SnackbarHost(state = snackbarHostState) },
     ) { padding ->
@@ -196,7 +196,7 @@ private fun EmptyAccountView(onCreateClick: () -> Unit) {
             imageVector = MiuixIcons.Forward,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MiuixTheme.colorScheme.textSecondary,
+            tint = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -208,7 +208,7 @@ private fun EmptyAccountView(onCreateClick: () -> Unit) {
         Text(
             text = "点击下方按钮添加你的 HoYoLAB 或米游社账号",
             style = MiuixTheme.textStyles.body2,
-            color = MiuixTheme.colorScheme.textSecondary,
+            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -245,7 +245,7 @@ private fun AccountListContent(
                 text = "账号列表",
                 style = MiuixTheme.textStyles.title3,
                 fontWeight = FontWeight.Bold,
-                color = MiuixTheme.colorScheme.textSecondary,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
 
@@ -293,7 +293,7 @@ private fun CreateAccountCard(onClick: () -> Unit, enabled: Boolean) {
                 imageVector = MiuixIcons.Forward,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
-                tint = MiuixTheme.colorScheme.textSecondary,
+                tint = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
     }
@@ -332,12 +332,12 @@ private fun AccountRow(
                 Text(
                     text = account.displayUid,
                     style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.textSecondary,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Text(
                     text = "${account.game.displayName} · ${account.region.displayName}",
-                    style = MiuixTheme.textStyles.caption,
-                    color = MiuixTheme.colorScheme.textSecondary,
+                    style = MiuixTheme.textStyles.body2,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
 
@@ -346,7 +346,7 @@ private fun AccountRow(
                     imageVector = MiuixIcons.Edit,
                     contentDescription = "编辑",
                     modifier = Modifier.size(20.dp),
-                    tint = MiuixTheme.colorScheme.textSecondary,
+                    tint = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
             IconButton(onClick = onDelete, enabled = enabled) {
@@ -395,7 +395,7 @@ private fun BusyOverlay() {
                 .background(MiuixTheme.colorScheme.surface.copy(alpha = 0.9f)),
             contentAlignment = Alignment.Center,
         ) {
-            ProgressIndicator(modifier = Modifier.size(48.dp))
+            CircularProgressIndicator(modifier = Modifier.size(48.dp))
         }
     }
 }
@@ -530,8 +530,8 @@ private fun PendingStepContent(
             )
             Text(
                 text = "登录后将自动获取该账号下所有游戏的UID",
-                style = MiuixTheme.textStyles.caption,
-                color = MiuixTheme.colorScheme.textSecondary,
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
@@ -568,7 +568,7 @@ private fun PendingStepContent(
             )
             Text(
                 text = "使用非官方API获取游戏数据存在一定风险，请自行评估后再使用。开发者不对账号安全承担任何责任。",
-                style = MiuixTheme.textStyles.caption,
+                style = MiuixTheme.textStyles.body2,
                 color = MiuixTheme.colorScheme.error,
             )
             Text(
@@ -578,8 +578,8 @@ private fun PendingStepContent(
             )
             Text(
                 text = "你的登录凭据（Cookie / SToken）将仅存储在本设备中，不会上传至任何服务器。",
-                style = MiuixTheme.textStyles.caption,
-                color = MiuixTheme.colorScheme.textSecondary,
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
             Text(
                 text = "安全提醒",
@@ -588,8 +588,8 @@ private fun PendingStepContent(
             )
             Text(
                 text = "请勿将你的登录凭据分享给任何人。账号凭据若被泄露，可能导致账号安全问题。",
-                style = MiuixTheme.textStyles.caption,
-                color = MiuixTheme.colorScheme.textSecondary,
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
             )
         }
     }
@@ -613,13 +613,13 @@ private fun GotCookieStepContent(isFetching: Boolean) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        ProgressIndicator(modifier = Modifier.size(56.dp))
+        CircularProgressIndicator(modifier = Modifier.size(56.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = if (isFetching) "正在获取游戏账号列表..."
             else "正在等待登录完成...",
             style = MiuixTheme.textStyles.body1,
-            color = MiuixTheme.colorScheme.textSecondary,
+            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
     }
 }
@@ -669,10 +669,10 @@ private fun GotProfileStepContent(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = account.gameBizPrefix,
-                                style = MiuixTheme.textStyles.caption,
+                                text = gameBizPrefix(account.gameBiz),
+                                style = MiuixTheme.textStyles.body2,
                                 color = if (isSelected) MiuixTheme.colorScheme.onPrimary
-                                else MiuixTheme.colorScheme.textSecondary,
+                                else MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -684,8 +684,8 @@ private fun GotProfileStepContent(
                             )
                             Text(
                                 text = "UID: ${account.gameUid} · Lv.${account.level}",
-                                style = MiuixTheme.textStyles.caption,
-                                color = MiuixTheme.colorScheme.textSecondary,
+                                style = MiuixTheme.textStyles.body2,
+                                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
                     }
@@ -790,7 +790,7 @@ private fun EditProfileSheet(
                     Text(
                         text = "${account.game.displayName} · ${account.region.displayName}",
                         style = MiuixTheme.textStyles.body2,
-                        color = MiuixTheme.colorScheme.textSecondary,
+                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                     )
 
                     Text(
@@ -871,4 +871,11 @@ private fun DeleteConfirmContent(
             }
         }
     }
+}
+
+private fun gameBizPrefix(gameBiz: String): String = when {
+    gameBiz.contains("hk4e") -> "原"
+    gameBiz.contains("hkrpg") -> "铁"
+    gameBiz.contains("nap") -> "绝"
+    else -> "?"
 }

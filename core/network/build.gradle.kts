@@ -23,10 +23,10 @@ dependencies {
     api(project(":core:model"))
 
     // Retrofit & OkHttp
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.moshi)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
+    api(libs.retrofit)
+    api(libs.retrofit.converter.moshi)
+    api(libs.okhttp)
+    api(libs.okhttp.logging.interceptor)
 
     // Moshi
     implementation(libs.moshi)

@@ -206,8 +206,11 @@ private fun DetailRow(label: String, value: String) {
 
 @Composable
 private fun DetailDivider() {
-    androidx.compose.material3.HorizontalDivider(
-        color = MiuixTheme.colorScheme.surfaceVariant,
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(MiuixTheme.colorScheme.surfaceVariant),
     )
 }
 

@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +58,6 @@ import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.LinearProgressIndicator
 import top.yukonga.miuix.kmp.basic.PullToRefresh
 import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
@@ -99,19 +97,12 @@ fun TodayScreen(
         dailyUiState.isLoading || eventsUiState.isLoading
     }
 
-    val pullToRefreshState = rememberPullToRefreshState()
-
-    LaunchedEffect(isRefreshing) {
-        pullToRefreshState.isRefreshing = isRefreshing
-    }
-
     PullToRefresh(
         isRefreshing = isRefreshing,
         onRefresh = {
             dailyNoteVM.refresh()
             eventsVM.refresh()
         },
-        pullToRefreshState = pullToRefreshState,
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(

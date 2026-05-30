@@ -19,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +39,6 @@ import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.PullToRefresh
 import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
@@ -49,20 +47,10 @@ fun LedgerScreen(
     viewModel: LedgerViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val pullToRefreshState = rememberPullToRefreshState()
-
-    LaunchedEffect(uiState.isLoading) {
-        if (uiState.isLoading) {
-            pullToRefreshState.isRefreshing = true
-        } else {
-            pullToRefreshState.isRefreshing = false
-        }
-    }
 
     PullToRefresh(
         isRefreshing = uiState.isLoading,
         onRefresh = { viewModel.refresh() },
-        pullToRefreshState = pullToRefreshState,
         modifier = Modifier.fillMaxSize(),
     ) {
         if (uiState.accounts.isEmpty()) {

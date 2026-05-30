@@ -19,15 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +40,13 @@ import com.chronie.helperunited.model.HoYoAccount
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import top.yukonga.miuix.kmp.basic.Button
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.Scaffold
+import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.TopAppBar
+import top.yukonga.miuix.kmp.theme.MiuixTheme
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
 /**
  * Configuration activity for widget setup.
@@ -80,7 +78,7 @@ class WidgetConfigActivity : ComponentActivity() {
         }
 
         setContent {
-            MaterialTheme {
+            MiuixTheme {
                 WidgetConfigScreen(
                     accountRepository = accountRepository,
                     appWidgetId = appWidgetId,
@@ -157,7 +155,6 @@ class WidgetConfigActivity : ComponentActivity() {
 
 // ========== Config Screen Composable ==========
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WidgetConfigScreen(
     accountRepository: AccountRepository,
@@ -191,7 +188,7 @@ private fun WidgetConfigScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("配置小组件") },
+                title = "配置小组件",
             )
         },
     ) { paddingValues ->
@@ -204,7 +201,7 @@ private fun WidgetConfigScreen(
             // Game selection
             Text(
                 text = "选择游戏",
-                style = MaterialTheme.typography.titleLarge,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -215,7 +212,7 @@ private fun WidgetConfigScreen(
             ) {
                 SupportedGame.entries.forEach { game ->
                     val isSelected = game == selectedGame
-                    OutlinedButton(
+                    Button(
                         onClick = { selectedGame = game },
                         modifier = Modifier.weight(1f),
                     ) {
@@ -227,8 +224,8 @@ private fun WidgetConfigScreen(
                                 else -> game.displayName
                             },
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isSelected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurface,
+                            color = if (isSelected) MiuixTheme.colorScheme.primary
+                            else MiuixTheme.colorScheme.onSurface,
                         )
                     }
                 }
@@ -239,7 +236,7 @@ private fun WidgetConfigScreen(
             // Account selection
             Text(
                 text = "选择账号",
-                style = MaterialTheme.typography.titleLarge,
+                style = MiuixTheme.textStyles.title2,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -247,9 +244,7 @@ private fun WidgetConfigScreen(
             if (filteredAccounts.isEmpty()) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    ),
+                    pressFeedbackType = PressFeedbackType.Sink,
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -257,14 +252,14 @@ private fun WidgetConfigScreen(
                     ) {
                         Text(
                             text = "没有找到该游戏的账号",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MiuixTheme.textStyles.main,
+                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "请先在「账号管理」中添加账号",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MiuixTheme.textStyles.main,
+                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                     }
                 }
@@ -279,33 +274,25 @@ private fun WidgetConfigScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { selectedAccount = account },
-                            colors = CardDefaults.cardColors(
-                                containerColor = if (isSelected)
-                                    MaterialTheme.colorScheme.primaryContainer
-                                else
-                                    MaterialTheme.colorScheme.surface,
-                            ),
-                            border = if (isSelected)
-                                CardDefaults.outlinedCardBorder()
-                            else null,
+                            pressFeedbackType = PressFeedbackType.Sink,
                         ) {
                             Column(
                                 modifier = Modifier.padding(12.dp),
                             ) {
                                 Text(
                                     text = account.name.ifEmpty { "UID: ${account.uid}" },
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = MiuixTheme.textStyles.main,
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
                                     text = "UID: ${account.displayUid}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MiuixTheme.textStyles.main,
+                                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                 )
                                 Text(
                                     text = if (account.region.isGlobal) "国际服" else "国服",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MiuixTheme.textStyles.main,
+                                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                                 )
                             }
                         }
@@ -320,7 +307,7 @@ private fun WidgetConfigScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                OutlinedButton(
+                Button(
                     onClick = onCancel,
                     modifier = Modifier.weight(1f),
                 ) {

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.chronie.helperunited"
+    namespace = "com.hyalurion.lumi.helper"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.chronie.helperunited"
+        applicationId = "com.hyalurion.lumi.helper"
         minSdk = 35
         targetSdk = 37
         versionCode = 1

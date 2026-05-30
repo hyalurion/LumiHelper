@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.chronie.helperunited.data"
+    namespace = "com.hyalurion.lumi.helper.data"
     compileSdk = 37
 
     defaultConfig {

@@ -1,6 +1,6 @@
 <resources>
     <!-- App -->
-    <string name="app_name">Helper United</string>
+    <string name="app_name">LumiHelper</string>
     <string name="widget_description">Show Resin/Trailblaze Power/Battery in real-time</string>
 
     <!-- Bottom Nav Tabs -->

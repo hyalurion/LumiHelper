@@ -1,4 +1,4 @@
-package com.chronie.helperunited
+package com.hyalurion.lumi.helper
 
 import org.junit.Test
 

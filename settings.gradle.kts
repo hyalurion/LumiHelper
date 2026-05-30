@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "HelperUnited"
+rootProject.name = "LumiHelper"
 include(":app")
 include(":core:base")
 include(":core:model")

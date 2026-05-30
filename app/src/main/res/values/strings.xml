@@ -1,6 +1,6 @@
 <resources>
     <!-- App -->
-    <string name="app_name">HelperUnited</string>
+    <string name="app_name">LumiHelper</string>
     <string name="widget_description">实时显示树脂/开拓力/电量</string>
     <string name="widget_small_description">小组件 - 紧凑视图：仅显示资源数值和进度</string>
     <string name="widget_medium_description">小组件 - 标准视图：资源 + 委托 + 派遣概览</string>

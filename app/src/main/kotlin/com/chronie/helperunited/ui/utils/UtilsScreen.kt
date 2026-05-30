@@ -365,7 +365,7 @@ private fun SectionHeader(text: String) {
 private fun SettingsDivider() {
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp),
-        color = MiuixTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+        color = MiuixTheme.colorScheme.surfaceVariant,
     )
 }
 

@@ -22,10 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +56,10 @@ import com.chronie.helperunited.ui.materials.TodayMaterialsViewModel
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
+import top.yukonga.miuix.kmp.basic.LinearProgressIndicator
+import top.yukonga.miuix.kmp.basic.PullToRefresh
 import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
@@ -80,7 +81,6 @@ private enum class TodayGameFilter(val label: String, val shortLabel: String) {
  *
  * Ported from PizzaHelperUnited's TodayTabPage.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodayScreen(
     onNavigateToMaterials: () -> Unit,
@@ -99,12 +99,19 @@ fun TodayScreen(
         dailyUiState.isLoading || eventsUiState.isLoading
     }
 
-    PullToRefreshBox(
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    LaunchedEffect(isRefreshing) {
+        pullToRefreshState.isRefreshing = isRefreshing
+    }
+
+    PullToRefresh(
         isRefreshing = isRefreshing,
         onRefresh = {
             dailyNoteVM.refresh()
             eventsVM.refresh()
         },
+        pullToRefreshState = pullToRefreshState,
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(
@@ -924,7 +931,7 @@ private fun ProgressCard(
             Spacer(modifier = Modifier.height(8.dp))
             val progress = if (max > 0) current.toFloat() / max else 0f
             LinearProgressIndicator(
-                progress = { progress.coerceIn(0f, 1f) },
+                progress = progress.coerceIn(0f, 1f),
                 modifier = Modifier.fillMaxWidth(),
             )
             Row(

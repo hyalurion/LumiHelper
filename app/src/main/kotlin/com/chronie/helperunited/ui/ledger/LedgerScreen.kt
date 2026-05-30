@@ -16,11 +16,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,29 +38,40 @@ import com.chronie.helperunited.model.LedgerData4HSR
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
+import top.yukonga.miuix.kmp.basic.PullToRefresh
 import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LedgerScreen(
     viewModel: LedgerViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val pullToRefreshState = rememberPullToRefreshState()
 
-    PullToRefreshBox(
+    LaunchedEffect(uiState.isLoading) {
+        if (uiState.isLoading) {
+            pullToRefreshState.isRefreshing = true
+        } else {
+            pullToRefreshState.isRefreshing = false
+        }
+    }
+
+    PullToRefresh(
         isRefreshing = uiState.isLoading,
         onRefresh = { viewModel.refresh() },
+        pullToRefreshState = pullToRefreshState,
         modifier = Modifier.fillMaxSize(),
     ) {
         if (uiState.accounts.isEmpty()) {
             NoAccountHint()
-            return@PullToRefreshBox
+            return@PullToRefresh
         }
 
         if (uiState.selectedAccount == null) {
-            return@PullToRefreshBox
+            return@PullToRefresh
         }
 
         Column(
@@ -497,9 +512,12 @@ private fun SectionLabel(text: String) {
 
 @Composable
 private fun SettingsDivider() {
-    androidx.compose.material3.HorizontalDivider(
-        modifier = Modifier.padding(vertical = 4.dp),
-        color = MiuixTheme.colorScheme.surfaceVariant,
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .height(1.dp)
+            .background(MiuixTheme.colorScheme.surfaceVariant),
     )
 }
 

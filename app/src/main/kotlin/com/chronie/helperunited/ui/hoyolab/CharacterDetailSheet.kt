@@ -224,3 +224,21 @@ private fun StatChip(text: String) {
         )
     }
 }
+
+private fun elementToEmoji(element: String): String = when (element.lowercase()) {
+    "pyro", "火" -> "🔥"
+    "hydro", "水" -> "💧"
+    "anemo", "风" -> "🍃"
+    "electro", "雷" -> "⚡"
+    "dendro", "草" -> "🌿"
+    "cryo", "冰" -> "❄️"
+    "geo", "岩" -> "🪨"
+    "physical" -> "⚔️"
+    "fire" -> "🔥"
+    "ice" -> "❄️"
+    "wind" -> "🍃"
+    "thunder" -> "⚡"
+    "quantum" -> "🔮"
+    "imaginary" -> "✨"
+    else -> "🌀"
+}

@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +46,7 @@ import com.chronie.helperunited.model.HoYoAccount
 import com.chronie.helperunited.model.LedgerData4GI
 import com.chronie.helperunited.model.LedgerData4HSR
 import com.chronie.helperunited.model.SpiralAbyssResponse
+import com.chronie.helperunited.ui.enka.rating.ArtifactRatingEngine
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
@@ -425,19 +427,46 @@ private fun AvatarCard(avatar: EnkaAvatarSummarized) {
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     avatar.artifacts.forEach { artifact ->
+                        val rating = remember(artifact.id, artifact.level) {
+                            ArtifactRatingEngine.calculateRating(
+                                mainStat = artifact.mainStat,
+                                subStats = artifact.subStats,
+                                level = artifact.level,
+                                rarity = artifact.rarity,
+                            )
+                        }
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.width(56.dp),
                         ) {
-                            AsyncImage(
-                                model = artifact.icon,
-                                contentDescription = artifact.name,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(MiuixTheme.colorScheme.surfaceVariant),
-                                contentScale = ContentScale.Crop,
-                            )
+                            Box {
+                                AsyncImage(
+                                    model = artifact.icon,
+                                    contentDescription = artifact.name,
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(MiuixTheme.colorScheme.surfaceVariant),
+                                    contentScale = ContentScale.Crop,
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .background(
+                                            color = Color(rating.gradeColor).copy(alpha = 0.9f),
+                                            shape = RoundedCornerShape(4.dp),
+                                        )
+                                        .padding(horizontal = 3.dp, vertical = 1.dp),
+                                ) {
+                                    Text(
+                                        text = rating.grade,
+                                        style = MiuixTheme.textStyles.main,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                }
+                            }
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "+${artifact.level}",

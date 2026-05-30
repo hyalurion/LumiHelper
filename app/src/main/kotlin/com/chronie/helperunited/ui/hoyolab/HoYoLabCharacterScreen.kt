@@ -1,6 +1,7 @@
 package com.chronie.helperunited.ui.hoyolab
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -163,13 +167,25 @@ fun HoYoLabCharacterScreen(
                 }
             }
             else -> {
+                var selectedCharacter by remember { mutableStateOf<HoYoLabCharacterDisplay?>(null) }
+
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(uiState.filteredCharacters, key = { it.id }) { character ->
-                        HoYoLabCharacterCard(character)
+                        HoYoLabCharacterCard(
+                            character = character,
+                            onClick = { selectedCharacter = character },
+                        )
                     }
+                }
+
+                selectedCharacter?.let { character ->
+                    CharacterDetailSheet(
+                        character = character,
+                        onDismiss = { selectedCharacter = null },
+                    )
                 }
             }
         }
@@ -321,9 +337,14 @@ private fun FilterChips(
 }
 
 @Composable
-private fun HoYoLabCharacterCard(character: HoYoLabCharacterDisplay) {
+private fun HoYoLabCharacterCard(
+    character: HoYoLabCharacterDisplay,
+    onClick: () -> Unit,
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         pressFeedbackType = PressFeedbackType.Sink,
     ) {
         Row(

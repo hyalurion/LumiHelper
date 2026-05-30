@@ -64,6 +64,7 @@ import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterScreen
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterViewModel
 import com.chronie.helperunited.ui.account.AccountNavigation
 import com.chronie.helperunited.ui.settings.SettingsScreen
+import com.chronie.helperunited.ui.ledger.LedgerScreen
 import com.chronie.helperunited.ui.utils.UtilsScreen
 import com.chronie.helperunited.ui.utils.UtilsSubPage
 import com.chronie.helperunited.ui.materials.TodayMaterialsScreen
@@ -217,8 +218,8 @@ fun HelperUnitedApp() {
                                 PrivacyPolicyScreen()
                             }
                             SubScreen.Ledger -> {
-                                subScreen = null
-                            }
+                                    LedgerScreen()
+                                }
                         }
                     }
                     else -> {

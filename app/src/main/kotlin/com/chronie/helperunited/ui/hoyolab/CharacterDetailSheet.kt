@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,19 +24,19 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.chronie.helperunited.model.HoYoLabCharacterDisplay
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.LazyColumn
 import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.WindowBottomSheet
-import top.yukonga.miuix.kmp.icons.MiuixIcons
+import top.yukonga.miuix.kmp.overlay.OverlayBottomSheet
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
 @Composable
 fun CharacterDetailSheet(
+    show: Boolean,
     character: HoYoLabCharacterDisplay,
     onDismiss: () -> Unit,
 ) {
-    WindowBottomSheet(
+    OverlayBottomSheet(
+        show = show,
         title = character.name,
         onDismissRequest = onDismiss,
     ) {

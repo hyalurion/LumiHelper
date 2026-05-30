@@ -35,7 +35,6 @@ import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.icons.MiuixIcons
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
@@ -115,7 +114,7 @@ private fun AccountSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         accounts.forEach { account ->
-            val isSelected = account.id == selected.id
+            val isSelected = account.uuid == selected.uuid
             Card(
                 modifier = Modifier.clickable { onSelect(account) },
                 pressFeedbackType = PressFeedbackType.Sink,
@@ -133,7 +132,7 @@ private fun AccountSelector(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = account.nickname,
+                        text = account.name,
                         style = MiuixTheme.textStyles.main,
                         color = if (isSelected) MiuixTheme.colorScheme.primary
                         else MiuixTheme.colorScheme.onSurfaceVariantSummary,

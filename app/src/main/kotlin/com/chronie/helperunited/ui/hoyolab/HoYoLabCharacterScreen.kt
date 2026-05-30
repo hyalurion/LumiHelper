@@ -183,6 +183,7 @@ fun HoYoLabCharacterScreen(
 
                 selectedCharacter?.let { character ->
                     CharacterDetailSheet(
+                        show = true,
                         character = character,
                         onDismiss = { selectedCharacter = null },
                     )

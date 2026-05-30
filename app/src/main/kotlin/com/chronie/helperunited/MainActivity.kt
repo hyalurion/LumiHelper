@@ -64,10 +64,11 @@ import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterScreen
 import com.chronie.helperunited.ui.hoyolab.HoYoLabCharacterViewModel
 import com.chronie.helperunited.ui.account.AccountNavigation
 import com.chronie.helperunited.ui.settings.SettingsScreen
+import com.chronie.helperunited.ui.utils.UtilsScreen
+import com.chronie.helperunited.ui.utils.UtilsSubPage
 import com.chronie.helperunited.ui.materials.TodayMaterialsScreen
 import com.chronie.helperunited.ui.materials.TodayMaterialsViewModel
 import com.chronie.helperunited.ui.legal.PrivacyPolicyScreen
-import com.chronie.helperunited.ui.sign.SignViewModel
 import com.chronie.helperunited.ui.challenge.ChallengeScreen
 import com.chronie.helperunited.ui.challenge.ChallengeViewModel
 import com.chronie.helperunited.ui.event.EventCalendarScreen
@@ -247,307 +248,30 @@ fun HelperUnitedApp() {
                                     )
                                 }
                                 AppTab.Utils -> {
-                                    HomeScreen(
-                                        onNavigate = { subScreen = it },
+                                    UtilsScreen(
+                                        onNavigate = { utilsPage ->
+                                            subScreen = when (utilsPage) {
+                                                UtilsSubPage.Account -> SubScreen.Account
+                                                UtilsSubPage.Characters -> SubScreen.Characters
+                                                UtilsSubPage.Gacha -> SubScreen.Gacha
+                                                UtilsSubPage.Materials -> SubScreen.Materials
+                                                UtilsSubPage.Challenge -> SubScreen.Challenge
+                                                UtilsSubPage.ZZZShowcase -> SubScreen.ZZZShowcase
+                                                UtilsSubPage.GachaAnalytics -> SubScreen.GachaAnalytics
+                                                UtilsSubPage.EventCalendar -> SubScreen.EventCalendar
+                                            }
+                                        },
                                     )
                                 }
                                 AppTab.Settings -> {
                                     SettingsScreen(
+                                        onNavigateToAccount = { subScreen = SubScreen.Account },
                                         onNavigateToPrivacy = { subScreen = SubScreen.PrivacyPolicy },
                                     )
                                 }
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-}
-
-/**
- * Home screen - feature overview and quick access.
- */
-@Composable
-private fun HomeScreen(
-    onNavigate: (SubScreen) -> Unit,
-) {
-    val signVm: SignViewModel = hiltViewModel()
-    val signState by signVm.uiState.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        // Welcome
-        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = "🍕 Helper United",
-                    style = MiuixTheme.textStyles.headline1,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Kotlin/Android Edition · 原神 · 星穹铁道 · 绝区零",
-                    style = MiuixTheme.textStyles.body2,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-            }
-        }
-
-        // HoYoLAB Auto Sign-in Card
-        SignInCard(
-            signState = signState,
-            onSignInAll = { signVm.signInAll() },
-            onRefresh = { signVm.loadSignStatus() },
-        )
-
-        // Quick Actions
-        Text(
-            text = "快捷功能",
-            style = MiuixTheme.textStyles.title1,
-            fontWeight = FontWeight.Bold,
-        )
-
-        QuickActionCard(
-            icon = "📅",
-            title = "今日素材",
-            subtitle = "查看今天可以刷哪些天赋/武器素材",
-            onClick = { onNavigate(SubScreen.Materials) },
-        )
-
-        QuickActionCard(
-            icon = "👤",
-            title = "账号管理",
-            subtitle = "添加和管理 HoYoLAB / 米游社账号",
-            onClick = { onNavigate(SubScreen.Account) },
-        )
-
-        QuickActionCard(
-            icon = "👥",
-            title = "角色列表",
-            subtitle = "查看 HoYoLAB 角色信息、天赋、命之座",
-            onClick = { onNavigate(SubScreen.Characters) },
-        )
-
-        QuickActionCard(
-            icon = "🎰",
-            title = "抽卡记录",
-            subtitle = "导入 UIGF 格式抽卡记录、查看统计",
-            onClick = { onNavigate(SubScreen.Gacha) },
-        )
-
-        QuickActionCard(
-            icon = "🎮",
-            title = "绝区零展柜",
-            subtitle = "查看 ZZZ 角色、W-Engine、驱动盘",
-            onClick = { onNavigate(SubScreen.ZZZShowcase) },
-        )
-
-        QuickActionCard(
-            icon = "📊",
-            title = "抽卡分析",
-            subtitle = "查看抽卡记录图表、保底统计、稀有度分布",
-            onClick = { onNavigate(SubScreen.GachaAnalytics) },
-        )
-
-        QuickActionCard(
-            icon = "🌙",
-            title = "挑战记录",
-            subtitle = "深境螺旋 · 混沌回忆 · 虚构叙事",
-            onClick = { onNavigate(SubScreen.Challenge) },
-        )
-
-        QuickActionCard(
-            icon = "📅",
-            title = "活动日历",
-            subtitle = "查看当前和即将开始的游戏活动、版本倒计时",
-            onClick = { onNavigate(SubScreen.EventCalendar) },
-        )
-
-        // Supported Games
-        Text(
-            text = "支持的游戏",
-            style = MiuixTheme.textStyles.title1,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                GameItem("⚡", "原神", "Genshin Impact", "每日便笺 · 角色展柜 · 抽卡记录")
-                Spacer(modifier = Modifier.height(12.dp))
-                GameItem("🚂", "崩坏：星穹铁道", "Honkai: Star Rail", "每日便笺 · 角色展柜 · 抽卡记录")
-                Spacer(modifier = Modifier.height(12.dp))
-                GameItem("🎮", "绝区零", "Zenless Zone Zero", "每日便笺 · 角色展柜 · 抽卡记录")
-            }
-        }
-    }
-}
-
-@Composable
-private fun QuickActionCard(
-    icon: String,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        pressFeedbackType = PressFeedbackType.Sink,
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = icon, style = MiuixTheme.textStyles.headline2)
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = subtitle,
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-            }
-            Text(text = "›", style = MiuixTheme.textStyles.headline2)
-        }
-    }
-}
-
-@Composable
-private fun GameItem(emoji: String, name: String, subtitle: String, features: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = emoji, style = MiuixTheme.textStyles.headline2)
-        Spacer(modifier = Modifier.width(12.dp))
-        Column {
-            Text(
-                text = name,
-                style = MiuixTheme.textStyles.title2,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = subtitle,
-                style = MiuixTheme.textStyles.main,
-                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-            )
-            Text(
-                text = features,
-                style = MiuixTheme.textStyles.main,
-                color = MiuixTheme.colorScheme.primary,
-            )
-        }
-    }
-}
-
-/**
- * HoYoLAB Auto Sign-in card for the Home screen.
- */
-@Composable
-private fun SignInCard(
-    signState: com.chronie.helperunited.ui.sign.SignUiState,
-    onSignInAll: () -> Unit,
-    onRefresh: () -> Unit,
-) {
-    Card(modifier = Modifier.fillMaxWidth(), pressFeedbackType = PressFeedbackType.Sink) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = "📝", style = MiuixTheme.textStyles.headline2)
-                Spacer(modifier = Modifier.width(12.dp))
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "HoYoLAB 签到",
-                        style = MiuixTheme.textStyles.title2,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = "每日签到获取奖励",
-                        style = MiuixTheme.textStyles.main,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                }
-                Button(
-                    onClick = onRefresh,
-                    enabled = !signState.isLoading && !signState.isSigning,
-                ) {
-                    Text("刷新")
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    onClick = onSignInAll,
-                    enabled = !signState.isLoading && !signState.isSigning,
-                ) {
-                    Text(if (signState.isSigning) "签到中..." else "一键签到")
-                }
-            }
-
-            if (signState.error != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = signState.error,
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.error,
-                )
-            }
-
-            if (signState.signStatuses.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(12.dp))
-                signState.signStatuses.forEach { status ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = if (status.isSigned) "✅" else "❌",
-                            style = MiuixTheme.textStyles.body2,
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = status.game.displayName,
-                            style = MiuixTheme.textStyles.body2,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        if (status.error != null) {
-                            Text(
-                                text = status.error!!,
-                                style = MiuixTheme.textStyles.main,
-                                color = MiuixTheme.colorScheme.error,
-                            )
-                        } else {
-                            Text(
-                                text = if (status.isSigned) "已签到 (${status.totalSignDays}天)"
-                                else "未签到",
-                                style = MiuixTheme.textStyles.main,
-                                color = if (status.isSigned) MiuixTheme.colorScheme.primary
-                                else MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (signState.isLoading) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
                 }
             }
         }

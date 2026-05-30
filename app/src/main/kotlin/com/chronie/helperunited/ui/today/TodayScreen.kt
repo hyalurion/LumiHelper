@@ -1,5 +1,8 @@
 package com.chronie.helperunited.ui.today
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +20,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,14 +64,23 @@ import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
 private val SECTION_SPACING = 20.dp
 
+private enum class TodayGameFilter(val label: String, val shortLabel: String) {
+    ALL("全部", "All"),
+    GENSHIN("原神", "GI"),
+    STAR_RAIL("星穹", "HSR"),
+    ZZZ("绝区零", "ZZZ"),
+}
+
 /**
- * Today dashboard screen — integrates three features:
+ * Today dashboard screen — integrates four features:
  * 1. Real-time notes (resin, stamina, energy)
  * 2. Today's upgrade materials (domains)
  * 3. Current game events
+ * 4. Official game feeds
  *
  * Ported from PizzaHelperUnited's TodayTabPage.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodayScreen(
     onNavigateToMaterials: () -> Unit,
@@ -76,45 +94,66 @@ fun TodayScreen(
     val materialsUiState by materialsVM.uiState.collectAsState()
     val eventsUiState by eventsVM.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(SECTION_SPACING),
+    var selectedGame by remember { mutableStateOf(TodayGameFilter.ALL) }
+    val isRefreshing = remember(dailyUiState.isLoading, eventsUiState.isLoading) {
+        dailyUiState.isLoading || eventsUiState.isLoading
+    }
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            dailyNoteVM.refresh()
+            eventsVM.refresh()
+        },
+        modifier = Modifier.fillMaxSize(),
     ) {
-        TodayHeader(
-            onRefresh = {
-                dailyNoteVM.refresh()
-                eventsVM.refresh()
-            },
-            isLoading = dailyUiState.isLoading || eventsUiState.isLoading,
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(SECTION_SPACING),
+        ) {
+            TodayHeader(
+                onRefresh = {
+                    dailyNoteVM.refresh()
+                    eventsVM.refresh()
+                },
+                isLoading = isRefreshing,
+            )
 
-        GameFilterSection(
-            accounts = dailyUiState.accounts,
-            selectedAccount = dailyUiState.selectedAccount,
-            onSelect = { dailyNoteVM.selectAccount(it) },
-        )
+            GamePickerRow(
+                selected = selectedGame,
+                onSelect = { selectedGame = it },
+            )
 
-        if (dailyUiState.accounts.isEmpty()) {
-            NoAccountHint()
+            GameFilterSection(
+                accounts = dailyUiState.accounts,
+                selectedAccount = dailyUiState.selectedAccount,
+                onSelect = { dailyNoteVM.selectAccount(it) },
+            )
+
+            if (dailyUiState.accounts.isEmpty()) {
+                NoAccountHint()
+            }
+
+            DailyNoteContent(
+                uiState = dailyUiState,
+                viewModel = dailyNoteVM,
+            )
+
+            TodayMaterialsSection(
+                uiState = materialsUiState,
+                onClick = onNavigateToMaterials,
+            )
+
+            EventsSection(
+                uiState = eventsUiState,
+                onClick = onNavigateToEvents,
+            )
+
+            OfficialFeedPlaceholder()
         }
-
-        DailyNoteContent(
-            uiState = dailyUiState,
-            viewModel = dailyNoteVM,
-        )
-
-        TodayMaterialsSection(
-            uiState = materialsUiState,
-            onClick = onNavigateToMaterials,
-        )
-
-        EventsSection(
-            uiState = eventsUiState,
-            onClick = onNavigateToEvents,
-        )
     }
 }
 
@@ -140,6 +179,71 @@ private fun TodayHeader(
             enabled = !isLoading,
         ) {
             Text("刷新")
+        }
+    }
+}
+
+// ========== Game Picker ==========
+
+@Composable
+private fun GamePickerRow(
+    selected: TodayGameFilter,
+    onSelect: (TodayGameFilter) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        TodayGameFilter.entries.forEach { filter ->
+            val isSelected = filter == selected
+            Button(
+                onClick = { onSelect(filter) },
+                modifier = if (isSelected) Modifier.background(
+                    color = MiuixTheme.colorScheme.primary.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(20.dp),
+                ) else Modifier,
+            ) {
+                Text(
+                    text = filter.label,
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                    color = if (isSelected) MiuixTheme.colorScheme.primary
+                    else MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
+            }
+        }
+    }
+}
+
+// ========== Official Feed Placeholder ==========
+
+@Composable
+private fun OfficialFeedPlaceholder() {
+    SectionLabel("官方资讯")
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = "\uD83D\uDCF0",
+                style = MiuixTheme.textStyles.headline2,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "官方资讯",
+                style = MiuixTheme.textStyles.title2,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "游戏新闻和公告即将上线，敬请期待",
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
         }
     }
 }

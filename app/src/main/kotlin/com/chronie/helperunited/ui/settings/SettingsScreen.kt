@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,21 +31,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-// import com.chronie.helperunited.BuildConfig
 import com.chronie.helperunited.worker.WorkScheduler
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.utils.PressFeedbackType
+import top.yukonga.miuix.kmp.basic.Switch
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
+import top.yukonga.miuix.kmp.utils.PressFeedbackType
 
-/**
- * Settings / About screen.
- * Shows app info, version, and useful links.
- * Ported from PizzaHelperUnited's PZAboutKit.
- */
+private val SECTION_HEADER_TOP = 24.dp
+private val SECTION_HEADER_BOTTOM = 8.dp
+private val SECTION_SPACING = 4.dp
+
 @Composable
 fun SettingsScreen(
+    onNavigateToAccount: () -> Unit = {},
     onNavigateToPrivacy: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -52,245 +55,80 @@ fun SettingsScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(SECTION_SPACING),
     ) {
-        // App Info
+        AppInfoHeader()
+
+        UpdateCheckSection(
+            updateCheckResult = updateCheckResult,
+            onCheckUpdate = {
+                updateCheckResult = "正在检查更新..."
+                updateCheckResult = "已是最新版本"
+            },
+        )
+
+        SectionHeader(text = "账号与资料管理")
         Card(
             modifier = Modifier.fillMaxWidth(),
             pressFeedbackType = PressFeedbackType.Sink,
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = "🍕 Helper United",
-                    style = MiuixTheme.textStyles.headline2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Kotlin/Android Edition",
-                    style = MiuixTheme.textStyles.body2,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "版本 1.0 (Build 1)",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-            }
-        }
-
-        // Check for Updates
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "🔄 检查更新",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = "当前版本: 1.0",
-                        style = MiuixTheme.textStyles.main,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                    Button(onClick = {
-                        // Placeholder: would check GitHub releases API
-                        updateCheckResult = "正在检查更新..."
-                        // In production, this would call GitHub API
-                        updateCheckResult = "已是最新版本 ✓"
-                    }) {
-                        Text("检查更新")
-                    }
-                }
-                AnimatedVisibility(
-                    visible = updateCheckResult != null,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    updateCheckResult?.let { result ->
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = result,
-                            style = MiuixTheme.textStyles.main,
-                            color = MiuixTheme.colorScheme.primary,
-                        )
-                    }
-                }
-            }
-        }
-
-        // Background Refresh Settings
-        BackgroundRefreshCard()
-
-        // Supported Games
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "支持的游戏",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                GameRow("⚡", "原神", "Genshin Impact", "完整支持")
-                Spacer(modifier = Modifier.height(8.dp))
-                GameRow("🚂", "崩坏：星穹铁道", "Honkai: Star Rail", "完整支持")
-                Spacer(modifier = Modifier.height(8.dp))
-                GameRow("🎮", "绝区零", "Zenless Zone Zero", "每日便笺")
-            }
-        }
-
-        // Features
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "功能",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                FeatureRow("⚡", "每日便笺", "实时查看树脂/开拓力/电量")
-                FeatureRow("🎭", "角色展柜", "Enka.Network 角色详情")
-                FeatureRow("🎰", "抽卡记录", "记录分析、UIGF 导入导出")
-                FeatureRow("👤", "账号管理", "多账号支持")
-                FeatureRow("🔔", "后台提醒", "树脂/开拓力/电量即将满时通知")
-            }
-        }
-
-        // Links
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "相关链接",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                LinkRow("GitHub", "pizza-studio/PizzaHelperUnited")
-                LinkRow("App Store", "The Latte Helper")
-                LinkRow("Enka.Network", "角色展柜数据源")
-            }
-        }
-
-        // Contributors
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "👥 贡献者",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "感谢所有为本项目做出贡献的开发者！",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = {
+            SettingsNavRow(
+                icon = "\uD83D\uDC64",
+                title = "账号管理",
+                subtitle = "添加和管理 HoYoLAB / 米游社账号",
+                onClick = onNavigateToAccount,
+            )
+            SettingsDivider()
+            SettingsNavRow(
+                icon = "\u2753",
+                title = "常见问题",
+                subtitle = "查看常见问题与解决方案",
+                onClick = {
                     val intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/pizza-studio/PizzaHelperUnited/graphs/contributors")
+                        Uri.parse("https://github.com/pizza-studio/PizzaHelperUnited/wiki/FAQ")
                     )
                     context.startActivity(intent)
-                }) {
-                    Text("查看贡献者")
-                }
-            }
+                },
+            )
         }
 
-        // Rate on Google Play
+        SectionHeader(text = "功能设置")
         Card(
             modifier = Modifier.fillMaxWidth(),
             pressFeedbackType = PressFeedbackType.Sink,
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "⭐ 评价应用",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "如果您觉得本应用有帮助，请在 Google Play 上给我们评分！",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = {
-                    try {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("market://details?id=com.chronie.helperunited")
-                        )
-                        context.startActivity(intent)
-                    } catch (_: Exception) {
-                        // Fallback to browser if Play Store not installed
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=com.chronie.helperunited")
-                        )
-                        context.startActivity(intent)
-                    }
-                }) {
-                    Text("在 Google Play 上评价")
-                }
-            }
+            BackgroundRefreshRow()
+            SettingsDivider()
+            SettingsButtonRow(
+                icon = "\uD83D\uDDC4\uFE0F",
+                title = "缓存管理",
+                subtitle = "清理 Enka 数据库和图片缓存",
+                buttonText = "清理",
+                onClick = {
+
+                },
+            )
         }
 
-        // Open Source Licenses
+        SectionHeader(text = "其他")
         Card(
             modifier = Modifier.fillMaxWidth(),
             pressFeedbackType = PressFeedbackType.Sink,
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "📜 开源许可",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "本项目使用了以下开源库，感谢所有贡献者。",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "本项目基于 AGPL-3.0 许可证开源",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "原始项目: (c) 2024 Pizza Studio",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = {
-                    // Navigate to OSS licenses activity (standard Android component)
+            SettingsNavRow(
+                icon = "\uD83D\uDD12",
+                title = "隐私政策",
+                subtitle = "查看应用隐私政策和用户协议",
+                onClick = onNavigateToPrivacy,
+            )
+            SettingsDivider()
+            SettingsNavRow(
+                icon = "\uD83D\uDCDC",
+                title = "开源许可",
+                subtitle = "AGPL-3.0 · 查看开源库许可证",
+                onClick = {
                     try {
                         val intent = Intent(
                             context,
@@ -298,136 +136,195 @@ fun SettingsScreen(
                         )
                         context.startActivity(intent)
                     } catch (_: Exception) {
-                        // Fallback: open GitHub licenses page
                         val intent = Intent(
                             Intent.ACTION_VIEW,
                             Uri.parse("https://github.com/pizza-studio/PizzaHelperUnited/blob/main/LICENSE")
                         )
                         context.startActivity(intent)
                     }
-                }) {
-                    Text("查看开源许可")
-                }
-            }
+                },
+            )
+            SettingsDivider()
+            SettingsNavRow(
+                icon = "\u2B50",
+                title = "评价应用",
+                subtitle = "在 Google Play 上给我们评分",
+                onClick = {
+                    try {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=com.chronie.helperunited")
+                        )
+                        context.startActivity(intent)
+                    } catch (_: Exception) {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.chronie.helperunited")
+                        )
+                        context.startActivity(intent)
+                    }
+                },
+            )
         }
 
-        // Privacy Policy
+        SectionHeader(text = "关于")
         Card(
             modifier = Modifier.fillMaxWidth(),
             pressFeedbackType = PressFeedbackType.Sink,
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "🔒 隐私政策",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "查看本应用的隐私政策和用户协议",
-                    style = MiuixTheme.textStyles.main,
+                    text = "Original project: (c) 2024 Pizza Studio",
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = onNavigateToPrivacy) {
-                    Text("查看隐私政策")
-                }
+                Text(
+                    text = "Enka.Network · MIUIX UI Library",
+                    style = MiuixTheme.textStyles.body2,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
             }
         }
 
-        // Credits
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            pressFeedbackType = PressFeedbackType.Sink,
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+// ========== App Info Header ==========
+
+@Composable
+private fun AppInfoHeader() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = "\uD83C\uDF55 Helper United",
+                style = MiuixTheme.textStyles.headline2,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Kotlin/Android Edition",
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Version 1.0 (Build 1)",
+                style = MiuixTheme.textStyles.main,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
+        }
+    }
+}
+
+// ========== Update Check ==========
+
+@Composable
+private fun UpdateCheckSection(
+    updateCheckResult: String?,
+    onCheckUpdate: () -> Unit,
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        pressFeedbackType = PressFeedbackType.Sink,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "致谢",
-                    style = MiuixTheme.textStyles.title2,
-                    fontWeight = FontWeight.Bold,
+                    text = "检查更新",
+                    style = MiuixTheme.textStyles.body1,
+                    fontWeight = FontWeight.Medium,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "• Pizza Studio 团队：原始 iOS 应用开发",
-                    style = MiuixTheme.textStyles.main,
+                    text = "当前版本: 1.0",
+                    style = MiuixTheme.textStyles.body2,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
-                Text(
-                    text = "• Enka.Network：角色展柜数据 API",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Text(
-                    text = "• MIUIX：UI 组件库",
-                    style = MiuixTheme.textStyles.main,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
+            }
+            Button(onClick = onCheckUpdate) {
+                Text("检查")
+            }
+        }
+        AnimatedVisibility(
+            visible = updateCheckResult != null,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            updateCheckResult?.let { result ->
+                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)) {
+                    Text(
+                        text = result,
+                        style = MiuixTheme.textStyles.main,
+                        color = MiuixTheme.colorScheme.primary,
+                    )
+                }
             }
         }
     }
 }
 
+// ========== Background Refresh ==========
+
 @Composable
-private fun BackgroundRefreshCard() {
+private fun BackgroundRefreshRow() {
     val context = LocalContext.current
     var enabled by remember { mutableStateOf(WorkScheduler.isEnabled(context)) }
     var intervalMinutes by remember { mutableLongStateOf(WorkScheduler.getIntervalMinutes(context)) }
     var thresholdPercent by remember { mutableIntStateOf(WorkScheduler.getThresholdPercent(context)) }
 
     val intervalOptions = listOf(15L, 30L, 60L)
-    val intervalLabels = listOf("15 分钟", "30 分钟", "1 小时")
+    val intervalLabels = listOf("15 min", "30 min", "1 h")
     val thresholdOptions = listOf(70, 80, 90)
     val thresholdLabels = listOf("70%", "80%", "90%")
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        pressFeedbackType = PressFeedbackType.Sink,
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = "🔔 后台刷新设置",
-                style = MiuixTheme.textStyles.title2,
-                fontWeight = FontWeight.Bold,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Enable/Disable toggle
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "启用后台刷新",
-                        style = MiuixTheme.textStyles.body2,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = "定期检查树脂/开拓力/电量并发送通知",
-                        style = MiuixTheme.textStyles.main,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(onClick = {
-                    enabled = !enabled
-                    WorkScheduler.setEnabled(context, enabled)
-                }) {
-                    Text(text = if (enabled) "已开启" else "已关闭")
-                }
+    Column(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "\uD83D\uDD14  后台刷新",
+                    style = MiuixTheme.textStyles.body1,
+                    fontWeight = FontWeight.Medium,
+                )
+                Text(
+                    text = "定期检查树脂/开拓力/电量并发送通知",
+                    style = MiuixTheme.textStyles.body2,
+                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                )
             }
+            Spacer(modifier = Modifier.width(8.dp))
+            Switch(
+                checked = enabled,
+                onCheckedChange = {
+                    enabled = it
+                    WorkScheduler.setEnabled(context, it)
+                },
+            )
+        }
 
-            if (enabled) {
-                Spacer(modifier = Modifier.height(16.dp))
+        AnimatedVisibility(visible = enabled, enter = fadeIn(), exit = fadeOut()) {
+            Column {
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // Refresh interval
                 Text(
                     text = "刷新间隔",
                     style = MiuixTheme.textStyles.body2,
                     fontWeight = FontWeight.Bold,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -443,30 +340,26 @@ private fun BackgroundRefreshCard() {
                         ) {
                             Text(
                                 text = intervalLabels[index],
-                                color = if (isSelected) {
-                                    MiuixTheme.colorScheme.primary
-                                } else {
-                                    MiuixTheme.colorScheme.onSurfaceVariantSummary
-                                },
+                                color = if (isSelected) MiuixTheme.colorScheme.primary
+                                else MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // Notification threshold
                 Text(
                     text = "通知阈值",
                     style = MiuixTheme.textStyles.body2,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "当资源达到最大值的百分比时发送通知",
+                    text = "资源达到最大值百分比时发送通知",
                     style = MiuixTheme.textStyles.main,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -482,11 +375,8 @@ private fun BackgroundRefreshCard() {
                         ) {
                             Text(
                                 text = thresholdLabels[index],
-                                color = if (isSelected) {
-                                    MiuixTheme.colorScheme.primary
-                                } else {
-                                    MiuixTheme.colorScheme.onSurfaceVariantSummary
-                                },
+                                color = if (isSelected) MiuixTheme.colorScheme.primary
+                                else MiuixTheme.colorScheme.onSurfaceVariantSummary,
                             )
                         }
                     }
@@ -496,71 +386,88 @@ private fun BackgroundRefreshCard() {
     }
 }
 
+// ========== Shared Components ==========
+
 @Composable
-private fun GameRow(emoji: String, name: String, subtitle: String, status: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = emoji, style = MiuixTheme.textStyles.headline2)
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = name,
-                style = MiuixTheme.textStyles.title3,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = subtitle,
-                style = MiuixTheme.textStyles.main,
-                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-            )
-        }
-        Text(
-            text = status,
-            style = MiuixTheme.textStyles.main,
-            color = MiuixTheme.colorScheme.primary,
-        )
-    }
+private fun SectionHeader(text: String) {
+    Text(
+        text = text,
+        style = MiuixTheme.textStyles.title2,
+        fontWeight = FontWeight.Bold,
+        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+        modifier = Modifier.padding(top = SECTION_HEADER_TOP, bottom = SECTION_HEADER_BOTTOM),
+    )
 }
 
 @Composable
-private fun FeatureRow(emoji: String, title: String, description: String) {
-    Row(
-        modifier = Modifier.padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(text = emoji, style = MiuixTheme.textStyles.title2)
-        Spacer(modifier = Modifier.width(12.dp))
-        Column {
-            Text(
-                text = title,
-                style = MiuixTheme.textStyles.body2,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = description,
-                style = MiuixTheme.textStyles.main,
-                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-            )
-        }
-    }
-}
-
-@Composable
-private fun LinkRow(title: String, subtitle: String) {
+private fun SettingsNavRow(
+    icon: String,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = title,
-            style = MiuixTheme.textStyles.body2,
-            fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = subtitle,
-            style = MiuixTheme.textStyles.main,
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-        )
+        Text(text = icon, style = MiuixTheme.textStyles.headline2)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MiuixTheme.textStyles.body1,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = subtitle,
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
+        }
     }
+}
+
+@Composable
+private fun SettingsButtonRow(
+    icon: String,
+    title: String,
+    subtitle: String,
+    buttonText: String,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = icon, style = MiuixTheme.textStyles.headline2)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MiuixTheme.textStyles.body1,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = subtitle,
+                style = MiuixTheme.textStyles.body2,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
+        }
+        Button(onClick = onClick) {
+            Text(buttonText)
+        }
+    }
+}
+
+@Composable
+private fun SettingsDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        color = MiuixTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+    )
 }

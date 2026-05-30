@@ -137,7 +137,7 @@ class ChallengeRepository @Inject constructor(
             )
         }
         if (response.retCode != 0) throw HoYoApiException(response.retCode, response.message)
-        response.data ?: throw HoYoApiException(-1, "Empty data")
+        return response.data ?: throw HoYoApiException(-1, "Empty data")
     }
 
     suspend fun fetchLedgerHSR(account: HoYoAccount): Result<LedgerData4HSR> = runCatching {

@@ -85,7 +85,7 @@ androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref 
 androidx-hilt-work-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
 
 # ZXing (QR code)
-zxing-core = { group = "com.google.zxing", name = "core", version = "3.5.3" }
+zxing-core = { group = "com.google.zxing", name = "core", version = "3.5.4" }
 
 # Glance (Widgets)
 androidx-glance = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }

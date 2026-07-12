@@ -61,7 +61,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
-    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.4.0")
     ksp(libs.hilt.compiler)
 
     // WorkManager + Hilt
